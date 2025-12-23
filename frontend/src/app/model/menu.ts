@@ -2,9 +2,11 @@
 export interface MenuItem {
   id: number;
   name: string;
-  price: number;
-  description: string;
+  desc: string;
+  imageUrl: string;
+  kitchenId: number;
   category: string;
-  image: string;
+  inStock: string;
   isVeg: boolean;
+  price: number;
 }

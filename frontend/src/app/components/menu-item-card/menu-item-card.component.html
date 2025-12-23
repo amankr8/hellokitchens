@@ -1,0 +1,51 @@
+<div
+  class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+>
+  <!-- Image Section -->
+  <div class="relative h-48 overflow-hidden">
+    <img
+      [src]="getImageUrl()"
+      [alt]="menuItem.name"
+      class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+    />
+    <!-- Vegetarian Badge (Optional) -->
+    <div
+      *ngIf="menuItem.isVeg"
+      class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold"
+    >
+      VEG
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="p-4">
+    <!-- Title Section -->
+    <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-1">
+      {{ menuItem.name }}
+    </h3>
+
+    <!-- Description Section -->
+    <p class="text-sm text-gray-600 mb-3 line-clamp-2">
+      {{ menuItem.desc }}
+    </p>
+
+    <!-- Category (Optional) -->
+    <span
+      *ngIf="menuItem.category"
+      class="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded mb-3"
+    >
+      {{ menuItem.category }}
+    </span>
+
+    <!-- Price and Action Section -->
+    <div
+      class="flex items-center justify-between mt-4 pt-3 border-t border-gray-200"
+    >
+      <div class="flex items-center">
+        <span class="text-2xl font-bold text-red-500"
+          >₹{{ menuItem.price }}</span
+        >
+      </div>
+    </div>
+  </div>
+</div>
