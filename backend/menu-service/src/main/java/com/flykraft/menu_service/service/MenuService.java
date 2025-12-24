@@ -1,6 +1,6 @@
 package com.flykraft.menu_service.service;
 
-import com.flykraft.menu_service.dto.MenuItemRequestDto;
+import com.flykraft.menu_service.dto.menu.MenuItemRequestDto;
 import com.flykraft.menu_service.model.MenuItem;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.flykraft.menu_service.dto;
+package com.flykraft.menu_service.dto.kitchen;
 
 import lombok.Data;
 

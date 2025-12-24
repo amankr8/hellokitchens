@@ -1,8 +1,7 @@
 package com.flykraft.menu_service.controller.impl;
 
 import com.flykraft.menu_service.controller.KitchenController;
-import com.flykraft.menu_service.dto.KitchenRequestDto;
-import com.flykraft.menu_service.model.Kitchen;
+import com.flykraft.menu_service.dto.kitchen.KitchenRequestDto;
 import com.flykraft.menu_service.service.KitchenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

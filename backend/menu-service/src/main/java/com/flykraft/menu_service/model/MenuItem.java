@@ -1,6 +1,6 @@
 package com.flykraft.menu_service.model;
 
-import com.flykraft.menu_service.dto.MenuItemResponseDto;
+import com.flykraft.menu_service.dto.menu.MenuItemResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

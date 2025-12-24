@@ -1,8 +1,8 @@
 package com.flykraft.menu_service.controller.impl;
 
 import com.flykraft.menu_service.controller.MenuController;
-import com.flykraft.menu_service.dto.MenuItemRequestDto;
-import com.flykraft.menu_service.dto.MenuItemResponseDto;
+import com.flykraft.menu_service.dto.menu.MenuItemRequestDto;
+import com.flykraft.menu_service.dto.menu.MenuItemResponseDto;
 import com.flykraft.menu_service.model.MenuItem;
 import com.flykraft.menu_service.service.MenuService;
 import lombok.RequiredArgsConstructor;

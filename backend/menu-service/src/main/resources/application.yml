@@ -14,3 +14,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: 86400000
+
+cloudinary:
+  url: cloudinary://${CN_KEY}:${CN_SECRET}@${CN_NAME}

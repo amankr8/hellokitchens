@@ -1,6 +1,6 @@
 package com.flykraft.menu_service.service;
 
-import com.flykraft.menu_service.dto.KitchenRequestDto;
+import com.flykraft.menu_service.dto.kitchen.KitchenRequestDto;
 import com.flykraft.menu_service.model.Kitchen;
 
 public interface KitchenService {

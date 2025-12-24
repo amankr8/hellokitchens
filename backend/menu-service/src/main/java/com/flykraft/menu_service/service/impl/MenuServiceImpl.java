@@ -1,6 +1,6 @@
 package com.flykraft.menu_service.service.impl;
 
-import com.flykraft.menu_service.dto.MenuItemRequestDto;
+import com.flykraft.menu_service.dto.menu.MenuItemRequestDto;
 import com.flykraft.menu_service.model.Kitchen;
 import com.flykraft.menu_service.model.MenuItem;
 import com.flykraft.menu_service.repository.MenuItemRepository;

@@ -1,4 +1,4 @@
-package com.flykraft.menu_service.dto;
+package com.flykraft.menu_service.dto.menu;
 
 import com.flykraft.menu_service.model.Category;
 import lombok.Data;

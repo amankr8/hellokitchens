@@ -1,6 +1,6 @@
 package com.flykraft.menu_service.controller;
 
-import com.flykraft.menu_service.dto.MenuItemRequestDto;
+import com.flykraft.menu_service.dto.menu.MenuItemRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
