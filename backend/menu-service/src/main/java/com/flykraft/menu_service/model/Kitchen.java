@@ -23,6 +23,9 @@ public class Kitchen {
     @Column(name = "kitchen_name")
     private String name;
 
+    @Column(name = "kitchen_tagline")
+    private String tagline;
+
     @Column(name = "kitchen_address")
     private String address;
 

@@ -1,42 +1,94 @@
 <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-  <!-- Header Section -->
-  <div class="max-w-4xl mx-auto mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">Meghana Foods</h1>
-    <p class="text-gray-600">Discover our delicious offerings</p>
-  </div>
-
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="max-w-4xl mx-auto">
-    <div class="flex justify-center items-center h-64">
-      <div
-        class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-500"
-      ></div>
-    </div>
-  </div>
-
-  <!-- Error State -->
-  <div *ngIf="errorMessage && !isLoading" class="max-w-4xl mx-auto">
+  <!-- Header -->
+  <div class="max-w-6xl mx-auto mb-8">
     <div
-      class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative"
-      role="alert"
+      class="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4 flex items-center justify-between"
     >
-      <strong class="font-bold">Error!</strong>
-      <span class="block sm:inline"> {{ errorMessage }}</span>
+      <!-- Brand -->
+      <div>
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+          Meghana Foods
+        </h1>
+        <p class="mt-0.5 text-sm text-gray-500">
+          Authentic Andhra-Style Cuisine
+        </p>
+      </div>
+
+      <!-- Placeholder Cart -->
+      <button
+        class="relative flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        aria-label="Cart (coming soon)"
+      >
+        <!-- Cart Icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-gray-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"
+          />
+        </svg>
+
+        <span>Cart</span>
+
+        <!-- Badge -->
+        <span
+          class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full px-1.5"
+        >
+          0
+        </span>
+      </button>
     </div>
   </div>
 
-  <!-- Menu Items Grid - Responsive horizontal cards -->
-  <div *ngIf="!isLoading && !errorMessage" class="max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <app-menu-item-card *ngFor="let item of menuItems" [menuItem]="item">
-      </app-menu-item-card>
+  <div class="max-w-6xl mx-auto min-h-[60vh]">
+    <!-- Loading State (Skeletons) -->
+    <ng-container *ngIf="isLoading">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div
+          *ngFor="let _ of skeletons"
+          class="h-36 bg-white rounded-xl border border-gray-100 animate-pulse"
+        ></div>
+      </div>
+    </ng-container>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !isLoading">
+      <div
+        class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"
+        role="alert"
+      >
+        <strong class="font-semibold">Error:</strong>
+        <span class="ml-1">{{ errorMessage }}</span>
+      </div>
     </div>
 
-    <!-- Empty State -->
-    <div *ngIf="menuItems.length === 0" class="text-center py-16">
-      <p class="text-gray-500 text-lg">
-        No menu items available at the moment.
-      </p>
-    </div>
+    <!-- Menu Items -->
+    <ng-container *ngIf="!isLoading && !errorMessage">
+      <div
+        *ngIf="menuItems.length > 0; else emptyState"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-4"
+      >
+        <app-menu-item-card
+          *ngFor="let item of menuItems; trackBy: trackById"
+          [menuItem]="item"
+        ></app-menu-item-card>
+      </div>
+
+      <!-- Empty State -->
+      <ng-template #emptyState>
+        <div class="text-center py-20">
+          <p class="text-gray-500 text-lg">
+            No menu items available right now.
+          </p>
+        </div>
+      </ng-template>
+    </ng-container>
   </div>
 </div>

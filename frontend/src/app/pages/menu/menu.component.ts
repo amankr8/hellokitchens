@@ -13,6 +13,7 @@ import { MenuItemCardComponent } from '../../components/menu-item-card/menu-item
 export class MenuComponent {
   menuItems: MenuItem[] = [];
   isLoading: boolean = true;
+  skeletons = Array(6);
   subdomain: string = 'taco-street';
   errorMessage: string = '';
 
@@ -20,6 +21,10 @@ export class MenuComponent {
 
   ngOnInit(): void {
     this.fetchMenuItems();
+  }
+
+  trackById(index: number, item: MenuItem) {
+    return item.id;
   }
 
   fetchMenuItems(): void {

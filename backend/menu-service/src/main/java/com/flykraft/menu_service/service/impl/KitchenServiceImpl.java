@@ -27,6 +27,7 @@ public class KitchenServiceImpl implements KitchenService {
     public Kitchen addKitchen(KitchenRequestDto kitchenRequestDto) {
         Kitchen kitchen = Kitchen.builder()
                 .name(kitchenRequestDto.getName())
+                .tagline(kitchenRequestDto.getTagline())
                 .address(kitchenRequestDto.getAddress())
                 .whatsapp(kitchenRequestDto.getWhatsapp())
                 .subdomain(kitchenRequestDto.getSubdomain())
@@ -45,6 +46,7 @@ public class KitchenServiceImpl implements KitchenService {
     public Kitchen updateKitchenDetails(Long kitchenId, KitchenRequestDto kitchenRequestDto) {
         Kitchen selectedKitchen = getKitchenById(kitchenId);
         selectedKitchen.setName(kitchenRequestDto.getName());
+        selectedKitchen.setTagline(kitchenRequestDto.getTagline());
         selectedKitchen.setAddress(kitchenRequestDto.getAddress());
         selectedKitchen.setWhatsapp(kitchenRequestDto.getWhatsapp());
         return kitchenRepository.save(selectedKitchen);
