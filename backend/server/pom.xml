@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.flykraft</groupId>
-	<artifactId>menu-service</artifactId>
+	<artifactId>server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>menu-service</name>
-	<description>Demo project for Spring Boot</description>
+	<name>livemenu</name>
+	<description>Server for Livemenu Application</description>
 	<url/>
 	<licenses>
 		<license/>
