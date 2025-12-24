@@ -2,8 +2,7 @@ package com.flykraft.livemenu.entity;
 
 import com.flykraft.livemenu.model.Authority;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +11,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "auth_user")
 public class AuthUser implements UserDetails {

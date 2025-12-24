@@ -7,9 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 @AllArgsConstructor
 public enum Authority implements GrantedAuthority {
-    ADMIN(1, "Admin"),
-    KITCHEN_OWNER(2, "Kitchen Owner"),
-    CUSTOMER(3, "Customer");
+    KITCHEN_OWNER(1, "Kitchen Owner"),
+    CUSTOMER(2, "Customer");
 
     @Getter
     private final Integer id;
@@ -18,5 +17,14 @@ public enum Authority implements GrantedAuthority {
     @Override
     public @NonNull String getAuthority() {
         return authority;
+    }
+
+    public static Authority getAuthorityById(int id) {
+        for (Authority authority : Authority.values()) {
+            if (authority.getId() == id) {
+                return authority;
+            }
+        }
+        throw new IllegalArgumentException("No authority found for id: " + id);
     }
 }
