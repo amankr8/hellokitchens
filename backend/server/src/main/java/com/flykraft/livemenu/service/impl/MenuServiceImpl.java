@@ -56,7 +56,6 @@ public class MenuServiceImpl implements MenuService {
 
     private DishImage saveImage(MultipartFile imageFile, String folderPath) {
         if  (imageFile == null) return null;
-
         try {
             CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(imageFile, folderPath);
             return DishImage.builder()
@@ -73,32 +72,27 @@ public class MenuServiceImpl implements MenuService {
     public MenuItem updateMenuItem(Long menuItemId, MenuItemRequestDto menuItemRequestDto) {
         MenuItem selectedMenuItem = getMenuItemById(menuItemId);
         if (menuItemRequestDto.getImage() != null) {
+            DishImage existingImage = selectedMenuItem.getDishImage();
             String folderPath = getFolderPathForMenuItem(selectedMenuItem.getKitchen().getId());
-            DishImage dishImage = updateImage(selectedMenuItem.getDishImage(), menuItemRequestDto.getImage(), folderPath);
+            DishImage dishImage = saveImage(menuItemRequestDto.getImage(), folderPath);
             selectedMenuItem.setDishImage(dishImage);
+            deleteImage(existingImage);
         }
-
         selectedMenuItem.setName(menuItemRequestDto.getName());
         selectedMenuItem.setDesc(menuItemRequestDto.getDesc());
         selectedMenuItem.setCategory(menuItemRequestDto.getCategory());
         selectedMenuItem.setIsVeg(menuItemRequestDto.getIsVeg());
         selectedMenuItem.setPrice(menuItemRequestDto.getPrice());
+
         return menuItemRepository.save(selectedMenuItem);
     }
 
-    private DishImage updateImage(DishImage existingImage, MultipartFile imageFile, String folderPath) {
+    private void deleteImage(DishImage existingImage) {
+        if (existingImage == null) return;
         try {
-            CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(imageFile, folderPath);
-            DishImage newImage = DishImage.builder()
-                    .publicId(cloudinaryFile.getPublicId())
-                    .url(cloudinaryFile.getUrl())
-                    .build();
-
-            if (existingImage != null) cloudinaryService.deleteFile(existingImage.getPublicId());
-            return newImage;
+            cloudinaryService.deleteFile(existingImage.getPublicId());
         } catch (IOException e) {
-            log.error("Error updating image {}: {}", imageFile.getOriginalFilename(), e.getMessage(), e);
-            return existingImage;
+            log.error("Error deleting image with Public ID - {}: {}", existingImage.getPublicId(), e.getMessage(), e);
         }
     }
 
