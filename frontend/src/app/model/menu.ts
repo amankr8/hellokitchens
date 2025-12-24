@@ -6,7 +6,7 @@ export interface MenuItem {
   imageUrl: string;
   kitchenId: number;
   category: string;
-  inStock: string;
+  inStock: boolean;
   isVeg: boolean;
   price: number;
 }

@@ -14,4 +14,20 @@ export class MenuService {
   getMenuItems(subdomain: string): Observable<MenuItem[]> {
     return this.http.get<MenuItem[]>(this.apiUrl + `/${subdomain}`);
   }
+
+  getMenuItemById(id: number): Observable<MenuItem> {
+    return this.http.get<MenuItem>(`${this.apiUrl}/${id}`);
+  }
+
+  addMenuItem(item: MenuItem): Observable<MenuItem> {
+    return this.http.post<MenuItem>(this.apiUrl, item);
+  }
+
+  updateMenuItem(itemId: number, item: MenuItem): Observable<MenuItem> {
+    return this.http.put<MenuItem>(`${this.apiUrl}/${item.id}`, item);
+  }
+
+  deleteMenuItem(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
