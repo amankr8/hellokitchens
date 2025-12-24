@@ -17,13 +17,13 @@ public class AuthUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_user_id")
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "auth_username")
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "auth_password")
+    @Column(name = "password")
     private String password;
 
     private Authority authority;
