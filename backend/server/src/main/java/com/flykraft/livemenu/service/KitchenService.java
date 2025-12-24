@@ -1,7 +1,7 @@
 package com.flykraft.livemenu.service;
 
 import com.flykraft.livemenu.dto.kitchen.KitchenRequestDto;
-import com.flykraft.livemenu.model.Kitchen;
+import com.flykraft.livemenu.entity.Kitchen;
 
 public interface KitchenService {
 

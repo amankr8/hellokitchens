@@ -1,6 +1,7 @@
-package com.flykraft.livemenu.model;
+package com.flykraft.livemenu.entity;
 
 import com.flykraft.livemenu.dto.menu.MenuItemResponseDto;
+import com.flykraft.livemenu.model.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,35 +15,39 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "menu_items")
+@Table(name = "menu_item")
 public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
+    @Column(name = "mi_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kitchen_id")
+    @JoinColumn(name = "k_id")
     private Kitchen kitchen;
 
-    @Column(name = "item_name")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "di_id")
+    private DishImage dishImage;
+
+    @Column(name = "mi_name")
     private String name;
 
-    @Column(name = "item_desc")
+    @Column(name = "mi_desc")
     private String desc;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "item_category")
+    @Column(name = "mi_category")
     private Category category;
 
-    @Column(name = "item_in_stock")
+    @Column(name = "mi_in_stock")
     private Boolean inStock;
 
-    @Column(name = "item_is_veg")
+    @Column(name = "mi_is_veg")
     private Boolean isVeg;
 
-    @Column(name = "item_price")
+    @Column(name = "mi_price")
     private BigDecimal price;
 
     public MenuItemResponseDto toResponseDto(){

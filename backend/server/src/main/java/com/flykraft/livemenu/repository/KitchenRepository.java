@@ -1,6 +1,6 @@
 package com.flykraft.livemenu.repository;
 
-import com.flykraft.livemenu.model.Kitchen;
+import com.flykraft.livemenu.entity.Kitchen;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

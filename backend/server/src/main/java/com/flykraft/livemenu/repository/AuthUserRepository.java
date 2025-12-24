@@ -1,6 +1,6 @@
 package com.flykraft.livemenu.repository;
 
-import com.flykraft.livemenu.model.AuthUser;
+import com.flykraft.livemenu.entity.AuthUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

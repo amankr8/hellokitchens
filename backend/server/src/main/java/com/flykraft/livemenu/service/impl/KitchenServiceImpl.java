@@ -1,7 +1,7 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.dto.kitchen.KitchenRequestDto;
-import com.flykraft.livemenu.model.Kitchen;
+import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.repository.KitchenRepository;
 import com.flykraft.livemenu.service.KitchenService;
 import lombok.RequiredArgsConstructor;

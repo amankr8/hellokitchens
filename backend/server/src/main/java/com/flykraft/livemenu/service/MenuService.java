@@ -1,7 +1,7 @@
 package com.flykraft.livemenu.service;
 
 import com.flykraft.livemenu.dto.menu.MenuItemRequestDto;
-import com.flykraft.livemenu.model.MenuItem;
+import com.flykraft.livemenu.entity.MenuItem;
 
 import java.util.List;
 

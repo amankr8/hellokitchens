@@ -1,4 +1,4 @@
-package com.flykraft.livemenu.model;
+package com.flykraft.livemenu.entity;
 
 import com.flykraft.livemenu.dto.kitchen.KitchenResponseDto;
 import jakarta.persistence.*;
@@ -12,27 +12,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "kitchens")
+@Table(name = "kitchen")
 public class Kitchen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "kitchen_id")
+    @Column(name = "k_id")
     private Long id;
 
-    @Column(name = "kitchen_name")
+    @Column(name = "k_name")
     private String name;
 
-    @Column(name = "kitchen_tagline")
+    @Column(name = "k_tagline")
     private String tagline;
 
-    @Column(name = "kitchen_address")
+    @Column(name = "k_address")
     private String address;
 
-    @Column(name = "kitchen_subdomain")
+    @Column(name = "k_subdomain")
     private String subdomain;
 
-    @Column(name = "kitchen_whatsapp")
+    @Column(name = "k_whatsapp")
     private String whatsapp;
 
     public KitchenResponseDto toResponseDto() {

@@ -42,7 +42,7 @@ export class LoginComponent {
     //   next: (response) => {
     //     // Handle successful login
     //     // Store token and redirect to menu management
-    //     this.router.navigate(['/menu']);
+    //     this.router.navigate(['/admin/menu']);
     //   },
     //   error: (error) => {
     //     this.errorMessage = 'Invalid username or password';

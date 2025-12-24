@@ -3,7 +3,7 @@ package com.flykraft.livemenu.controller.impl;
 import com.flykraft.livemenu.controller.MenuController;
 import com.flykraft.livemenu.dto.menu.MenuItemRequestDto;
 import com.flykraft.livemenu.dto.menu.MenuItemResponseDto;
-import com.flykraft.livemenu.model.MenuItem;
+import com.flykraft.livemenu.entity.MenuItem;
 import com.flykraft.livemenu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

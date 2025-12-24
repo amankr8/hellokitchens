@@ -1,8 +1,8 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.dto.menu.MenuItemRequestDto;
-import com.flykraft.livemenu.model.Kitchen;
-import com.flykraft.livemenu.model.MenuItem;
+import com.flykraft.livemenu.entity.Kitchen;
+import com.flykraft.livemenu.entity.MenuItem;
 import com.flykraft.livemenu.repository.MenuItemRepository;
 import com.flykraft.livemenu.service.KitchenService;
 import com.flykraft.livemenu.service.MenuService;

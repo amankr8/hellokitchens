@@ -1,5 +1,6 @@
-package com.flykraft.livemenu.model;
+package com.flykraft.livemenu.entity;
 
+import com.flykraft.livemenu.model.Authority;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
@@ -12,20 +13,21 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "auth_users")
+@Table(name = "auth_user")
 public class AuthUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "au_id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "au_username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "au_password")
     private String password;
 
+    @Column(name = "au_authority")
     private Authority authority;
 
     @Override
