@@ -2,7 +2,7 @@ package com.flykraft.livemenu.model;
 
 public enum Category {
     STARTERS,
-    MAINS,
+    MAIN_COURSE,
     DRINKS,
     DESSERTS
 }
