@@ -31,6 +31,7 @@ public class AuthUser implements UserDetails {
     @Column(name = "au_password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "au_authority")
     private Authority authority;
 

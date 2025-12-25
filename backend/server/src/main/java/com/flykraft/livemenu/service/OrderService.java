@@ -5,4 +5,8 @@ import com.flykraft.livemenu.entity.Order;
 
 public interface OrderService {
     Order createOrder(OrderRequestDto orderRequestDto);
+
+    Order updateOrderStatus(Long orderId, String status);
+
+    void deleteOrder(Long orderId);
 }

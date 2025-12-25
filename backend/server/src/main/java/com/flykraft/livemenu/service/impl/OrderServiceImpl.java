@@ -16,4 +16,14 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(OrderRequestDto orderRequestDto) {
         return null;
     }
+
+    @Override
+    public Order updateOrderStatus(Long orderId, String status) {
+        return null;
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+
+    }
 }

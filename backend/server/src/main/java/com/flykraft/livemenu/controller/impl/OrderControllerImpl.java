@@ -16,4 +16,14 @@ public class OrderControllerImpl implements OrderController {
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequestDto) {
         return null;
     }
+
+    @Override
+    public ResponseEntity<?> updateOrderStatus(Long orderId, String status) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> deleteOrder(Long orderId) {
+        return null;
+    }
 }

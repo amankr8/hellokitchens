@@ -1,6 +1,7 @@
 package com.flykraft.livemenu.entity;
 
 import com.flykraft.livemenu.model.Auditable;
+import com.flykraft.livemenu.model.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,8 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -30,4 +33,15 @@ public class Order extends Auditable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "k_id")
     private Kitchen kitchen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "c_id")
+    private Customer customer;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "o_status")
+    private OrderStatus status;
+
+    @Column(name = "o_total_price")
+    private BigDecimal totalPrice;
 }
