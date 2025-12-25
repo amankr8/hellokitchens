@@ -1,8 +1,10 @@
 package com.flykraft.livemenu.dto.kitchen;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class KitchenRequestDto {
     private String name;
     private String tagline;

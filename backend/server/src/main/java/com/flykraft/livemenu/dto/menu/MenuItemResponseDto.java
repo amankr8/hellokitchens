@@ -2,11 +2,13 @@ package com.flykraft.livemenu.dto.menu;
 
 import com.flykraft.livemenu.model.Category;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class MenuItemResponseDto {
     private Long id;

@@ -1,8 +1,10 @@
 package com.flykraft.livemenu.dto.auth;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class AuthResponseDto {
     private String token;
 }
