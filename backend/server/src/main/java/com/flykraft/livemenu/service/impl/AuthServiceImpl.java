@@ -22,10 +22,10 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${spring.security.username}")
+    @Value("${spring.security.user.name}")
     private String adminUsername;
 
-    @Value("${spring.security.password}")
+    @Value("${spring.security.user.password}")
     private String adminPassword;
 
     @PostConstruct
