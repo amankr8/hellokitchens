@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/kitchens")
 public interface KitchenController {
 
-    @GetMapping("/{kitchenSubdomain}")
-    ResponseEntity<?> getKitchenBySubdomain(@PathVariable String kitchenSubdomain);
+    @GetMapping
+    ResponseEntity<?> getCurrentKitchen();
 
     @PostMapping
     ResponseEntity<?> addKitchen(@RequestBody KitchenRequestDto kitchenRequestDto);
-
-    @PatchMapping("/{kitchenId}/update")
-    ResponseEntity<?> updateKitchenSubdomain(@PathVariable Long kitchenId, @RequestParam String kitchenSubdomain);
 
     @PutMapping("/{kitchenId}")
     ResponseEntity<?> updateKitchenDetails(@PathVariable Long kitchenId, @RequestBody KitchenRequestDto kitchenRequestDto);

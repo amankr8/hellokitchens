@@ -5,13 +5,11 @@ import com.flykraft.livemenu.entity.Kitchen;
 
 public interface KitchenService {
 
+    Kitchen getCurrentKitchen();
+
     Kitchen getKitchenById(Long kitchenId);
 
-    Kitchen getKitchenBySubdomain(String kitchenSubdomain);
-
     Kitchen addKitchen(KitchenRequestDto kitchenRequestDto);
-
-    Kitchen updateKitchenSubdomain(Long kitchenId, String kitchenSubdomain);
 
     Kitchen updateKitchenDetails(Long kitchenId, KitchenRequestDto kitchenRequestDto);
 

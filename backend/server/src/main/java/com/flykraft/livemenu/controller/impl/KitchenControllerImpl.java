@@ -2,6 +2,7 @@ package com.flykraft.livemenu.controller.impl;
 
 import com.flykraft.livemenu.controller.KitchenController;
 import com.flykraft.livemenu.dto.kitchen.KitchenRequestDto;
+import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.service.KitchenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +14,13 @@ public class KitchenControllerImpl implements KitchenController {
     private final KitchenService kitchenService;
 
     @Override
-    public ResponseEntity<?> getKitchenBySubdomain(String kitchenSubdomain) {
-        return ResponseEntity.ok().body(kitchenService.getKitchenBySubdomain(kitchenSubdomain).toResponseDto());
+    public ResponseEntity<Kitchen> getCurrentKitchen() {
+        return ResponseEntity.ok().body(kitchenService.getCurrentKitchen());
     }
 
     @Override
     public ResponseEntity<?> addKitchen(KitchenRequestDto kitchenRequestDto) {
         return ResponseEntity.ok().body(kitchenService.addKitchen(kitchenRequestDto).toResponseDto());
-    }
-
-    @Override
-    public ResponseEntity<?> updateKitchenSubdomain(Long kitchenId, String kitchenSubdomain) {
-        return ResponseEntity.ok().body(kitchenService.updateKitchenSubdomain(kitchenId, kitchenSubdomain).toResponseDto());
     }
 
     @Override

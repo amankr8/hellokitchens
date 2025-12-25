@@ -5,6 +5,7 @@ import com.flykraft.livemenu.dto.menu.MenuItemRequestDto;
 import com.flykraft.livemenu.entity.DishImage;
 import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.entity.MenuItem;
+import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.model.CloudinaryFile;
 import com.flykraft.livemenu.repository.DishImageRepository;
 import com.flykraft.livemenu.repository.MenuItemRepository;
@@ -35,7 +36,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public MenuItem getMenuItemById(Long menuItemId) {
-        return menuItemRepository.findById(menuItemId).orElseThrow();
+        return menuItemRepository.findById(menuItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item with id " + menuItemId + " not found"));
     }
 
     @Override

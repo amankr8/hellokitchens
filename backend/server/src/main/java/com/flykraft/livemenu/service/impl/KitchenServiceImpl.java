@@ -1,7 +1,9 @@
 package com.flykraft.livemenu.service.impl;
 
+import com.flykraft.livemenu.config.TenantContext;
 import com.flykraft.livemenu.dto.kitchen.KitchenRequestDto;
 import com.flykraft.livemenu.entity.Kitchen;
+import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.repository.KitchenRepository;
 import com.flykraft.livemenu.service.KitchenService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +16,15 @@ public class KitchenServiceImpl implements KitchenService {
     private final KitchenRepository kitchenRepository;
 
     @Override
-    public Kitchen getKitchenById(Long kitchenId) {
-        return kitchenRepository.findById(kitchenId).orElseThrow();
+    public Kitchen getCurrentKitchen() {
+        Long currentKitchenId = TenantContext.getKitchenId();
+        return getKitchenById(currentKitchenId);
     }
 
     @Override
-    public Kitchen getKitchenBySubdomain(String kitchenSubdomain) {
-        return kitchenRepository.findBySubdomain(kitchenSubdomain).orElseThrow();
+    public Kitchen getKitchenById(Long kitchenId) {
+        return kitchenRepository.findById(kitchenId)
+                .orElseThrow(() -> new ResourceNotFoundException("Kitchen with id " + kitchenId + " not found"));
     }
 
     @Override
@@ -32,13 +36,6 @@ public class KitchenServiceImpl implements KitchenService {
                 .whatsapp(kitchenRequestDto.getWhatsapp())
                 .subdomain(kitchenRequestDto.getSubdomain())
                 .build();
-        return kitchenRepository.save(kitchen);
-    }
-
-    @Override
-    public Kitchen updateKitchenSubdomain(Long kitchenId, String kitchenSubdomain) {
-        Kitchen kitchen = getKitchenById(kitchenId);
-        kitchen.setSubdomain(kitchenSubdomain);
         return kitchenRepository.save(kitchen);
     }
 
