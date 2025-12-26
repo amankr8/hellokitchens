@@ -10,5 +10,4 @@ import java.math.BigDecimal;
 public class OrderItemRequestDto {
     private Long menuItemId;
     private Integer quantity;
-    private BigDecimal price;
 }

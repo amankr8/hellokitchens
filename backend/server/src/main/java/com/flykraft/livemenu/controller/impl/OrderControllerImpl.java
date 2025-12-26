@@ -23,8 +23,8 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ResponseEntity<?> deleteOrder(Long orderId) {
-        orderService.deleteOrder(orderId);
+    public ResponseEntity<?> cancelOrder(Long orderId) {
+        orderService.cancelOrder(orderId);
         return ResponseEntity.ok().build();
     }
 }

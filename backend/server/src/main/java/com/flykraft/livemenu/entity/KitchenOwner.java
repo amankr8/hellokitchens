@@ -20,11 +20,11 @@ public class KitchenOwner extends Auditable {
     @Column(name = "ko_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "au_id", nullable = false)
     private AuthUser authUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "k_id", nullable = false)
     private Kitchen kitchen;
 

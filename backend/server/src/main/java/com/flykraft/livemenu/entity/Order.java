@@ -30,8 +30,8 @@ public class Order extends Auditable {
     @Column(name = "o_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "k_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "k_id", nullable = false)
     private Kitchen kitchen;
 
     @ManyToOne(fetch = FetchType.LAZY)

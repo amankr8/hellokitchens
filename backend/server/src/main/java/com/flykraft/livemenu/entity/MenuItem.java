@@ -28,8 +28,8 @@ public class MenuItem extends Auditable {
     @Column(name = "mi_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "k_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "k_id", nullable = false)
     private Kitchen kitchen;
 
     @OneToOne(fetch = FetchType.LAZY)

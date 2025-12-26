@@ -22,7 +22,7 @@ public class Customer extends Auditable {
     @Column(name = "c_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "au_id", nullable = false)
     private AuthUser authUser;
 

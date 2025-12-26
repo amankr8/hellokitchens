@@ -8,7 +8,5 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderRequestDto {
-    private Long kitchenId;
-    private String customerPhone;
     private List<OrderItemRequestDto> orderItems;
 }

@@ -14,5 +14,5 @@ public interface OrderController {
     ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestParam String status);
 
     @DeleteMapping
-    ResponseEntity<?> deleteOrder(@PathVariable Long orderId);
+    ResponseEntity<?> cancelOrder(@PathVariable Long orderId);
 }
