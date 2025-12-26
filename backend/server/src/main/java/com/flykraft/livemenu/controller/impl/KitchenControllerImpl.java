@@ -14,13 +14,13 @@ public class KitchenControllerImpl implements KitchenController {
     private final KitchenService kitchenService;
 
     @Override
-    public ResponseEntity<Kitchen> getCurrentKitchen() {
-        return ResponseEntity.ok().body(kitchenService.loadCurrentKitchen());
+    public ResponseEntity<Kitchen> getKitchen() {
+        return ResponseEntity.ok().body(kitchenService.loadKitchen());
     }
 
     @Override
-    public ResponseEntity<?> addKitchen(KitchenRequestDto kitchenRequestDto) {
-        return ResponseEntity.ok().body(kitchenService.addKitchen(kitchenRequestDto).toResponseDto());
+    public ResponseEntity<?> registerKitchen(KitchenRequestDto kitchenRequestDto) {
+        return ResponseEntity.ok().body(kitchenService.registerKitchen(kitchenRequestDto).toResponseDto());
     }
 
     @Override

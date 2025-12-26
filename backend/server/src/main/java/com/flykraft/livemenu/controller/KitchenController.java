@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 public interface KitchenController {
 
     @GetMapping
-    ResponseEntity<?> getCurrentKitchen();
+    ResponseEntity<?> getKitchen();
 
     @PostMapping
-    ResponseEntity<?> addKitchen(@RequestBody KitchenRequestDto kitchenRequestDto);
+    ResponseEntity<?> registerKitchen(@RequestBody KitchenRequestDto kitchenRequestDto);
 
     @PutMapping("/{kitchenId}")
     ResponseEntity<?> updateKitchenDetails(@PathVariable Long kitchenId, @RequestBody KitchenRequestDto kitchenRequestDto);
