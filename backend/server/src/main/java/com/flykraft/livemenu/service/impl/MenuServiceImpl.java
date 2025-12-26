@@ -69,7 +69,7 @@ public class MenuServiceImpl implements MenuService {
             CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(imageFile, folderPath);
             DishImage dishImage = DishImage.builder()
                     .publicId(cloudinaryFile.getPublicId())
-                    .url(cloudinaryFile.getUrl())
+                    .secureUrl(cloudinaryFile.getSecureUrl())
                     .build();
             return dishImageRepository.save(dishImage);
         } catch (IOException e) {
@@ -116,9 +116,12 @@ public class MenuServiceImpl implements MenuService {
         return menuItemRepository.save(menuItem);
     }
 
+    @Transactional
     @Override
     public void deleteMenuItemById(Long menuItemId) {
+        DishImage existingImage = loadMenuItemById(menuItemId).getDishImage();
         menuItemRepository.deleteById(menuItemId);
+        deleteImage(existingImage);
     }
 
     private String getFolderPathForMenuItem(Long kitchenId) {

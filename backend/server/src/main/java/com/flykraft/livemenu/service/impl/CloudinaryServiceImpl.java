@@ -29,7 +29,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         Map<?, ?> result = cloudinary.uploader().upload(file.getBytes(), params);
         return CloudinaryFile.builder()
                 .publicId(result.get("public_id").toString())
-                .url(result.get("secure_url").toString())
+                .secureUrl(result.get("secure_url").toString())
                 .build();
     }
 

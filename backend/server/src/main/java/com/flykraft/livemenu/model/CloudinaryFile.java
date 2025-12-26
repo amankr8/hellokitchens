@@ -13,9 +13,9 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 public class CloudinaryFile {
 
-    @Column(name = "public_id")
+    @Column(name = "cl_public_id")
     private String publicId;
 
-    @Column(name = "url")
-    private String url;
+    @Column(name = "cl_secure_url")
+    private String secureUrl;
 }

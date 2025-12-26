@@ -65,7 +65,7 @@ public class MenuItem extends Auditable {
                 .inStock(this.inStock)
                 .isVeg(this.isVeg)
                 .price(this.price)
-                .imageUrl(this.dishImage == null ? null : this.dishImage.getUrl())
+                .imageUrl(this.dishImage == null ? null : this.dishImage.getSecureUrl())
                 .build();
     }
 }
