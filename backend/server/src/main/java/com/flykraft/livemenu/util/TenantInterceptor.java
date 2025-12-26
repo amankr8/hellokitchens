@@ -4,15 +4,15 @@ import com.flykraft.livemenu.config.TenantContext;
 import com.flykraft.livemenu.repository.KitchenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+@RequiredArgsConstructor
 @Component
 public class TenantInterceptor implements HandlerInterceptor {
-    @Autowired
-    private KitchenRepository kitchenRepository;
+    private final KitchenRepository kitchenRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
