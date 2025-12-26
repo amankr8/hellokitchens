@@ -32,9 +32,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/menus/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/menu/**").hasAuthority(Authority.KITCHEN_OWNER.getAuthority())
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/menu/**").hasAuthority(Authority.KITCHEN_OWNER.getAuthority())
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/menu/**").hasAuthority(Authority.KITCHEN_OWNER.getAuthority())
+                        .requestMatchers(HttpMethod.POST, "/api/v1/menus/**").hasAuthority(Authority.KITCHEN_OWNER.getAuthority())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/menus/**").hasAuthority(Authority.KITCHEN_OWNER.getAuthority())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/menus/**").hasAuthority(Authority.KITCHEN_OWNER.getAuthority())
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )

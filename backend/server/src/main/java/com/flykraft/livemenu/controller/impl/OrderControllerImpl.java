@@ -14,16 +14,17 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequestDto) {
-        return null;
+        return ResponseEntity.ok(orderService.createOrder(orderRequestDto));
     }
 
     @Override
     public ResponseEntity<?> updateOrderStatus(Long orderId, String status) {
-        return null;
+        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, status));
     }
 
     @Override
     public ResponseEntity<?> deleteOrder(Long orderId) {
-        return null;
+        orderService.deleteOrder(orderId);
+        return ResponseEntity.ok().build();
     }
 }

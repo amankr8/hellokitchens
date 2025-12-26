@@ -29,10 +29,10 @@ public class Customer extends Auditable {
     @Column(name = "c_name")
     private String name;
 
-    @Column(name = "c_email")
+    @Column(name = "c_email, unique = true")
     private String email;
 
-    @Column(name = "c_phone")
+    @Column(name = "c_phone, unique = true, nullable = false")
     private String phone;
 
     @Column(name = "c_address")
