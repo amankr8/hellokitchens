@@ -12,16 +12,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
         highlight_sql: true
-
-  sql:
-    init:
-      mode: always
 
   security:
     user:

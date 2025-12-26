@@ -15,7 +15,4 @@ public interface KitchenController {
 
     @PutMapping("/{kitchenId}")
     ResponseEntity<?> updateKitchenDetails(@PathVariable Long kitchenId, @RequestBody KitchenRequestDto kitchenRequestDto);
-
-    @DeleteMapping("/{kitchenId}")
-    ResponseEntity<?> deleteKitchenById(@PathVariable Long kitchenId);
 }

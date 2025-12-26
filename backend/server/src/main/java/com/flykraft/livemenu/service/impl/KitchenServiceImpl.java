@@ -57,9 +57,4 @@ public class KitchenServiceImpl implements KitchenService {
         selectedKitchen.setWhatsapp(kitchenRequestDto.getWhatsapp());
         return kitchenRepository.save(selectedKitchen);
     }
-
-    @Override
-    public void deleteKitchenById(Long kitchenId) {
-        kitchenRepository.deleteById(kitchenId);
-    }
 }

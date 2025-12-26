@@ -27,10 +27,4 @@ public class KitchenControllerImpl implements KitchenController {
     public ResponseEntity<?> updateKitchenDetails(Long kitchenId, KitchenRequestDto kitchenRequestDto) {
         return ResponseEntity.ok().body(kitchenService.updateKitchenDetails(kitchenId, kitchenRequestDto).toResponseDto());
     }
-
-    @Override
-    public ResponseEntity<?> deleteKitchenById(Long kitchenId) {
-        kitchenService.deleteKitchenById(kitchenId);
-        return ResponseEntity.ok().build();
-    }
 }

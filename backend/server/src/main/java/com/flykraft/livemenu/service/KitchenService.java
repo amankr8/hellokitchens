@@ -12,6 +12,4 @@ public interface KitchenService {
     Kitchen registerKitchen(KitchenRequestDto kitchenRequestDto);
 
     Kitchen updateKitchenDetails(Long kitchenId, KitchenRequestDto kitchenRequestDto);
-
-    void deleteKitchenById(Long kitchenId);
 }
