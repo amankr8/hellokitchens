@@ -7,16 +7,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 
 public interface OrderService {
-    List<Order> loadOrdersByKitchen(Long kitchenId);
 
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    List<Order> loadOrdersByCustomer(Long customerId);
+    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
+    List<Order> loadOrdersByKitchen(Long kitchenId);
 
     Order loadOrderById(Long orderId);
 
     Order createOrder(OrderRequestDto orderRequestDto);
 
+    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     Order updateOrderStatus(Long orderId, String status);
 
+    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     void cancelOrder(Long orderId);
 }

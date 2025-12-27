@@ -15,7 +15,6 @@ import com.flykraft.livemenu.service.MenuService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,7 +41,6 @@ public class MenuServiceImpl implements MenuService {
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item with id " + menuItemId + " not found"));
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Transactional
     @Override
     public MenuItem addMenuItem(MenuItemRequestDto menuItemRequestDto) {
@@ -82,7 +80,6 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Transactional
     @Override
     public MenuItem updateMenuItem(Long menuItemId, MenuItemRequestDto menuItemRequestDto) {
@@ -112,7 +109,6 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Override
     public MenuItem toggleInStockForMenuItem(Long menuItemId) {
         MenuItem menuItem = loadMenuItemById(menuItemId);
@@ -120,7 +116,6 @@ public class MenuServiceImpl implements MenuService {
         return menuItemRepository.save(menuItem);
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Transactional
     @Override
     public void deleteMenuItemById(Long menuItemId) {

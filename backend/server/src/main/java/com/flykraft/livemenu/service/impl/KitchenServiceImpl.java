@@ -16,7 +16,6 @@ import com.flykraft.livemenu.service.AuthService;
 import com.flykraft.livemenu.service.KitchenService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -37,7 +36,6 @@ public class KitchenServiceImpl implements KitchenService {
         return loadKitchenById(TenantContext.getKitchenId());
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @Transactional
     @Override
     public Kitchen registerKitchen(RegisterKitchenDto registerKitchenDto) {
@@ -73,7 +71,6 @@ public class KitchenServiceImpl implements KitchenService {
         return kitchenRepository.save(kitchen);
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Transactional
     @Override
     public Kitchen updateKitchenDetails(Long kitchenId, KitchenReqDto kitchenReqDto) {

@@ -1,7 +1,5 @@
 package com.flykraft.livemenu.service.impl;
 
-import com.flykraft.livemenu.dto.auth.AuthRequestDto;
-import com.flykraft.livemenu.dto.customer.RegisterUserDto;
 import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.AuthUserRepository;
@@ -9,7 +7,6 @@ import com.flykraft.livemenu.service.AuthService;
 import com.flykraft.livemenu.service.CustomerService;
 import com.flykraft.livemenu.service.JwtService;
 import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,22 +43,9 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    @Override
-    public AuthUser loadUserByUsername(String username) {
+    private AuthUser loadUserByUsername(String username) {
         return authUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
-    @Transactional
-    @Override
-    public void userSignup(RegisterUserDto registerUserDto) {
-        AuthRequestDto authRequestDto = registerUserDto.getCredentials();
-        AuthUser authUser = register(
-                authRequestDto.getUsername(),
-                authRequestDto.getPassword(),
-                Authority.CUSTOMER
-        );
-        customerService.registerCustomer(authUser, registerUserDto.getCustomerDetails());
     }
 
     @Override

@@ -6,9 +6,11 @@ import com.flykraft.livemenu.entity.Customer;
 
 public interface CustomerService {
 
-    Customer getCustomerByAuthUser(AuthUser authUser);
+    Customer loadCustomerById(Long customerId);
 
-    Customer updateCustomerDetails(AuthUser authUser, CustomerReqDto customerReqDto);
+    Customer loadCustomerByPhone(String phone);
 
-    void registerCustomer(AuthUser authUser, CustomerReqDto customerReqDto);
+    Customer updateCustomerDetails(Long customerId, CustomerReqDto customerReqDto);
+
+    Customer registerCustomer(CustomerReqDto customerReqDto);
 }

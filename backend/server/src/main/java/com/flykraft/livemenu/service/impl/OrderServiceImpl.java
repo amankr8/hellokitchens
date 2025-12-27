@@ -1,21 +1,19 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.config.TenantContext;
+import com.flykraft.livemenu.dto.customer.CustomerReqDto;
 import com.flykraft.livemenu.dto.order.OrderRequestDto;
 import com.flykraft.livemenu.entity.*;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
-import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.model.OrderStatus;
-import com.flykraft.livemenu.repository.CustomerRepository;
 import com.flykraft.livemenu.repository.OrderItemRepository;
 import com.flykraft.livemenu.repository.OrderRepository;
+import com.flykraft.livemenu.service.CustomerService;
 import com.flykraft.livemenu.service.KitchenService;
 import com.flykraft.livemenu.service.MenuService;
 import com.flykraft.livemenu.service.OrderService;
-import com.flykraft.livemenu.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,11 +25,10 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
     private final KitchenService kitchenService;
     private final MenuService menuService;
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Override
     public List<Order> loadOrdersByKitchen(Long kitchenId) {
         Long currentKitchenId = TenantContext.getKitchenId();
@@ -40,18 +37,6 @@ public class OrderServiceImpl implements OrderService {
         }
         Kitchen kitchen = kitchenService.loadKitchenById(currentKitchenId);
         return orderRepository.findAllByKitchen(kitchen);
-    }
-
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    @Override
-    public List<Order> loadOrdersByCustomer(Long customerId) {
-        AuthUser authUser = AuthUtil.getLoggedInUser();
-        Customer customer = customerRepository.findByAuthUser(authUser)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer record is missing for user id: " + authUser.getId()));
-        if (!customer.getId().equals(customerId)) {
-            throw new SecurityException("Access denied to orders of customer id: " + customerId);
-        }
-        return orderRepository.findAllByCustomer(customer);
     }
 
     @Override
@@ -72,18 +57,15 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         order = orderRepository.save(order);
 
-        AuthUser authUser = AuthUtil.getLoggedInUser();
-        if (authUser != null && authUser.getAuthority().equals(Authority.CUSTOMER)) {
-            Customer customer = customerRepository.findByAuthUser(authUser)
-                    .orElseThrow(() -> new ResourceNotFoundException("Customer record is missing for user id: " + authUser.getId()));
+        CustomerReqDto customerReqDto = orderRequestDto.getCustomerDetails();
+        try {
+            //TODO: Add logic to verify customer by phone OTP
+            Customer customer = customerService.loadCustomerByPhone(customerReqDto.getPhone());
+            customer = customerService.updateCustomerDetails(customer.getId(), customerReqDto);
             order.setCustomer(customer);
-        } else {
-            if (orderRequestDto.getGuestName() == null || orderRequestDto.getGuestPhone() == null || orderRequestDto.getGuestAddress() == null) {
-                throw new IllegalArgumentException("Guest details are required for placing an order as a guest.");
-            }
-            order.setGuestName(orderRequestDto.getGuestName());
-            order.setGuestPhone(orderRequestDto.getGuestPhone());
-            order.setGuestAddress(orderRequestDto.getGuestAddress());
+        } catch (ResourceNotFoundException e) {
+            Customer customer = customerService.registerCustomer(customerReqDto);
+            order.setCustomer(customer);
         }
 
         BigDecimal totalPrice = BigDecimal.ZERO;
@@ -104,7 +86,6 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Override
     public Order updateOrderStatus(Long orderId, String status) {
         Order order = loadOrderById(orderId);
@@ -112,7 +93,6 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     @Override
     public void cancelOrder(Long orderId) {
         Order order = loadOrderById(orderId);

@@ -19,11 +19,6 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ResponseEntity<?> getOrdersByCustomer(Long customerId) {
-        return ResponseEntity.ok(orderService.loadOrdersByCustomer(customerId).stream().map(Order::toResponseDto).toList());
-    }
-
-    @Override
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequestDto) {
         return ResponseEntity.ok(orderService.createOrder(orderRequestDto));
     }

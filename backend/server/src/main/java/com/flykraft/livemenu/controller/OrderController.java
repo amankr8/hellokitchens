@@ -10,9 +10,6 @@ public interface OrderController {
     @GetMapping("/kitchen/{kitchenId}")
     ResponseEntity<?> getOrdersByKitchen(@PathVariable Long kitchenId);
 
-    @GetMapping("/customer/{customerId}")
-    ResponseEntity<?> getOrdersByCustomer(@PathVariable Long customerId);
-
     @PostMapping
     ResponseEntity<?> createOrder(@RequestBody OrderRequestDto orderRequestDto);
 

@@ -23,15 +23,8 @@ public class Customer extends Auditable {
     @Column(name = "c_id")
     private Long id;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "au_id", nullable = false)
-    private AuthUser authUser;
-
     @Column(name = "c_name")
     private String name;
-
-    @Column(name = "c_email, unique = true")
-    private String email;
 
     @Column(name = "c_phone, unique = true, nullable = false")
     private String phone;
@@ -39,13 +32,16 @@ public class Customer extends Auditable {
     @Column(name = "c_address")
     private String address;
 
+    @Column(name = "c_verified", nullable = false)
+    private Boolean verified;
+
     public CustomerResDto toResponseDto() {
         return CustomerResDto.builder()
                 .id(this.id)
                 .name(this.name)
-                .email(this.email)
                 .phone(this.phone)
                 .address(this.address)
+                .verified(this.verified)
                 .build();
     }
 }

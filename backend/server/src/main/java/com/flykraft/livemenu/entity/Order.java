@@ -47,15 +47,6 @@ public class Order extends Auditable {
     @Column(name = "o_total_price", nullable = false)
     private BigDecimal totalPrice;
 
-    @Column(name = "o_guest_name")
-    private String guestName;
-
-    @Column(name = "o_guest_phone")
-    private String guestPhone;
-
-    @Column(name = "o_guest_address")
-    private String guestAddress;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
@@ -63,8 +54,8 @@ public class Order extends Auditable {
         return OrderResponseDto.builder()
                 .id(this.id)
                 .kitchenId(this.kitchen.getId())
-                .status(this.status.name())
-                .address(this.guestAddress)
+                .customerDetails(this.customer.toResponseDto())
+                .status(this.status)
                 .totalPrice(this.totalPrice)
                 .orderItems(this.orderItems.stream()
                         .map(OrderItem::toResponseDto)
