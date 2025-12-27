@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-login',
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   // Form data

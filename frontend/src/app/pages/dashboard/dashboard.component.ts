@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-dashboard',
   imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
   menuItems: MenuItem[] = [];

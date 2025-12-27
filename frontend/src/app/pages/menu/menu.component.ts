@@ -8,7 +8,6 @@ import { MenuItemCardComponent } from '../../components/menu-item-card/menu-item
   selector: 'app-menu',
   imports: [CommonModule, MenuItemCardComponent],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss',
 })
 export class MenuComponent {
   menuItems: MenuItem[] = [];
