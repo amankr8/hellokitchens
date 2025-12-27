@@ -9,6 +9,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +27,7 @@ public class Kitchen extends Auditable {
     @Column(name = "k_id")
     private Long id;
 
-    @Column(name = "k_name")
+    @Column(name = "k_name", nullable = false)
     private String name;
 
     @Column(name = "k_tagline")
@@ -39,6 +41,15 @@ public class Kitchen extends Auditable {
 
     @Column(name = "k_whatsapp", nullable = false)
     private String whatsapp;
+
+    @OneToMany(mappedBy = "kitchen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MenuItem> menuItems;
+
+    @OneToMany(mappedBy = "kitchen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<KitchenOwner> kitchenOwners;
+
+    @OneToMany(mappedBy = "kitchen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders;
 
     public KitchenResponseDto toResponseDto() {
         return KitchenResponseDto.builder()

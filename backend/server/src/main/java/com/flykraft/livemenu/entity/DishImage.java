@@ -21,4 +21,8 @@ public class DishImage extends CloudinaryFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "di_id")
     private Long id;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "mi_id", nullable = false)
+    private MenuItem menuItem;
 }

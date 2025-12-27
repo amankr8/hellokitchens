@@ -20,7 +20,7 @@ public class KitchenOwner extends Auditable {
     @Column(name = "ko_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "au_id", nullable = false)
     private AuthUser authUser;
 

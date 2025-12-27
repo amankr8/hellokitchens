@@ -32,11 +32,7 @@ public class MenuItem extends Auditable {
     @JoinColumn(name = "k_id", nullable = false)
     private Kitchen kitchen;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "di_id")
-    private DishImage dishImage;
-
-    @Column(name = "mi_name")
+    @Column(name = "mi_name", nullable = false)
     private String name;
 
     @Column(name = "mi_desc")
@@ -46,14 +42,17 @@ public class MenuItem extends Auditable {
     @Column(name = "mi_category")
     private Category category;
 
-    @Column(name = "mi_in_stock")
+    @Column(name = "mi_in_stock", nullable = false)
     private Boolean inStock;
 
-    @Column(name = "mi_is_veg")
+    @Column(name = "mi_is_veg", nullable = false)
     private Boolean isVeg;
 
-    @Column(name = "mi_price")
+    @Column(name = "mi_price", nullable = false)
     private BigDecimal price;
+
+    @OneToOne(mappedBy = "menuItem", cascade = CascadeType.ALL)
+    private DishImage dishImage;
 
     public MenuItemResponseDto toResponseDto(){
         return MenuItemResponseDto.builder()

@@ -31,6 +31,29 @@ public class OrderServiceImpl implements OrderService {
     private final KitchenService kitchenService;
     private final MenuService menuService;
 
+    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
+    @Override
+    public List<Order> loadOrdersByKitchen(Long kitchenId) {
+        Long currentKitchenId = TenantContext.getKitchenId();
+        if (!currentKitchenId.equals(kitchenId)) {
+            throw new SecurityException("Access denied to orders of kitchen id: " + kitchenId);
+        }
+        Kitchen kitchen = kitchenService.loadKitchenById(currentKitchenId);
+        return orderRepository.findAllByKitchen(kitchen);
+    }
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @Override
+    public List<Order> loadOrdersByCustomer(Long customerId) {
+        AuthUser authUser = AuthUtil.getLoggedInUser();
+        Customer customer = customerRepository.findByAuthUser(authUser)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer record is missing for user id: " + authUser.getId()));
+        if (!customer.getId().equals(customerId)) {
+            throw new SecurityException("Access denied to orders of customer id: " + customerId);
+        }
+        return orderRepository.findAllByCustomer(customer);
+    }
+
     @Override
     public Order loadOrderById(Long orderId) {
         return orderRepository.findById(orderId)

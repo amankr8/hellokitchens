@@ -49,7 +49,6 @@ public class MenuServiceImpl implements MenuService {
         Long currentKitchenId = TenantContext.getKitchenId();
         Kitchen kitchen = kitchenService.loadKitchenById(currentKitchenId);
 
-        DishImage dishImage = saveImage(menuItemRequestDto.getImage(), getFolderPathForMenuItem(kitchen.getId()));
         MenuItem menuItem = MenuItem.builder()
                 .kitchen(kitchen)
                 .name(menuItemRequestDto.getName())
@@ -58,9 +57,14 @@ public class MenuServiceImpl implements MenuService {
                 .inStock(Boolean.TRUE)
                 .isVeg(menuItemRequestDto.getIsVeg())
                 .price(menuItemRequestDto.getPrice())
-                .dishImage(dishImage)
                 .build();
-        return menuItemRepository.save(menuItem);
+        menuItem = menuItemRepository.save(menuItem);
+
+        DishImage dishImage = saveImage(menuItemRequestDto.getImage(), getFolderPathForMenuItem(kitchen.getId()));
+        dishImage.setMenuItem(menuItem);
+        dishImageRepository.save(dishImage);
+
+        return menuItem;
     }
 
     private DishImage saveImage(MultipartFile imageFile, String folderPath) {

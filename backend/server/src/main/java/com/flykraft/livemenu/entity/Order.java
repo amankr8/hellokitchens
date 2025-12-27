@@ -1,5 +1,6 @@
 package com.flykraft.livemenu.entity;
 
+import com.flykraft.livemenu.dto.order.OrderResponseDto;
 import com.flykraft.livemenu.model.Auditable;
 import com.flykraft.livemenu.model.OrderStatus;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,10 +41,10 @@ public class Order extends Auditable {
     private Customer customer;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "o_status")
+    @Column(name = "o_status", nullable = false)
     private OrderStatus status;
 
-    @Column(name = "o_total_price")
+    @Column(name = "o_total_price", nullable = false)
     private BigDecimal totalPrice;
 
     @Column(name = "o_guest_name")
@@ -53,4 +55,20 @@ public class Order extends Auditable {
 
     @Column(name = "o_guest_address")
     private String guestAddress;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
+
+    public OrderResponseDto toResponseDto() {
+        return OrderResponseDto.builder()
+                .id(this.id)
+                .kitchenId(this.kitchen.getId())
+                .status(this.status.name())
+                .address(this.guestAddress)
+                .totalPrice(this.totalPrice)
+                .orderItems(this.orderItems.stream()
+                        .map(OrderItem::toResponseDto)
+                        .toList())
+                .build();
+    }
 }
