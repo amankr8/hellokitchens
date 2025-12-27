@@ -4,7 +4,6 @@ import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.AuthUserRepository;
 import com.flykraft.livemenu.service.AuthService;
-import com.flykraft.livemenu.service.CustomerService;
 import com.flykraft.livemenu.service.JwtService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final CustomerService customerService;
 
     @Value("${spring.security.user.name}")
     private String adminUsername;
