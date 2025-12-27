@@ -1,14 +1,16 @@
 package com.flykraft.livemenu.dto.kitchen;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class KitchenRequestDto {
+@Builder
+public class KitchenResDto {
+    private Long id;
     private String name;
     private String tagline;
-    private String subdomain;
     private String address;
     private String whatsapp;
 }

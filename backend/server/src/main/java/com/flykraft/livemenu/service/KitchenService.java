@@ -1,6 +1,6 @@
 package com.flykraft.livemenu.service;
 
-import com.flykraft.livemenu.dto.kitchen.KitchenRequestDto;
+import com.flykraft.livemenu.dto.kitchen.KitchenReqDto;
 import com.flykraft.livemenu.dto.kitchen.RegisterKitchenDto;
 import com.flykraft.livemenu.entity.Kitchen;
 
@@ -12,5 +12,5 @@ public interface KitchenService {
 
     Kitchen registerKitchen(RegisterKitchenDto registerKitchenDto);
 
-    Kitchen updateKitchenDetails(Long kitchenId, KitchenRequestDto kitchenRequestDto);
+    Kitchen updateKitchenDetails(Long kitchenId, KitchenReqDto kitchenReqDto);
 }

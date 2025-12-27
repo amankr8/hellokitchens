@@ -1,13 +1,16 @@
 package com.flykraft.livemenu.service;
 
-import com.flykraft.livemenu.dto.auth.AuthRequestDto;
+import com.flykraft.livemenu.dto.customer.RegisterUserDto;
 import com.flykraft.livemenu.entity.AuthUser;
+import com.flykraft.livemenu.model.Authority;
 
 public interface AuthService {
 
     AuthUser loadUserByUsername(String username);
 
-    AuthUser signup(AuthRequestDto authRequestDto);
+    void userSignup(RegisterUserDto registerUserDto);
 
-    String login(AuthRequestDto authRequestDto);
+    AuthUser register(String username, String password, Authority authority);
+
+    String login(String username, String password);
 }

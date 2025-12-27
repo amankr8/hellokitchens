@@ -1,6 +1,6 @@
 package com.flykraft.livemenu.entity;
 
-import com.flykraft.livemenu.dto.kitchen.KitchenResponseDto;
+import com.flykraft.livemenu.dto.kitchen.KitchenResDto;
 import com.flykraft.livemenu.model.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,8 +51,8 @@ public class Kitchen extends Auditable {
     @OneToMany(mappedBy = "kitchen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
 
-    public KitchenResponseDto toResponseDto() {
-        return KitchenResponseDto.builder()
+    public KitchenResDto toResponseDto() {
+        return KitchenResDto.builder()
                 .id(this.id)
                 .name(this.name)
                 .address(this.address)

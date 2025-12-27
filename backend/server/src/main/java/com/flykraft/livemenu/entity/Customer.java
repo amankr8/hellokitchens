@@ -1,5 +1,6 @@
 package com.flykraft.livemenu.entity;
 
+import com.flykraft.livemenu.dto.customer.CustomerResDto;
 import com.flykraft.livemenu.model.Auditable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,4 +38,14 @@ public class Customer extends Auditable {
 
     @Column(name = "c_address")
     private String address;
+
+    public CustomerResDto toResponseDto() {
+        return CustomerResDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .phone(this.phone)
+                .address(this.address)
+                .build();
+    }
 }

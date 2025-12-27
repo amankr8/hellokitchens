@@ -1,12 +1,15 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.dto.auth.AuthRequestDto;
+import com.flykraft.livemenu.dto.customer.RegisterUserDto;
 import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.AuthUserRepository;
 import com.flykraft.livemenu.service.AuthService;
+import com.flykraft.livemenu.service.CustomerService;
 import com.flykraft.livemenu.service.JwtService;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerService customerService;
 
     @Value("${spring.security.user.name}")
     private String adminUsername;
@@ -48,30 +52,42 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    @Transactional
     @Override
-    public AuthUser signup(AuthRequestDto authRequestDto) {
+    public void userSignup(RegisterUserDto registerUserDto) {
+        AuthRequestDto authRequestDto = registerUserDto.getCredentials();
+        AuthUser authUser = register(
+                authRequestDto.getUsername(),
+                authRequestDto.getPassword(),
+                Authority.CUSTOMER
+        );
+        customerService.registerCustomer(authUser, registerUserDto.getCustomerDetails());
+    }
+
+    @Override
+    public AuthUser register(String username, String password, Authority authority) {
         try {
-            loadUserByUsername(authRequestDto.getUsername());
+            loadUserByUsername(username);
             throw new IllegalArgumentException("Username already exists");
         } catch (UsernameNotFoundException e) {
-            String encodedPassword = passwordEncoder.encode(authRequestDto.getPassword());
+            String encodedPassword = passwordEncoder.encode(password);
             AuthUser authUser = AuthUser.builder()
-                    .username(authRequestDto.getUsername())
+                    .username(username)
                     .password(encodedPassword)
-                    .authority(Authority.CUSTOMER)
+                    .authority(authority)
                     .build();
             return authUserRepository.save(authUser);
         }
     }
 
     @Override
-    public String login(AuthRequestDto authRequestDto) {
+    public String login(String username, String password) {
         try {
-            AuthUser authUser = loadUserByUsername(authRequestDto.getUsername());
+            AuthUser authUser = loadUserByUsername(username);
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            authRequestDto.getUsername(),
-                            authRequestDto.getPassword()
+                            username,
+                            password
                     )
             );
             return jwtService.generateToken(authUser);

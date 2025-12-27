@@ -1,4 +1,4 @@
-package com.flykraft.livemenu.dto.kitchen;
+package com.flykraft.livemenu.dto.customer;
 
 import com.flykraft.livemenu.dto.auth.AuthRequestDto;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterKitchenDto {
+public class RegisterUserDto {
     private AuthRequestDto credentials;
-    private KitchenReqDto kitchenDetails;
+    private CustomerReqDto customerDetails;
 }
