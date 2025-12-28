@@ -7,5 +7,7 @@ public interface AuthService {
 
     AuthUser register(String username, String password, Authority authority);
 
+    String firebaseLogin(String firebaseToken);
+
     String login(String username, String password);
 }

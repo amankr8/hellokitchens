@@ -5,6 +5,9 @@ import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.AuthUserRepository;
 import com.flykraft.livemenu.service.AuthService;
 import com.flykraft.livemenu.service.JwtService;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +62,26 @@ public class AuthServiceImpl implements AuthService {
                     .authority(authority)
                     .build();
             return authUserRepository.save(authUser);
+        }
+    }
+
+    @Override
+    public String firebaseLogin(String firebaseToken) {
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(firebaseToken);
+            String phoneNumber = decodedToken.getUid();
+
+            AuthUser authUser = authUserRepository.findByUsername(phoneNumber)
+                    .orElseGet(() -> {
+                        AuthUser newUser = AuthUser.builder()
+                                .username(phoneNumber)
+                                .authority(Authority.USER)
+                                .build();
+                        return authUserRepository.save(newUser);
+                    });
+            return jwtService.generateToken(authUser);
+        } catch (FirebaseAuthException e) {
+            throw new IllegalArgumentException("Invalid Firebase token");
         }
     }
 
