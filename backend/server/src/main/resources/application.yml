@@ -39,3 +39,6 @@ logging:
 
 cloudinary:
   url: ${CN_URL:cloudinary://api_key:api_secret@cloud_name}
+
+firebase:
+  config: ${FIREBASE_CONFIG}

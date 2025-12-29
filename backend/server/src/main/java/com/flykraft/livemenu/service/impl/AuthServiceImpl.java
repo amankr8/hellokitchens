@@ -36,10 +36,10 @@ public class AuthServiceImpl implements AuthService {
     public void init() {
         if (authUserRepository.findByUsername(adminUsername).isEmpty()) {
             AuthUser admin = AuthUser.builder()
-                    .username(adminUsername)
-                    .password(passwordEncoder.encode(adminPassword))
-                    .authority(Authority.ADMIN)
-                    .build();
+                .username(adminUsername)
+                .password(passwordEncoder.encode(adminPassword))
+                .authority(Authority.ADMIN)
+                .build();
             authUserRepository.save(admin);
         }
     }
@@ -57,10 +57,10 @@ public class AuthServiceImpl implements AuthService {
         } catch (UsernameNotFoundException e) {
             String encodedPassword = passwordEncoder.encode(password);
             AuthUser authUser = AuthUser.builder()
-                    .username(username)
-                    .password(encodedPassword)
-                    .authority(authority)
-                    .build();
+                .username(username)
+                .password(encodedPassword)
+                .authority(authority)
+                .build();
             return authUserRepository.save(authUser);
         }
     }
@@ -69,16 +69,16 @@ public class AuthServiceImpl implements AuthService {
     public String firebaseLogin(String firebaseToken) {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(firebaseToken);
-            String phoneNumber = decodedToken.getUid();
+            String phoneNumber = decodedToken.getClaims().get("phone_number").toString();
 
             AuthUser authUser = authUserRepository.findByUsername(phoneNumber)
-                    .orElseGet(() -> {
-                        AuthUser newUser = AuthUser.builder()
-                                .username(phoneNumber)
-                                .authority(Authority.USER)
-                                .build();
-                        return authUserRepository.save(newUser);
-                    });
+                .orElseGet(() -> {
+                    AuthUser newUser = AuthUser.builder()
+                        .username(phoneNumber)
+                        .authority(Authority.USER)
+                        .build();
+                    return authUserRepository.save(newUser);
+                });
             return jwtService.generateToken(authUser);
         } catch (FirebaseAuthException e) {
             throw new IllegalArgumentException("Invalid Firebase token");
@@ -90,10 +90,10 @@ public class AuthServiceImpl implements AuthService {
         try {
             AuthUser authUser = loadUserByUsername(username);
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            username,
-                            password
-                    )
+                new UsernamePasswordAuthenticationToken(
+                    username,
+                    password
+                )
             );
             return jwtService.generateToken(authUser);
         } catch (AuthenticationException e) {
