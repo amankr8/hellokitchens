@@ -32,10 +32,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 1. Resolve Kitchen ID from Subdomain/Host first (Applies to everyone, even guests)
-        String host = request.getHeader("Host");
+        String origin = request.getHeader("Origin");
         Long resolvedKitchenId = null;
-        if (host != null) {
-            String subdomain = host.split("\\.")[0];
+        if (origin != null) {
+            // 1. Remove "http://" or "https://"
+            String cleanOrigin = origin.replaceFirst("^https?://", "");
+            // 2. Split by the dot to get the first part
+            String subdomain = cleanOrigin.split("\\.")[0];
+
             // Tip: Cache this lookup or use a simple Map to avoid DB hits on every filter call
             resolvedKitchenId = kitchenRepository.findBySubdomain(subdomain)
                     .map(Kitchen::getId)
