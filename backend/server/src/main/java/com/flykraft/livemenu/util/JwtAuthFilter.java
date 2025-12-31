@@ -42,7 +42,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String authHeader = request.getHeader("Authorization");
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             if (resolvedKitchenId != null) {
                 TenantContext.setKitchenId(resolvedKitchenId);
@@ -60,9 +59,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String username = jwtService.extractUsername(jwtToken);
             Long kitchenIdFromJwt = jwtService.extractKitchenId(jwtToken);
 
-            if (kitchenIdFromJwt != null && resolvedKitchenId != null
-                    && !kitchenIdFromJwt.equals(resolvedKitchenId)) {
-
+            if (kitchenIdFromJwt != null && resolvedKitchenId != null && !kitchenIdFromJwt.equals(resolvedKitchenId)) {
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.getWriter().write("Access Denied: You are not authorized for this kitchen.");
                 return;
