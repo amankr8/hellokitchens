@@ -30,17 +30,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-
-        // 1. Resolve Kitchen ID from Subdomain/Host first (Applies to everyone, even guests)
         String origin = request.getHeader("Origin");
         Long resolvedKitchenId = null;
         if (origin != null) {
-            // 1. Remove "http://" or "https://"
             String cleanOrigin = origin.replaceFirst("^https?://", "");
-            // 2. Split by the dot to get the first part
             String subdomain = cleanOrigin.split("\\.")[0];
 
-            // Tip: Cache this lookup or use a simple Map to avoid DB hits on every filter call
             resolvedKitchenId = kitchenRepository.findBySubdomain(subdomain)
                     .map(Kitchen::getId)
                     .orElse(null);
@@ -48,7 +43,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // Handle Guest/Public access
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             if (resolvedKitchenId != null) {
                 TenantContext.setKitchenId(resolvedKitchenId);
@@ -66,9 +60,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String username = jwtService.extractUsername(jwtToken);
             Long kitchenIdFromJwt = jwtService.extractKitchenId(jwtToken);
 
-            // 2. SECURITY CHECK: Mismatch Validation
-            // If the user is logged into a specific kitchen (Admin/Staff),
-            // but tries to access a different subdomain, block it.
             if (kitchenIdFromJwt != null && resolvedKitchenId != null
                     && !kitchenIdFromJwt.equals(resolvedKitchenId)) {
 
@@ -77,12 +68,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            // 3. Set the Context (Use the resolved one for consistency)
             if (resolvedKitchenId != null) {
                 TenantContext.setKitchenId(resolvedKitchenId);
             }
 
-            // Standard Auth Logic
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 if (jwtService.isTokenValid(jwtToken, userDetails)) {
@@ -94,7 +83,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-
         } catch (Exception e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write("Authentication failed.");

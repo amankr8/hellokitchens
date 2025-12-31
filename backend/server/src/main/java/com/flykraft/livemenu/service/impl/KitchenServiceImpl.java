@@ -16,6 +16,7 @@ import com.flykraft.livemenu.service.AuthService;
 import com.flykraft.livemenu.service.KitchenService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -55,6 +56,7 @@ public class KitchenServiceImpl implements KitchenService {
         return kitchen;
     }
 
+    @CachePut(value = "kitchens", key = "#kitchenReqDto.subdomain")
     private Kitchen addKitchen(KitchenReqDto kitchenReqDto) {
         String subdomain = kitchenReqDto.getSubdomain().toLowerCase().trim();
         if (kitchenRepository.findBySubdomain(subdomain).isPresent()) {
