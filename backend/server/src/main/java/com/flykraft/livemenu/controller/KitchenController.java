@@ -11,6 +11,9 @@ public interface KitchenController {
     @GetMapping
     ResponseEntity<?> getKitchen();
 
+    @GetMapping("/validate/{subdomain}")
+    ResponseEntity<?> validateSubdomain(@PathVariable String subdomain);
+
     @PostMapping
     ResponseEntity<?> registerKitchen(@RequestBody RegisterKitchenDto registerKitchenDto);
 

@@ -39,6 +39,7 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Transactional
     @Override
+    @CachePut(value = "kitchens", key = "#result.subdomain")
     public Kitchen registerKitchen(RegisterKitchenDto registerKitchenDto) {
         AuthRequestDto authRequestDto = registerKitchenDto.getCredentials();
         AuthUser authUser = authService.register(
@@ -56,7 +57,6 @@ public class KitchenServiceImpl implements KitchenService {
         return kitchen;
     }
 
-    @CachePut(value = "kitchens", key = "#kitchenReqDto.subdomain")
     private Kitchen addKitchen(KitchenReqDto kitchenReqDto) {
         String subdomain = kitchenReqDto.getSubdomain().toLowerCase().trim();
         if (kitchenRepository.findBySubdomain(subdomain).isPresent()) {
