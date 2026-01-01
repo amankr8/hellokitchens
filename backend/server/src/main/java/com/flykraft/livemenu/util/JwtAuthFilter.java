@@ -20,13 +20,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final KitchenRepository kitchenRepository; // Inject this to resolve subdomain
+    private final KitchenRepository kitchenRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -36,9 +37,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String cleanOrigin = origin.replaceFirst("^https?://", "");
             String subdomain = cleanOrigin.split("\\.")[0];
 
-            resolvedKitchenId = kitchenRepository.findBySubdomain(subdomain)
-                    .map(Kitchen::getId)
-                    .orElse(null);
+            Optional<Kitchen> kitchenOpt = kitchenRepository.findBySubdomain(subdomain.toLowerCase());
+            if (kitchenOpt.isPresent()) {
+                resolvedKitchenId = kitchenOpt.get().getId();
+            } else {
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.getWriter().write("Access Denied: Invalid kitchen subdomain.");
+                return;
+            }
         }
 
         String authHeader = request.getHeader("Authorization");
