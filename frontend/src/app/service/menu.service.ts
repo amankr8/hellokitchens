@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MenuService {
-  private apiUrl = 'http://localhost:8080/api/v1/menus'; // Adjust to your backend URL
+  private apiUrl = 'http://localhost:8080/api/v1/menus';
 
   constructor(private http: HttpClient) {}
 
