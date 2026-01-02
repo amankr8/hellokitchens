@@ -1,4 +1,19 @@
 services:
+  livemenu-service:
+    container_name: livemenu_service
+    build: ./backend/server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+    environment:
+      - spring.datasource.url=jdbc:postgresql://postgres-db:5432/livemenu_db
+      - spring.datasource.username=postgres
+      - spring.datasource.password=postgres
+      - spring.security.jwt.secret=${JWT_SECRET}
+      - cloudinary.url=${CN_URL}
+      - firebase.config=${FIREBASE_CONFIG}
+
   postgres-db:
     image: 'postgres:17'
     container_name: postgres_db

@@ -19,9 +19,8 @@ spring:
         highlight_sql: true
 
   security:
-    user:
-      name: ${ADMIN_USERNAME:livemenu}
-      password: ${ADMIN_PASSWORD:admin}
+    username: ${ADMIN_USERNAME:livemenu}
+    password: ${ADMIN_PASSWORD:admin}
     jwt:
       secret: ${JWT_SECRET:local_dev_secret_key_make_it_long_enough_32_chars}
       expiration: 86400000
