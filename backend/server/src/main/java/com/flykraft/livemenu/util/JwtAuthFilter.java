@@ -5,7 +5,6 @@ import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.service.JwtService;
 import com.flykraft.livemenu.service.KitchenService;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -91,8 +90,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write("Authentication failed.");
-            throw e;
+            response.getWriter().write("Authentication failed: " + e.getMessage());
         } finally {
             TenantContext.clear();
         }
