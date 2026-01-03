@@ -25,16 +25,16 @@ spring:
       secret: ${JWT_SECRET:local_dev_secret_key_make_it_long_enough_32_chars}
       expiration: 86400000
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: 6379
+
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
-        orm.results.graph.AST: TRACE
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
 
 cloudinary:
   url: ${CN_URL:cloudinary://api_key:api_secret@cloud_name}
