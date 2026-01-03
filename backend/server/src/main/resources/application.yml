@@ -9,14 +9,8 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-        highlight_sql: true
 
   security:
     username: ${ADMIN_USERNAME:livemenu}
@@ -29,12 +23,6 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: 6379
-
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
 
 cloudinary:
   url: ${CN_URL:cloudinary://api_key:api_secret@cloud_name}
