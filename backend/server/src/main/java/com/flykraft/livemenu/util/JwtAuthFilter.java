@@ -2,8 +2,9 @@ package com.flykraft.livemenu.util;
 
 import com.flykraft.livemenu.config.TenantContext;
 import com.flykraft.livemenu.entity.Kitchen;
-import com.flykraft.livemenu.repository.KitchenRepository;
+import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.service.JwtService;
+import com.flykraft.livemenu.service.KitchenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,14 +21,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final KitchenRepository kitchenRepository;
+    private final KitchenService kitchenService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -38,10 +38,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String cleanOrigin = origin.replaceFirst("^https?://", "");
             String subdomain = cleanOrigin.split("\\.")[0];
 
-            Optional<Kitchen> kitchenOpt = kitchenRepository.findBySubdomain(subdomain.toLowerCase());
-            if (kitchenOpt.isPresent()) {
-                resolvedKitchenId = kitchenOpt.get().getId();
-            } else {
+            try {
+                Kitchen kitchen = kitchenService.loadKitchenBySubdomain(subdomain.toLowerCase());
+                resolvedKitchenId = kitchen.getId();
+            } catch (ResourceNotFoundException e) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
                 response.getWriter().write("Not Found: Kitchen does not exist");
                 return;

@@ -1,30 +1,26 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.config.TenantContext;
-import com.flykraft.livemenu.dto.auth.AuthRequestDto;
 import com.flykraft.livemenu.dto.kitchen.KitchenReqDto;
-import com.flykraft.livemenu.dto.kitchen.RegisterKitchenDto;
-import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.entity.Kitchen;
-import com.flykraft.livemenu.entity.KitchenOwner;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
-import com.flykraft.livemenu.model.Authority;
-import com.flykraft.livemenu.model.KitchenRole;
-import com.flykraft.livemenu.repository.KitchenOwnerRepository;
 import com.flykraft.livemenu.repository.KitchenRepository;
-import com.flykraft.livemenu.service.AuthService;
 import com.flykraft.livemenu.service.KitchenService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class KitchenServiceImpl implements KitchenService {
     private final KitchenRepository kitchenRepository;
-    private final KitchenOwnerRepository kitchenOwnerRepository;
-    private final AuthService authService;
+
+    @Override
+    public Kitchen loadKitchen() {
+        return loadKitchenById(TenantContext.getKitchenId());
+    }
 
     @Override
     public Kitchen loadKitchenById(Long kitchenId) {
@@ -32,32 +28,16 @@ public class KitchenServiceImpl implements KitchenService {
                 .orElseThrow(() -> new ResourceNotFoundException("Kitchen with id " + kitchenId + " not found"));
     }
 
+    @Cacheable(value = "kitchens", key = "#subdomain")
     @Override
-    public Kitchen loadKitchen() {
-        return loadKitchenById(TenantContext.getKitchenId());
+    public Kitchen loadKitchenBySubdomain(String subdomain) {
+        return kitchenRepository.findBySubdomain(subdomain)
+                .orElseThrow(() -> new ResourceNotFoundException("Kitchen with subdomain " + subdomain + " not found"));
     }
 
-    @Transactional
-    @Override
     @CachePut(value = "kitchens", key = "#result.subdomain")
-    public Kitchen registerKitchen(RegisterKitchenDto registerKitchenDto) {
-        AuthRequestDto authRequestDto = registerKitchenDto.getCredentials();
-        AuthUser authUser = authService.register(
-            authRequestDto.getUsername(),
-            authRequestDto.getPassword(),
-            Authority.KITCHEN_OWNER
-        );
-        Kitchen kitchen = addKitchen(registerKitchenDto.getKitchenDetails());
-        KitchenOwner kitchenOwner = KitchenOwner.builder()
-            .authUser(authUser)
-            .kitchen(kitchen)
-            .role(KitchenRole.ADMIN)
-            .build();
-        kitchenOwnerRepository.save(kitchenOwner);
-        return kitchen;
-    }
-
-    private Kitchen addKitchen(KitchenReqDto kitchenReqDto) {
+    @Override
+    public Kitchen addKitchen(KitchenReqDto kitchenReqDto) {
         String subdomain = kitchenReqDto.getSubdomain().toLowerCase().trim();
         if (kitchenRepository.findBySubdomain(subdomain).isPresent()) {
             throw new IllegalArgumentException("Subdomain " + subdomain + " is already taken");

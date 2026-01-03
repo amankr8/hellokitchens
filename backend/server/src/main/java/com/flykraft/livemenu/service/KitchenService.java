@@ -11,8 +11,9 @@ public interface KitchenService {
 
     Kitchen loadKitchenById(Long kitchenId);
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    Kitchen registerKitchen(RegisterKitchenDto registerKitchenDto);
+    Kitchen loadKitchenBySubdomain(String subdomain);
+
+    Kitchen addKitchen(KitchenReqDto kitchenReqDto);
 
     @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     Kitchen updateKitchenDetails(Long kitchenId, KitchenReqDto kitchenReqDto);
