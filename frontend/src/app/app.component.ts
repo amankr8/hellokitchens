@@ -10,6 +10,5 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'LiveMenu';
   constructor(public tenantService: TenantService) {}
 }
