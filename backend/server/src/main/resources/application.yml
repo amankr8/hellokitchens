@@ -9,7 +9,7 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -30,6 +30,11 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: 6379
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 cloudinary:
   url: ${CN_URL:cloudinary://api_key:api_secret@cloud_name}
