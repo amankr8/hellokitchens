@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Kitchen } from '../model/kitchen';
 
 @Injectable({ providedIn: 'root' })
 export class TenantService {
-  isKitchenValid = true;
+  kitchenDetails: Kitchen | null = null;
 }

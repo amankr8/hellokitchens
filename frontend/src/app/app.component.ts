@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TenantService } from './service/tenant.service';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { KitchenService } from './service/kitchen.service';
+import { Kitchen } from './model/kitchen';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +12,29 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  constructor(public tenantService: TenantService) {}
+  loading: boolean = true;
+
+  constructor(
+    private kitchenService: KitchenService,
+    public tenantService: TenantService
+  ) {}
+
+  ngOnInit(): void {
+    this.getKitchenDetails();
+  }
+
+  getKitchenDetails() {
+    this.kitchenService.getKitchen().subscribe({
+      next: (data: Kitchen) => {
+        document.title = data.name + ' - Home';
+        this.tenantService.kitchenDetails = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        document.title = 'Kitchen Not Found';
+        console.error('Error fetching kitchen details:', error);
+        this.loading = false;
+      },
+    });
+  }
 }
