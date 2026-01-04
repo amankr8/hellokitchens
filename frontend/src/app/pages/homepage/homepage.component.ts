@@ -21,7 +21,7 @@ export class HomepageComponent {
 
   ngOnInit(): void {
     let kitchen = this.tenantService.kitchenDetails;
-    if (kitchen != null) {
+    if (kitchen) {
       this.kitchenName = kitchen.name;
       this.kitchenTagline = kitchen.tagline;
     }
