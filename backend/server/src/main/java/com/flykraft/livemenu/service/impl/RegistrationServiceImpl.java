@@ -5,7 +5,6 @@ import com.flykraft.livemenu.dto.kitchen.RegisterKitchenDto;
 import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.entity.KitchenOwner;
-import com.flykraft.livemenu.exception.KitchenRegistrationException;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.model.KitchenRole;
 import com.flykraft.livemenu.repository.KitchenOwnerRepository;
@@ -43,9 +42,9 @@ public class RegistrationServiceImpl implements RegistrationService {
                     .build();
             kitchenOwnerRepository.save(kitchenOwner);
             return kitchen;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("Error registering Kitchen: {}", e.getMessage());
-            throw new KitchenRegistrationException("Error registering Kitchen: " + e.getMessage());
+            throw new RuntimeException("Error registering Kitchen: " + e.getMessage());
         }
     }
 
