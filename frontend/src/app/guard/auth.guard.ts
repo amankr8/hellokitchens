@@ -3,7 +3,7 @@ import { AuthService } from '../service/auth.service';
 import { inject } from '@angular/core';
 import { TenantService } from '../service/tenant.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
   const tenantService = inject(TenantService);
   const router = inject(Router);
@@ -14,11 +14,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   const decodedToken = authService.getDecodedToken();
-  const currentKitchenId = tenantService.kitchenDetails?.id;
+  const currentKitchenId = await tenantService.fetchKitchenDetails();
 
   if (!currentKitchenId) {
     console.warn('Kitchen details not yet loaded. Waiting for context...');
-    return true;
+    router.navigate(['/dashboard/login']);
+    return false;
   }
 
   if (decodedToken && decodedToken.kitchenId === currentKitchenId) {
