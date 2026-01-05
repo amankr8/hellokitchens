@@ -22,12 +22,11 @@ export const appConfig: ApplicationConfig = {
       JwtModule.forRoot({
         config: {
           tokenGetter,
-          allowedDomains: [
-            'http://localhost:8080',
-            'https://livemenu-server.onrender.com',
+          allowedDomains: ['localhost:8080', 'livemenu-server.onrender.com'],
+          disallowedRoutes: [
+            'localhost:8080/api/v1/auth',
+            'livemenu-server.onrender.com/api/v1/auth',
           ],
-          disallowedRoutes: [],
-          authScheme: 'Bearer ',
         },
       })
     ),
