@@ -14,15 +14,15 @@ export const authGuard: CanActivateFn = async (route, state) => {
   }
 
   const decodedToken = authService.getDecodedToken();
-  const currentKitchenId = await tenantService.fetchKitchenDetails();
+  const currentKitchen = await tenantService.fetchKitchenDetails();
 
-  if (!currentKitchenId) {
+  if (!currentKitchen) {
     console.warn('Kitchen details not yet loaded. Waiting for context...');
     router.navigate(['/dashboard/login']);
     return false;
   }
 
-  if (decodedToken && decodedToken.kitchenId === currentKitchenId) {
+  if (decodedToken && decodedToken.kitchenId === currentKitchen.id) {
     return true;
   }
 
