@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 export class MenuItemCardComponent {
   @Input() menuItem!: MenuItem;
 
-  defaultImage: string = 'https://picsum.photos/300/400';
+  defaultImage: string = 'images/dish.png';
 
   onImageError(event: any): void {
     event.target.src = this.defaultImage;
