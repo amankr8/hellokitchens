@@ -10,9 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,24 +26,6 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-
-    @Value("${spring.security.username}")
-    private String adminUsername;
-
-    @Value("${spring.security.password}")
-    private String adminPassword;
-
-    @PostConstruct
-    public void init() {
-        if (authUserRepository.findByUsername(adminUsername).isEmpty()) {
-            AuthUser admin = AuthUser.builder()
-                .username(adminUsername)
-                .password(passwordEncoder.encode(adminPassword))
-                .authority(Authority.ADMIN)
-                .build();
-            authUserRepository.save(admin);
-        }
-    }
 
     private AuthUser loadUserByUsername(String username) {
         return authUserRepository.findByUsername(username)
