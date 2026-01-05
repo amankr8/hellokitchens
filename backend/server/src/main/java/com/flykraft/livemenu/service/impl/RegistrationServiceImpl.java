@@ -29,7 +29,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Kitchen registerKitchen(RegisterKitchenDto registerKitchenDto) {
         try {
-            log.info("Register Kitchen");
             AuthRequestDto authRequestDto = registerKitchenDto.getCredentials();
             AuthUser authUser = authService.register(
                     authRequestDto.getUsername(),
@@ -43,7 +42,6 @@ public class RegistrationServiceImpl implements RegistrationService {
                     .role(KitchenRole.ADMIN)
                     .build();
             kitchenOwnerRepository.save(kitchenOwner);
-            log.info("Kitchen {} has been registered successfully", kitchen.getName());
             return kitchen;
         } catch (Exception e) {
             log.error("Error registering Kitchen: {}", e.getMessage());
