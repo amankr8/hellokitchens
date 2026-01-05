@@ -26,7 +26,7 @@ spring:
 logging:
   level:
     root: INFO
-    com.flykraft.livemenu: DEBUG
+    com.flykraft.livemenu: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
