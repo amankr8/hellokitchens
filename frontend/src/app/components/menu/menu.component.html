@@ -1,26 +1,20 @@
-<div class="max-w-6xl mx-auto min-h-[60vh]">
-  <!-- Loading State (Skeletons) -->
-  <ng-container *ngIf="loading">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div
-        *ngFor="let _ of skeletons"
-        class="h-36 bg-white rounded-xl border border-gray-100 animate-pulse"
-      ></div>
-    </div>
-  </ng-container>
-
-  <!-- Error State -->
-  <div *ngIf="error && !loading">
+<div class="max-w-6xl mx-auto min-h-[60vh] p-4">
+  <div *ngIf="loading" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <div
-      class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"
-      role="alert"
-    >
-      <strong class="font-semibold">Error:</strong>
-      <span class="ml-1">{{ error }}</span>
-    </div>
+      *ngFor="let _ of skeletons"
+      class="h-36 bg-gray-200 rounded-xl border border-gray-100 animate-pulse"
+    ></div>
   </div>
 
-  <!-- Menu Items -->
+  <div
+    *ngIf="error && !loading"
+    class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"
+    role="alert"
+  >
+    <strong class="font-semibold">Error:</strong>
+    <span class="ml-1">{{ error }}</span>
+  </div>
+
   <ng-container *ngIf="!loading && !error">
     <div
       *ngIf="menuItems.length > 0; else emptyState"
@@ -32,10 +26,16 @@
       ></app-menu-item-card>
     </div>
 
-    <!-- Empty State -->
     <ng-template #emptyState>
-      <div class="text-center py-20">
-        <p class="text-gray-500 text-lg">No menu items available right now.</p>
+      <div
+        class="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300"
+      >
+        <p class="text-gray-500 text-lg font-medium">
+          No menu items available right now.
+        </p>
+        <p class="text-gray-400 text-sm">
+          Check back later or try a different category.
+        </p>
       </div>
     </ng-template>
   </ng-container>
