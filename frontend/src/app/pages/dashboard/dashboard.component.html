@@ -1,94 +1,34 @@
-<div
-  class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-100"
+<header
+  class="bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm"
 >
-  <div class="mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Kitchen Profile</h2>
-    <p class="text-sm text-gray-500">
-      Update your public information shown to customers.
+  <div class="flex items-center gap-2">
+    <span class="text-orange-600 font-bold text-xl">LiveMenu</span>
+    <span class="text-gray-300">|</span>
+    <span class="font-medium text-gray-700">Admin Dashboard</span>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <span class="text-sm text-gray-500">{{
+      tenantService.kitchenDetails?.name
+    }}</span>
+    <button
+      (click)="onLogout()"
+      class="text-sm text-red-500 hover:text-red-700 font-medium"
+    >
+      Logout
+    </button>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <div class="mb-8">
+    <h2 class="text-3xl font-extrabold text-gray-900 capitalize">
+      {{ getActiveRouteName() }}
+    </h2>
+    <p class="mt-1 text-sm text-gray-500">
+      Manage your kitchen's digital presence and operations.
     </p>
   </div>
 
-  <div
-    *ngIf="message.text"
-    [ngClass]="
-      message.type === 'success'
-        ? 'bg-green-50 text-green-700 border-green-200'
-        : 'bg-red-50 text-red-700 border-red-200'
-    "
-    class="mb-4 p-3 rounded border text-sm"
-  >
-    {{ message.text }}
-  </div>
-
-  <form [formGroup]="kitchenForm" (ngSubmit)="onUpdate()" class="space-y-4">
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1"
-        >Kitchen Name</label
-      >
-      <input
-        formControlName="name"
-        type="text"
-        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
-      />
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1"
-        >Tagline</label
-      >
-      <input
-        formControlName="tagline"
-        type="text"
-        placeholder="e.g. Best Burgers in Town"
-        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
-      />
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1"
-        >Address</label
-      >
-      <textarea
-        formControlName="address"
-        rows="3"
-        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
-      ></textarea>
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1"
-        >WhatsApp Number</label
-      >
-      <div class="flex">
-        <span
-          class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
-        >
-          +91
-        </span>
-        <input
-          formControlName="whatsapp"
-          type="text"
-          placeholder="9876543210"
-          class="flex-1 block w-full px-4 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-        />
-      </div>
-      <p
-        *ngIf="
-          kitchenForm.get('whatsapp')?.touched &&
-          kitchenForm.get('whatsapp')?.invalid
-        "
-        class="mt-1 text-xs text-red-500"
-      >
-        Please enter a valid 10-digit mobile number.
-      </p>
-    </div>
-
-    <button
-      type="submit"
-      [disabled]="kitchenForm.invalid || isSaving"
-      class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 rounded-lg transition-colors disabled:bg-gray-400"
-    >
-      {{ isSaving ? "Saving Changes..." : "Update Details" }}
-    </button>
-  </form>
-</div>
+  <router-outlet></router-outlet>
+</main>
