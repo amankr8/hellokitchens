@@ -25,14 +25,14 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen loadKitchenById(Long kitchenId) {
         return kitchenRepository.findById(kitchenId)
-                .orElseThrow(() -> new ResourceNotFoundException("Kitchen with id " + kitchenId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Kitchen with id " + kitchenId + " does not exist."));
     }
 
     @Cacheable(value = "kitchens", key = "#subdomain")
     @Override
     public Kitchen loadKitchenBySubdomain(String subdomain) {
         return kitchenRepository.findBySubdomain(subdomain)
-                .orElseThrow(() -> new ResourceNotFoundException("Kitchen with subdomain " + subdomain + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Kitchen with subdomain '" + subdomain + "' does not exist."));
     }
 
     @CachePut(value = "kitchens", key = "#result.subdomain")

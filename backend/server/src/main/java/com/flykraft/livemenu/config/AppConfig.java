@@ -1,5 +1,6 @@
 package com.flykraft.livemenu.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flykraft.livemenu.repository.AuthUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,11 @@ public class AppConfig {
     UserDetailsService userDetailsService() {
         return username -> authUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Bean
+    ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 
     @Bean

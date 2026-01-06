@@ -1,6 +1,8 @@
 package com.flykraft.livemenu.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flykraft.livemenu.config.TenantContext;
+import com.flykraft.livemenu.dto.ErrorResponseDto;
 import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.service.JwtService;
@@ -14,6 +16,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final KitchenService kitchenService;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -40,14 +44,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (origin != null) {
             String cleanOrigin = origin.replaceFirst("^https?://", "");
             String subdomain = cleanOrigin.split("\\.")[0];
-
             try {
                 Kitchen kitchen = kitchenService.loadKitchenBySubdomain(subdomain);
                 resolvedKitchenId = kitchen.getId();
             } catch (ResourceNotFoundException e) {
+                String errorMsg = "Authentication failed: " + e.getMessage();
                 response.setStatus(HttpStatus.NOT_FOUND.value());
-                response.getWriter().write("Not Found: Kitchen does not exist");
-                return;
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                ErrorResponseDto errorResponseDto = new ErrorResponseDto(HttpStatus.NOT_FOUND.value(), errorMsg);
+                objectMapper.writeValue(response.getWriter(), errorResponseDto);
             }
         }
 
@@ -70,9 +75,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Long kitchenIdFromJwt = jwtService.extractKitchenId(jwtToken);
 
             if (kitchenIdFromJwt != null && resolvedKitchenId != null && !kitchenIdFromJwt.equals(resolvedKitchenId)) {
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.getWriter().write("Access Denied: You are not authorized for this kitchen.");
-                return;
+                throw new SecurityException("You are not authorized for this kitchen");
             }
 
             if (resolvedKitchenId != null) {
@@ -91,8 +94,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
+            String errorMsg = "Authentication failed: " + e.getMessage();
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write("Authentication failed: " + e.getMessage());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            ErrorResponseDto errorResponseDto = new ErrorResponseDto(HttpStatus.UNAUTHORIZED.value(), errorMsg);
+            objectMapper.writeValue(response.getWriter(), errorResponseDto);
         } finally {
             TenantContext.clear();
         }

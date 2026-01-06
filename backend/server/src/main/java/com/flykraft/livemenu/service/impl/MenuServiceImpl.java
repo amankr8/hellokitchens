@@ -38,7 +38,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuItem loadMenuItemById(Long menuItemId) {
         return menuItemRepository.findById(menuItemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Menu item with id " + menuItemId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item with id " + menuItemId + " does not exist"));
     }
 
     @Transactional
