@@ -38,6 +38,25 @@ export class CartService {
     return this.cartItems.reduce((acc, item) => acc + item.quantity, 0);
   }
 
+  removeFromCart(item: MenuItem) {
+    const existingItem = this.cartItems.find((i) => i.menuItem.id === item.id);
+    if (existingItem) {
+      if (existingItem.quantity > 1) {
+        existingItem.quantity -= 1;
+      } else {
+        this.cartItems = this.cartItems.filter(
+          (i) => i.menuItem.id !== item.id
+        );
+      }
+    }
+    this.cartSubject.next([...this.cartItems]);
+  }
+
+  getItemQuantity(itemId: number): number {
+    const item = this.cartItems.find((i) => i.menuItem.id === itemId);
+    return item ? item.quantity : 0;
+  }
+
   clearCart() {
     this.cartItems = [];
     this.cartSubject.next([]);

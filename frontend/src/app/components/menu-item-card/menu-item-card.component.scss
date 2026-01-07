@@ -14,3 +14,13 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+fa-icon {
+  display: inline-flex;
+  transition: transform 0.2s ease-in-out;
+}
+
+span {
+  display: inline-block;
+  transition: transform 0.1s ease;
+}

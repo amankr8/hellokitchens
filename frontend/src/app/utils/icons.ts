@@ -12,6 +12,7 @@ import {
   faCircleNotch,
   faShoppingCart,
   faPhone,
+  faMinus,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
@@ -28,4 +29,5 @@ export const Icons = {
   outOfStock: faTimesCircle,
   search: faSearch,
   spinner: faCircleNotch,
+  remove: faMinus,
 };

@@ -65,13 +65,41 @@
         >
       </div>
 
-      <button
-        (click)="onAddClick($event)"
-        *ngIf="menuItem.inStock"
-        class="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-200 transition-all active:scale-90"
-      >
-        Add
-      </button>
+      <div class="h-10">
+        <button
+          *ngIf="quantity === 0 && menuItem.inStock"
+          (click)="onAddClick($event)"
+          class="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95"
+        >
+          Add
+        </button>
+
+        <div
+          *ngIf="quantity > 0 && menuItem.inStock"
+          class="flex items-center bg-orange-600 text-white rounded-2xl overflow-hidden shadow-lg shadow-orange-200 animate-in zoom-in duration-200"
+        >
+          <button
+            (click)="onDecrease()"
+            class="px-3 py-2.5 hover:bg-orange-700 transition-colors border-r border-orange-500/50"
+          >
+            <fa-icon
+              [icon]="quantity === 1 ? icons.delete : icons.remove"
+              class="text-xs"
+            ></fa-icon>
+          </button>
+
+          <span class="px-4 py-2.5 font-black text-sm min-w-[40px] text-center">
+            {{ quantity }}
+          </span>
+
+          <button
+            (click)="onIncrease($event)"
+            class="px-3 py-2.5 hover:bg-orange-700 transition-colors border-l border-orange-500/50"
+          >
+            <fa-icon [icon]="icons.add" class="text-xs"></fa-icon>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

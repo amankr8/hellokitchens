@@ -14,10 +14,25 @@ import { CartService } from '../../service/cart.service';
 export class MenuItemCardComponent {
   @Input() menuItem!: MenuItem;
   cartService = inject(CartService);
+  quantity = 0;
 
   defaultImage: string = 'images/dish.png';
 
   icons = Icons;
+
+  ngOnInit(): void {
+    this.cartService.cart$.subscribe(() => {
+      this.quantity = this.cartService.getItemQuantity(this.menuItem.id);
+    });
+  }
+
+  onIncrease(event: MouseEvent) {
+    this.onAddClick(event);
+  }
+
+  onDecrease() {
+    this.cartService.removeFromCart(this.menuItem);
+  }
 
   onImageError(event: any): void {
     event.target.src = this.defaultImage;
