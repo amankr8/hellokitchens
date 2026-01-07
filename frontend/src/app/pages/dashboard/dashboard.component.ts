@@ -34,24 +34,27 @@ export class DashboardComponent {
     this.authService.logout();
   }
 
-  getActiveRouteName(): string {
+  getPageRouteName(): string {
     const url = this.router.url;
+    if (url.includes('/add-new-item')) return 'Add New Item';
+    if (url.includes('/menu')) return 'Menu Items';
+    if (url.includes('/kitchen')) return 'Kitchen Profile';
+    return 'Welcome';
+  }
 
-    if (url.includes('/dashboard/menu/add-new-item')) {
-      return 'Menu Items / Add New Item';
+  getBreadcrumbs(): string[] {
+    const url = this.router.url;
+    const crumbs: string[] = [];
+
+    if (url.includes('/menu')) {
+      crumbs.push('Menu Items');
+      if (url.includes('/add-new-item')) {
+        crumbs.push('Add New Item');
+      }
+    } else if (url.includes('/kitchen')) {
+      crumbs.push('Kitchen Profile');
     }
 
-    const urlParts = url.split('/');
-    const lastPart = urlParts[urlParts.length - 1];
-
-    if (!lastPart || lastPart === 'dashboard' || lastPart === 'kitchen') {
-      return 'Kitchen Profile';
-    }
-
-    if (lastPart === 'menu') {
-      return 'Menu Items';
-    }
-
-    return lastPart.replace(/-/g, ' ');
+    return crumbs;
   }
 }

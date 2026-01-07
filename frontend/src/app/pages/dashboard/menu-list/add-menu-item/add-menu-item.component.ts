@@ -55,14 +55,16 @@ export class AddMenuItemComponent {
   }
 
   onSubmit() {
-    if (this.itemForm.valid && this.selectedFile) {
+    if (this.itemForm.valid) {
       const formData = new FormData();
 
       Object.keys(this.itemForm.value).forEach((key) => {
         formData.append(key, this.itemForm.value[key]);
       });
 
-      formData.append('image', this.selectedFile);
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile);
+      }
 
       this.menuService.addMenuItem(formData).subscribe({
         next: (res) => {

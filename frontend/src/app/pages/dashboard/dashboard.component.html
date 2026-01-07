@@ -76,15 +76,19 @@
           >
             <fa-icon [icon]="icons.kitchen"></fa-icon>
             <span>Dashboard</span>
-            <ng-container *ngIf="getActiveRouteName()">
-              <span>/</span>
-              <span class="text-orange-500">{{ getActiveRouteName() }}</span>
+
+            <ng-container
+              *ngFor="let crumb of getBreadcrumbs(); let last = last"
+            >
+              <span class="text-gray-300">/</span>
+              <span [class.text-orange-500]="last">{{ crumb }}</span>
             </ng-container>
           </div>
+
           <h2
             class="text-4xl font-black text-gray-900 capitalize tracking-tight"
           >
-            {{ getActiveRouteName() || "Welcome!" }}
+            {{ getPageRouteName() }}
           </h2>
         </div>
 
