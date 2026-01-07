@@ -66,6 +66,7 @@
       </div>
 
       <button
+        (click)="onAddClick($event)"
         *ngIf="menuItem.inStock"
         class="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-200 transition-all active:scale-90"
       >
