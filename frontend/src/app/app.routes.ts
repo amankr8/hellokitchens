@@ -4,6 +4,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './guard/auth.guard';
 import { KitchenComponent } from './pages/dashboard/kitchen/kitchen.component';
+import { MenuListComponent } from './pages/dashboard/menu-list/menu-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -12,6 +13,9 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard],
-    children: [{ path: '', component: KitchenComponent }],
+    children: [
+      { path: '', component: KitchenComponent },
+      { path: 'menu-list', component: MenuListComponent },
+    ],
   },
 ];

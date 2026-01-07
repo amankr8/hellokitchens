@@ -28,6 +28,10 @@ export class MenuService {
     return this.http.put<MenuItem>(`${this.apiUrl}/${item.id}`, item);
   }
 
+  toggleAvailability(itemId: number): void {
+    this.http.patch(`${this.apiUrl}/${itemId}`, null);
+  }
+
   deleteMenuItem(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
