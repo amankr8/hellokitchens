@@ -17,7 +17,8 @@ export class HomepageComponent {
   kitchenName: string = '';
   kitchenTagline: string = '';
   kitchenNumber: string = '';
-  cartCount = 0;
+  displayedCount = 0;
+  actualCartCount = 0;
   icons = Icons;
 
   flyX = 0;
@@ -37,7 +38,10 @@ export class HomepageComponent {
       this.kitchenNumber = kitchen.whatsapp;
     }
     this.cartService.cart$.subscribe(() => {
-      this.cartCount = this.cartService.getTotalCount();
+      this.actualCartCount = this.cartService.getTotalCount();
+      if (this.actualCartCount < this.displayedCount) {
+        this.displayedCount = this.actualCartCount;
+      }
     });
     this.cartService.animate$.subscribe((data) => {
       this.startFlyAnimation(data);
@@ -65,6 +69,7 @@ export class HomepageComponent {
     }, 800);
 
     setTimeout(() => {
+      this.displayedCount = this.actualCartCount;
       this.isBadgePulsing = true;
       setTimeout(() => {
         this.isBadgePulsing = false;
