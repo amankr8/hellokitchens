@@ -20,8 +20,8 @@ export class MenuService {
     return this.http.get<MenuItem>(`${this.apiUrl}/${id}`);
   }
 
-  addMenuItem(item: MenuItem): Observable<MenuItem> {
-    return this.http.post<MenuItem>(this.apiUrl, item);
+  addMenuItem(formData: FormData): Observable<MenuItem> {
+    return this.http.post<MenuItem>(this.apiUrl, formData);
   }
 
   updateMenuItem(itemId: number, item: MenuItem): Observable<MenuItem> {
