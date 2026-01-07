@@ -54,49 +54,51 @@
       </p>
     </div>
 
-    <div class="flex items-center justify-between mt-3">
+    <div
+      class="flex items-center justify-between mt-3 pt-2 border-t border-gray-50"
+    >
       <div class="flex flex-col">
         <span
-          class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter"
+          class="text-[9px] text-gray-400 font-bold uppercase tracking-tight"
           >Price</span
         >
-        <span class="text-xl font-black text-gray-900"
+        <span class="text-lg font-black text-gray-900 leading-none"
           >₹{{ menuItem.price }}</span
         >
       </div>
 
-      <div class="w-24 h-9 flex justify-end">
+      <div class="w-20 h-8 flex justify-end relative">
         <button
           *ngIf="quantity === 0 && menuItem.inStock"
           (click)="onAddClick($event)"
-          class="w-full h-full bg-gray-900 text-white rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-orange-600 transition-all active:scale-95 flex items-center justify-center shadow-sm"
+          class="w-full h-full bg-gray-900 text-white rounded-full text-[10px] font-black uppercase tracking-wider hover:bg-orange-600 transition-all active:scale-95 flex items-center justify-center shadow-sm"
         >
           Add
         </button>
 
         <div
           *ngIf="quantity > 0 && menuItem.inStock"
-          class="w-full h-full flex items-center justify-between bg-orange-600 text-white rounded-full shadow-md shadow-orange-100 animate-in zoom-in duration-200"
+          class="w-full h-full flex items-center justify-between bg-orange-600 text-white rounded-full shadow-md shadow-orange-100"
         >
           <button
             (click)="onDecrease()"
-            class="w-9 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-l-full pl-1"
+            class="w-7 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-l-full"
           >
             <fa-icon
               [icon]="quantity === 1 ? icons.delete : icons.remove"
-              class="text-[9px]"
+              class="text-[8px]"
             ></fa-icon>
           </button>
 
-          <span class="flex-1 text-center font-black text-xs select-none">
+          <span class="flex-1 text-center font-black text-[11px] select-none">
             {{ quantity }}
           </span>
 
           <button
             (click)="onIncrease($event)"
-            class="w-9 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-r-full pr-1"
+            class="w-7 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-r-full"
           >
-            <fa-icon [icon]="icons.add" class="text-[9px]"></fa-icon>
+            <fa-icon [icon]="icons.add" class="text-[8px]"></fa-icon>
           </button>
         </div>
       </div>
