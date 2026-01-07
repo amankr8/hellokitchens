@@ -5,14 +5,19 @@ import { TenantService } from './service/tenant.service';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { KitchenService } from './service/kitchen.service';
 import { Kitchen } from './model/kitchen';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icons } from './utils/icons';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, NotFoundComponent],
+  imports: [CommonModule, RouterOutlet, NotFoundComponent, FontAwesomeModule],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
   loading: boolean = true;
+  showHelp: boolean = false;
+
+  icons = Icons;
 
   constructor(
     private kitchenService: KitchenService,
@@ -20,7 +25,16 @@ export class AppComponent {
   ) {}
 
   ngOnInit(): void {
+    this.startLoadingTimer();
     this.getKitchenDetails();
+  }
+
+  startLoadingTimer() {
+    setTimeout(() => {
+      if (this.loading) {
+        this.showHelp = true;
+      }
+    }, 6000);
   }
 
   getKitchenDetails() {
