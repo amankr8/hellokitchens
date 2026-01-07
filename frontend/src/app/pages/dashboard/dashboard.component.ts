@@ -1,6 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router } from '@angular/router';
+import {
+  RouterOutlet,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; //
 import { Icons } from '../../utils/icons'; //
 import { AuthService } from '../../service/auth.service';
@@ -9,7 +14,13 @@ import { TenantService } from '../../service/tenant.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    FontAwesomeModule,
+  ],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {

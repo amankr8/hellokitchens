@@ -8,16 +8,20 @@ import {
 } from '@angular/forms';
 import { KitchenService } from '../../../service/kitchen.service';
 import { TenantService } from '../../../service/tenant.service';
+import { Icons } from '../../../utils/icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-kitchen',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule],
   templateUrl: './kitchen.component.html',
 })
 export class KitchenComponent {
   private fb = inject(FormBuilder);
   private kitchenService = inject(KitchenService);
   private tenantService = inject(TenantService);
+
+  icons = Icons;
 
   kitchenForm!: FormGroup;
   isSaving = false;
