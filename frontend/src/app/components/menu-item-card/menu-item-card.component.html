@@ -1,68 +1,76 @@
 <div
-  class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+  class="group bg-white rounded-[2rem] p-3 shadow-sm border border-gray-100 flex gap-4 hover:shadow-xl hover:shadow-orange-100/20 hover:border-orange-100 transition-all duration-300 relative overflow-hidden"
+  [class.opacity-60]="!menuItem.inStock"
 >
-  <div class="flex h-32 sm:h-36">
-    <!-- Image Section -->
-    <div
-      class="relative aspect-square w-32 sm:w-36 flex-shrink-0 bg-gray-100 overflow-hidden"
-    >
-      <img
-        [src]="getImageUrl()"
-        [alt]="menuItem.name"
-        (error)="onImageError($event)"
-        class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-      />
+  <div
+    class="relative w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 overflow-hidden rounded-[1.5rem] bg-gray-50"
+  >
+    <img
+      [src]="getImageUrl()"
+      [alt]="menuItem.name"
+      (error)="onImageError($event)"
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+    />
 
-      <!-- Veg / Non-veg Indicator -->
-      <div class="absolute top-2 left-2 z-10">
-        <div
-          [ngClass]="menuItem.isVeg ? 'border-green-600' : 'border-red-600'"
-          class="w-5 h-5 border-2 bg-white flex items-center justify-center p-0.5"
-        >
-          <div
-            [ngClass]="menuItem.isVeg ? 'bg-green-600' : 'bg-red-600'"
-            class="w-2 h-2 rounded-full"
-          ></div>
-        </div>
-      </div>
+    <div
+      *ngIf="!menuItem.inStock"
+      class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]"
+    >
+      <span
+        class="bg-white text-black text-[10px] font-black uppercase px-2 py-1 rounded-lg"
+        >Sold Out</span
+      >
     </div>
 
-    <!-- Content Section -->
-    <div class="flex-1 p-3 sm:p-4 flex flex-col justify-between min-w-0">
-      <div class="flex-1 min-h-0">
-        <!-- Title & Category -->
-        <div class="mb-1">
-          <h3
-            class="text-sm sm:text-base font-semibold text-gray-900 line-clamp-1"
-          >
-            {{ menuItem.name }}
-          </h3>
-          <span *ngIf="menuItem.category" class="text-xs text-gray-500">
-            {{ menuItem.category }}
-          </span>
-        </div>
-
-        <!-- Description -->
-        <p class="text-xs sm:text-sm text-gray-600 line-clamp-2 break-words">
-          {{ menuItem.desc }}
-        </p>
+    <div class="absolute top-3 left-3 shadow-sm">
+      <div
+        [ngClass]="menuItem.isVeg ? 'border-green-600' : 'border-red-600'"
+        class="w-4 h-4 border-2 bg-white flex items-center justify-center"
+      >
+        <div
+          [ngClass]="menuItem.isVeg ? 'bg-green-600' : 'bg-red-600'"
+          class="w-1.5 h-1.5 rounded-full"
+        ></div>
       </div>
+    </div>
+  </div>
 
-      <!-- Price & Action -->
-      <div class="flex items-center justify-between mt-2 pt-2">
-        <div class="flex items-baseline gap-1">
-          <span class="text-sm font-normal text-gray-500">₹</span>
-          <span class="text-base sm:text-lg font-bold text-gray-900">
-            {{ menuItem.price }}
-          </span>
-        </div>
-
-        <button
-          class="px-4 py-2 text-sm font-semibold text-green-600 bg-white border border-green-600 rounded hover:bg-green-50 active:bg-green-100 transition-colors uppercase tracking-wide"
+  <div class="flex-1 py-1 flex flex-col justify-between">
+    <div>
+      <div class="flex justify-between items-start">
+        <span
+          class="text-[10px] font-black text-orange-600 uppercase tracking-widest mb-1 block"
         >
-          Add
-        </button>
+          {{ menuItem.category }}
+        </span>
       </div>
+      <h3
+        class="text-lg font-black text-gray-900 leading-tight mb-1 group-hover:text-orange-600 transition-colors"
+      >
+        {{ menuItem.name }}
+      </h3>
+      <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+        {{ menuItem.desc }}
+      </p>
+    </div>
+
+    <div class="flex items-center justify-between mt-3">
+      <div class="flex flex-col">
+        <span
+          class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter"
+          >Price</span
+        >
+        <span class="text-xl font-black text-gray-900"
+          >₹{{ menuItem.price }}</span
+        >
+      </div>
+
+      <button
+        *ngIf="menuItem.inStock"
+        class="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-200 transition-all active:scale-90"
+      >
+        Add
+      </button>
     </div>
   </div>
 </div>

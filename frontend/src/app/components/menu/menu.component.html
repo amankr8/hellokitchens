@@ -1,24 +1,30 @@
-<div class="max-w-6xl mx-auto min-h-[60vh] p-4">
-  <div *ngIf="loading" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<div class="space-y-8 animate-in fade-in duration-500">
+  <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div
       *ngFor="let _ of skeletons"
-      class="h-36 bg-gray-200 rounded-xl border border-gray-100 animate-pulse"
-    ></div>
+      class="h-40 bg-white rounded-3xl border border-gray-100 flex p-4 gap-4 animate-pulse"
+    >
+      <div class="w-32 h-32 bg-gray-100 rounded-2xl"></div>
+      <div class="flex-1 space-y-3 py-2">
+        <div class="h-4 bg-gray-100 rounded w-3/4"></div>
+        <div class="h-3 bg-gray-100 rounded w-full"></div>
+        <div class="h-6 bg-gray-100 rounded w-1/4 mt-4"></div>
+      </div>
+    </div>
   </div>
 
   <div
     *ngIf="error && !loading"
-    class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"
-    role="alert"
+    class="bg-red-50 border border-red-100 text-red-700 px-6 py-4 rounded-2xl flex items-center gap-3"
   >
-    <strong class="font-semibold">Error:</strong>
-    <span class="ml-1">{{ error }}</span>
+    <fa-icon [icon]="icons.outOfStock"></fa-icon>
+    <span class="font-bold text-sm">{{ error }}</span>
   </div>
 
   <ng-container *ngIf="!loading && !error">
     <div
       *ngIf="menuItems.length > 0; else emptyState"
-      class="grid grid-cols-1 lg:grid-cols-2 gap-4"
+      class="grid grid-cols-1 md:grid-cols-2 gap-6"
     >
       <app-menu-item-card
         *ngFor="let item of menuItems; trackBy: trackById"
@@ -28,13 +34,17 @@
 
     <ng-template #emptyState>
       <div
-        class="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300"
+        class="flex flex-col items-center justify-center py-20 bg-gray-50/50 rounded-[2.5rem] border-2 border-dashed border-gray-200"
       >
-        <p class="text-gray-500 text-lg font-medium">
-          No menu items available right now.
-        </p>
-        <p class="text-gray-400 text-sm">
-          Check back later or try a different category.
+        <div
+          class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 mb-4"
+        >
+          <fa-icon [icon]="icons.logo" class="text-3xl"></fa-icon>
+        </div>
+        <h3 class="text-xl font-black text-gray-800">Kitchen is Prepping!</h3>
+        <p class="text-gray-500 text-sm mt-1 max-w-xs text-center">
+          We haven't added items to this section yet. Stay tuned for some
+          delicious updates!
         </p>
       </div>
     </ng-template>

@@ -3,10 +3,12 @@ import { MenuItem } from '../../model/menu';
 import { MenuService } from '../../service/menu.service';
 import { CommonModule } from '@angular/common';
 import { MenuItemCardComponent } from '../menu-item-card/menu-item-card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icons } from '../../utils/icons';
 
 @Component({
   selector: 'app-menu',
-  imports: [CommonModule, MenuItemCardComponent],
+  imports: [CommonModule, MenuItemCardComponent, FontAwesomeModule],
   templateUrl: './menu.component.html',
 })
 export class MenuComponent {
@@ -14,6 +16,7 @@ export class MenuComponent {
   loading: boolean = true;
   skeletons = Array(6);
   error: string = '';
+  icons = Icons;
 
   constructor(private menuService: MenuService) {}
 
