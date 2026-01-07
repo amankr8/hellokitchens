@@ -1,24 +1,24 @@
 <div
   class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
-  >
+>
   <div class="flex h-32 sm:h-36">
     <!-- Image Section -->
     <div
       class="relative aspect-square w-32 sm:w-36 flex-shrink-0 bg-gray-100 overflow-hidden"
-      >
+    >
       <img
         [src]="getImageUrl()"
         [alt]="menuItem.name"
         (error)="onImageError($event)"
         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+      />
 
       <!-- Veg / Non-veg Indicator -->
       <div class="absolute top-2 left-2 z-10">
         <div
           [ngClass]="menuItem.isVeg ? 'border-green-600' : 'border-red-600'"
           class="w-5 h-5 border-2 bg-white flex items-center justify-center p-0.5"
-          >
+        >
           <div
             [ngClass]="menuItem.isVeg ? 'bg-green-600' : 'bg-red-600'"
             class="w-2 h-2 rounded-full"
@@ -34,14 +34,12 @@
         <div class="mb-1">
           <h3
             class="text-sm sm:text-base font-semibold text-gray-900 line-clamp-1"
-            >
+          >
             {{ menuItem.name }}
           </h3>
-          @if (menuItem.category) {
-            <span class="text-xs text-gray-500">
-              {{ menuItem.category }}
-            </span>
-          }
+          <span *ngIf="menuItem.category" class="text-xs text-gray-500">
+            {{ menuItem.category }}
+          </span>
         </div>
 
         <!-- Description -->
@@ -61,7 +59,7 @@
 
         <button
           class="px-4 py-2 text-sm font-semibold text-green-600 bg-white border border-green-600 rounded hover:bg-green-50 active:bg-green-100 transition-colors uppercase tracking-wide"
-          >
+        >
           Add
         </button>
       </div>

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { MenuItem } from '../../model/menu';
 import { MenuService } from '../../service/menu.service';
-
+import { CommonModule } from '@angular/common';
 import { MenuItemCardComponent } from '../menu-item-card/menu-item-card.component';
 
 @Component({
   selector: 'app-menu',
-  imports: [MenuItemCardComponent],
+  imports: [CommonModule, MenuItemCardComponent],
   templateUrl: './menu.component.html',
 })
 export class MenuComponent {
