@@ -65,38 +65,38 @@
         >
       </div>
 
-      <div class="h-10">
+      <div class="w-24 h-9 flex justify-end">
         <button
           *ngIf="quantity === 0 && menuItem.inStock"
           (click)="onAddClick($event)"
-          class="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95"
+          class="w-full h-full bg-gray-900 text-white rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-orange-600 transition-all active:scale-95 flex items-center justify-center shadow-sm"
         >
           Add
         </button>
 
         <div
           *ngIf="quantity > 0 && menuItem.inStock"
-          class="flex items-center bg-orange-600 text-white rounded-2xl overflow-hidden shadow-lg shadow-orange-200 animate-in zoom-in duration-200"
+          class="w-full h-full flex items-center justify-between bg-orange-600 text-white rounded-full shadow-md shadow-orange-100 animate-in zoom-in duration-200"
         >
           <button
             (click)="onDecrease()"
-            class="px-3 py-2.5 hover:bg-orange-700 transition-colors border-r border-orange-500/50"
+            class="w-9 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-l-full pl-1"
           >
             <fa-icon
               [icon]="quantity === 1 ? icons.delete : icons.remove"
-              class="text-xs"
+              class="text-[9px]"
             ></fa-icon>
           </button>
 
-          <span class="px-4 py-2.5 font-black text-sm min-w-[40px] text-center">
+          <span class="flex-1 text-center font-black text-xs select-none">
             {{ quantity }}
           </span>
 
           <button
             (click)="onIncrease($event)"
-            class="px-3 py-2.5 hover:bg-orange-700 transition-colors border-l border-orange-500/50"
+            class="w-9 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-r-full pr-1"
           >
-            <fa-icon [icon]="icons.add" class="text-xs"></fa-icon>
+            <fa-icon [icon]="icons.add" class="text-[9px]"></fa-icon>
           </button>
         </div>
       </div>
