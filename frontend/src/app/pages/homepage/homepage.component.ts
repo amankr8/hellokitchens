@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { MenuComponent } from '../../components/menu/menu.component';
 import { TenantService } from '../../service/tenant.service';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,8 @@ import { CartService } from '../../service/cart.service';
   styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
+  @ViewChild('cartButton') cartButton!: ElementRef;
+
   loading: boolean = true;
   kitchenName: string = '';
   kitchenTagline: string = '';
@@ -54,12 +56,17 @@ export class HomepageComponent {
     this.flyY = data.y;
     this.flyStyle = { opacity: '1', transform: 'scale(1)' };
 
+    const rect = this.cartButton.nativeElement.getBoundingClientRect();
+
+    const targetX = rect.left + rect.width / 2 - 24; // subtract half ghost width
+    const targetY = rect.top + rect.height / 2 - 24;
+
     setTimeout(() => {
-      this.flyX = window.innerWidth - 100;
-      this.flyY = 40;
+      this.flyX = targetX;
+      this.flyY = targetY;
       this.flyStyle = {
         opacity: '0',
-        transform: 'scale(0.2) rotate(360deg)',
+        transform: 'scale(0.2) rotate(720deg)', // Extra spin for flair!
         transition: 'all 0.8s cubic-bezier(0.42, 0, 0.58, 1)',
       };
     }, 10);

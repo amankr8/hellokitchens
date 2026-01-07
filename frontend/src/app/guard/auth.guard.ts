@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   const router = inject(Router);
 
   if (!authService.isAuthenticated()) {
-    router.navigate(['/dashboard/login']);
+    router.navigate(['/login']);
     return false;
   }
 
@@ -18,7 +18,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
 
   if (!currentKitchen) {
     console.warn('Kitchen details not yet loaded. Waiting for context...');
-    router.navigate(['/dashboard/login']);
+    router.navigate(['/login']);
     return false;
   }
 
@@ -27,6 +27,6 @@ export const authGuard: CanActivateFn = async (route, state) => {
   }
 
   console.error('Tenant Mismatch: Token is for a different kitchen');
-  router.navigate(['/dashboard/login']);
+  router.navigate(['/login']);
   return false;
 };
