@@ -34,6 +34,7 @@
           <span class="hidden sm:inline">My Order</span>
 
           <span
+            [class.animate-badge-pulse]="isBadgePulsing"
             class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white group-hover:bg-white group-hover:text-orange-600 transition-colors"
           >
             {{ cartCount }}

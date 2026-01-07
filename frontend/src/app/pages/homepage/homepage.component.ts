@@ -10,6 +10,7 @@ import { CartService } from '../../service/cart.service';
   selector: 'app-homepage',
   imports: [MenuComponent, CommonModule, FontAwesomeModule],
   templateUrl: './homepage.component.html',
+  styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
   loading: boolean = true;
@@ -23,6 +24,7 @@ export class HomepageComponent {
   flyY = 0;
   flyingItem: any = null;
   flyStyle = {};
+  isBadgePulsing = false;
 
   tenantService = inject(TenantService);
   cartService = inject(CartService);
@@ -48,9 +50,7 @@ export class HomepageComponent {
     this.flyY = data.y;
     this.flyStyle = { opacity: '1', transform: 'scale(1)' };
 
-    // Wait a tiny bit for the browser to register the starting position
     setTimeout(() => {
-      // Target: The cart button position (approximate top right)
       this.flyX = window.innerWidth - 100;
       this.flyY = 40;
       this.flyStyle = {
@@ -60,9 +60,15 @@ export class HomepageComponent {
       };
     }, 10);
 
-    // Clean up
     setTimeout(() => {
       this.flyingItem = null;
     }, 800);
+
+    setTimeout(() => {
+      this.isBadgePulsing = true;
+      setTimeout(() => {
+        this.isBadgePulsing = false;
+      }, 300);
+    }, 750);
   }
 }

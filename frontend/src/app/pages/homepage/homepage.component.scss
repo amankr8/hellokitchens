@@ -1,0 +1,9 @@
+@keyframes pulse-orange {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.animate-badge-pulse {
+  animation: pulse-orange 0.3s ease-in-out;
+}
