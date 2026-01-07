@@ -13,9 +13,13 @@ import {
   faShoppingCart,
   faPhone,
   faMinus,
+  faPenToSquare,
+  faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  editPen: faPenToSquare,
+  trashCan: faTrashCan,
   phone: faPhone,
   cart: faShoppingCart,
   logo: faUtensils,

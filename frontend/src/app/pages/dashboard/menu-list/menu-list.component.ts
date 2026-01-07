@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
-import { MenuItem } from '../../../model/menu';
+import { MenuItem } from '../../../model/menu-item';
 import { MenuService } from '../../../service/menu.service';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { MenuItem } from '../../model/menu';
+import { MenuItem } from '../../model/menu-item';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../utils/icons';
