@@ -9,6 +9,7 @@ import {
   faCheckCircle,
   faTimesCircle,
   faSearch,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
@@ -22,4 +23,5 @@ export const Icons = {
   inStock: faCheckCircle,
   outOfStock: faTimesCircle,
   search: faSearch,
+  spinner: faCircleNotch,
 };

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { LoginComponent } from './pages/dashboard/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './guard/auth.guard';
 import { KitchenComponent } from './pages/dashboard/kitchen/kitchen.component';
 
