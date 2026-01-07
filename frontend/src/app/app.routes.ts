@@ -14,8 +14,9 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', component: KitchenComponent },
-      { path: 'menu-list', component: MenuListComponent },
+      { path: '', redirectTo: 'kitchen', pathMatch: 'full' },
+      { path: 'kitchen', component: KitchenComponent },
+      { path: 'menu', component: MenuListComponent },
     ],
   },
 ];

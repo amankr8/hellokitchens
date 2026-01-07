@@ -38,8 +38,9 @@ export class DashboardComponent {
     const urlParts = this.router.url.split('/');
     const lastPart = urlParts[urlParts.length - 1];
     if (!lastPart || lastPart === 'dashboard') {
-      return '';
+      return 'Kitchen Profile';
     }
+    if (lastPart === 'menu') return 'Menu Items';
     return lastPart.replace(/-/g, ' ');
   }
 }
