@@ -10,9 +10,13 @@ import {
   faTimesCircle,
   faSearch,
   faCircleNotch,
+  faShoppingCart,
+  faPhone,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  phone: faPhone,
+  cart: faShoppingCart,
   logo: faUtensils,
   profile: faUser,
   kitchen: faStore,

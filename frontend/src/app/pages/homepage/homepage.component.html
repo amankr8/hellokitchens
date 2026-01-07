@@ -1,52 +1,73 @@
-<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-  <!-- Header -->
-  <div class="max-w-6xl mx-auto mb-8">
-    <div
-      class="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4 flex items-center justify-between"
+<div class="min-h-screen bg-[#F9FAFB]">
+  <div class="bg-orange-600 h-32 w-full absolute top-0 left-0 z-0"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto pt-12 px-4 pb-20">
+    <header class="sticky top-6 z-50 mb-10">
+      <div
+        class="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl px-6 py-5 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 shadow-inner"
+          >
+            <fa-icon [icon]="icons.logo" class="text-2xl"></fa-icon>
+          </div>
+          <div>
+            <h1
+              class="text-xl sm:text-2xl font-black text-gray-900 leading-tight"
+            >
+              {{ kitchenName }}
+            </h1>
+            <p
+              class="text-xs sm:text-sm font-bold text-orange-600/70 uppercase tracking-widest"
+            >
+              {{ kitchenTagline }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          class="group relative flex items-center gap-2 bg-gray-900 text-white px-5 py-3 rounded-2xl text-sm font-black hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+          aria-label="View Cart"
+        >
+          <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
+          <span class="hidden sm:inline">My Order</span>
+
+          <span
+            class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white group-hover:bg-white group-hover:text-orange-600 transition-colors"
+          >
+            0
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <section
+      class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 sm:p-8 min-h-[60vh]"
     >
-      <!-- Brand -->
-      <div>
-        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-          {{ this.kitchenName }}
-        </h1>
-        <p class="mt-0.5 text-sm text-gray-500">
-          {{ this.kitchenTagline }}
-        </p>
+      <div class="flex items-center justify-between mb-8">
+        <h3 class="text-xl font-black text-gray-900">Explore Menu</h3>
+        <div class="h-1 flex-1 mx-4 bg-gray-50 rounded-full"></div>
+        <fa-icon [icon]="icons.search" class="text-gray-400"></fa-icon>
       </div>
 
-      <!-- Placeholder Cart -->
-      <button
-        class="relative flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-        aria-label="Cart (coming soon)"
+      <app-menu></app-menu>
+    </section>
+
+    <a
+      [href]="'tel:+91' + kitchenNumber"
+      class="fixed bottom-6 right-6 z-[60] flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-2xl shadow-2xl shadow-green-200 hover:bg-green-600 transition-all active:scale-90 md:w-auto md:px-6 md:gap-3"
+    >
+      <fa-icon [icon]="icons.phone" class="text-xl"></fa-icon>
+      <span class="hidden md:inline font-black text-sm uppercase tracking-wider"
+        >Call Kitchen</span
       >
-        <!-- Cart Icon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-gray-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"
-          />
-        </svg>
+    </a>
 
-        <span>Cart</span>
-
-        <!-- Badge -->
-        <span
-          class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full px-1.5"
-        >
-          0
-        </span>
-      </button>
-    </div>
+    <p
+      class="mt-8 text-center text-gray-400 text-xs font-bold tracking-widest uppercase"
+    >
+      Powered by LiveMenu
+    </p>
   </div>
-
-  <!-- Menu Component -->
-  <app-menu></app-menu>
 </div>
