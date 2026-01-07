@@ -15,9 +15,12 @@ import {
   faMinus,
   faPenToSquare,
   faTrashCan,
+  faArrowLeft,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  back: faArrowLeft,
   editPen: faPenToSquare,
   trashCan: faTrashCan,
   phone: faPhone,
