@@ -19,16 +19,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class KitchenComponent {
   private fb = inject(FormBuilder);
   private kitchenService = inject(KitchenService);
-  private tenantService = inject(TenantService);
+  public tenantService = inject(TenantService); // Public for template access
 
   icons = Icons;
-
   kitchenForm!: FormGroup;
   isSaving = false;
   message = { type: '', text: '' };
 
   ngOnInit() {
-    const details = this.tenantService.kitchenDetails;
+    const details = this.tenantService.kitchenDetails();
 
     let rawPhone = details?.whatsapp || '';
     if (rawPhone.startsWith('91')) rawPhone = rawPhone.substring(2);
@@ -46,9 +45,10 @@ export class KitchenComponent {
   }
 
   onUpdate() {
-    if (this.kitchenForm.valid && this.tenantService.kitchenDetails) {
+    const currentDetails = this.tenantService.kitchenDetails();
+
+    if (this.kitchenForm.valid && currentDetails) {
       this.isSaving = true;
-      const kitchenId = this.tenantService.kitchenDetails.id;
       const formValue = this.kitchenForm.value;
 
       const payload = {
@@ -56,14 +56,17 @@ export class KitchenComponent {
         whatsapp: '91' + formValue.whatsapp,
       };
 
-      this.kitchenService.updateKitchen(kitchenId, payload).subscribe({
+      this.kitchenService.updateKitchen(currentDetails.id, payload).subscribe({
         next: (updatedKitchen) => {
-          this.tenantService.kitchenDetails = updatedKitchen; // Sync local state
+          this.tenantService.setKitchenDetails(updatedKitchen);
+
           this.message = {
             type: 'success',
             text: 'Kitchen details updated successfully!',
           };
           this.isSaving = false;
+
+          setTimeout(() => (this.message = { type: '', text: '' }), 3000);
         },
         error: (err) => {
           this.message = {

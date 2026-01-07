@@ -1,26 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Kitchen } from '../model/kitchen';
+import { filter, firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TenantService {
-  kitchenDetails: Kitchen | null = null;
-  loaded: boolean = false;
+  private _kitchenDetails = signal<Kitchen | null>(null);
+  public kitchenDetails = this._kitchenDetails.asReadonly();
 
-  async fetchKitchenDetails(): Promise<Kitchen | null> {
-    if (this.loaded) return this.kitchenDetails;
+  async waitUntilLoaded(): Promise<Kitchen> {
+    const current = this._kitchenDetails();
+    if (current) return current;
 
-    return new Promise((resolve) => {
-      const interval = setInterval(() => {
-        if (this.loaded) {
-          clearInterval(interval);
-          resolve(this.kitchenDetails);
-        }
-      }, 100);
+    // Otherwise, convert the signal to an observable and wait for the first non-null value
+    return firstValueFrom(
+      toObservable(this._kitchenDetails).pipe(
+        filter((details): details is Kitchen => details !== null)
+      )
+    );
+  }
 
-      setTimeout(() => {
-        clearInterval(interval);
-        resolve(null);
-      }, 5000);
-    });
+  setKitchenDetails(data: Kitchen) {
+    this._kitchenDetails.set(data);
   }
 }

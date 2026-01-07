@@ -41,14 +41,12 @@ export class AppComponent {
     this.kitchenService.getKitchen().subscribe({
       next: (data: Kitchen) => {
         document.title = data.name + ' - Home';
-        this.tenantService.kitchenDetails = data;
-        this.tenantService.loaded = true;
+        this.tenantService.setKitchenDetails(data);
         this.loading = false;
       },
       error: (error) => {
         document.title = 'Kitchen Not Found';
         console.error('Error fetching kitchen details:', error);
-        this.tenantService.loaded = true;
         this.loading = false;
       },
     });

@@ -14,19 +14,20 @@ export const authGuard: CanActivateFn = async (route, state) => {
   }
 
   const decodedToken = authService.getDecodedToken();
-  const currentKitchen = await tenantService.fetchKitchenDetails();
 
-  if (!currentKitchen) {
-    console.warn('Kitchen details not yet loaded. Waiting for context...');
+  try {
+    const currentKitchen = await tenantService.waitUntilLoaded();
+
+    if (decodedToken && decodedToken.kitchenId === currentKitchen.id) {
+      return true;
+    }
+
+    console.error('Tenant Mismatch: Token is for a different kitchen');
+    router.navigate(['/login']);
+    return false;
+  } catch (error) {
+    console.error('Guard failed to resolve kitchen context', error);
     router.navigate(['/login']);
     return false;
   }
-
-  if (decodedToken && decodedToken.kitchenId === currentKitchen.id) {
-    return true;
-  }
-
-  console.error('Tenant Mismatch: Token is for a different kitchen');
-  router.navigate(['/login']);
-  return false;
 };

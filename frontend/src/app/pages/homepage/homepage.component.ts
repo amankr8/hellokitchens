@@ -33,7 +33,7 @@ export class HomepageComponent {
   cartService = inject(CartService);
 
   ngOnInit(): void {
-    let kitchen = this.tenantService.kitchenDetails;
+    let kitchen = this.tenantService.kitchenDetails();
     if (kitchen) {
       this.kitchenName = kitchen.name;
       this.kitchenTagline = kitchen.tagline;
