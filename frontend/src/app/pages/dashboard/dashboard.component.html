@@ -2,31 +2,49 @@
   class="bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm"
 >
   <div class="flex items-center gap-2">
-    <span class="text-orange-600 font-bold text-xl">LiveMenu</span>
-    <span class="text-gray-300">|</span>
-    <span class="font-medium text-gray-700">Admin Dashboard</span>
+    <fa-icon [icon]="icons.logo" class="text-orange-600 text-xl"></fa-icon>
+    <span class="text-orange-600 font-bold text-xl ml-1">LiveMenu</span>
+    <span class="text-gray-300 mx-1">|</span>
+    <span class="font-medium text-gray-600">Admin Dashboard</span>
   </div>
 
-  <div class="flex items-center gap-4">
-    <span class="text-sm text-gray-500">{{
-      tenantService.kitchenDetails?.name
-    }}</span>
+  <div class="flex items-center gap-6">
+    <div class="flex flex-col items-end">
+      <span class="text-sm font-bold text-gray-800">
+        {{ tenantService.kitchenDetails?.name }}
+      </span>
+      <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold"
+        >Kitchen Owner</span
+      >
+    </div>
+
     <button
       (click)="onLogout()"
-      class="text-sm text-red-500 hover:text-red-700 font-medium"
+      class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-red-500 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 rounded-xl transition-all duration-200"
     >
-      Logout
+      <fa-icon [icon]="icons.logout"></fa-icon> <span>Logout</span>
     </button>
   </div>
 </header>
 
 <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-  <div class="mb-8">
-    <h2 class="text-3xl font-extrabold text-gray-900 capitalize">
+  <div class="mb-10">
+    <div
+      class="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1"
+    >
+      <fa-icon [icon]="icons.kitchen"></fa-icon>
+      <span>Dashboard</span>
+
+      <ng-container *ngIf="getActiveRouteName()">
+        <span>/</span>
+        <span class="text-orange-500">{{ getActiveRouteName() }}</span>
+      </ng-container>
+    </div>
+    <h2 class="text-4xl font-black text-gray-900 capitalize tracking-tight">
       {{ getActiveRouteName() }}
     </h2>
-    <p class="mt-1 text-sm text-gray-500">
-      Manage your kitchen's digital presence and operations.
+    <p class="mt-2 text-base text-gray-500">
+      Manage your kitchen's digital presence and daily operations.
     </p>
   </div>
 
