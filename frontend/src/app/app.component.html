@@ -1,15 +1,14 @@
-<ng-container *ngIf="!loading; else loadingState">
-  <div *ngIf="!tenantService.kitchenDetails; else liveMenu">
-    <app-not-found></app-not-found>
-  </div>
-
-  <ng-template #liveMenu>
+@if (!loading) {
+  @if (!tenantService.kitchenDetails) {
+    <div>
+      <app-not-found></app-not-found>
+    </div>
+  } @else {
     <router-outlet></router-outlet>
-  </ng-template>
-</ng-container>
-
-<ng-template #loadingState>
+  }
+} @else {
   <div class="flex items-center justify-center min-h-screen">
     <p>Loading Kitchen...</p>
   </div>
-</ng-template>
+}
+
