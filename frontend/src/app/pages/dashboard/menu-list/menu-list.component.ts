@@ -4,10 +4,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
 import { MenuItem } from '../../../model/menu-item';
 import { MenuService } from '../../../service/menu.service';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-menu-list',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, RouterLink],
   templateUrl: './menu-list.component.html',
   styleUrl: './menu-list.component.scss',
 })

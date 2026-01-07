@@ -35,12 +35,23 @@ export class DashboardComponent {
   }
 
   getActiveRouteName(): string {
-    const urlParts = this.router.url.split('/');
+    const url = this.router.url;
+
+    if (url.includes('/dashboard/menu/add-new-item')) {
+      return 'Menu Items / Add New Item';
+    }
+
+    const urlParts = url.split('/');
     const lastPart = urlParts[urlParts.length - 1];
-    if (!lastPart || lastPart === 'dashboard') {
+
+    if (!lastPart || lastPart === 'dashboard' || lastPart === 'kitchen') {
       return 'Kitchen Profile';
     }
-    if (lastPart === 'menu') return 'Menu Items';
+
+    if (lastPart === 'menu') {
+      return 'Menu Items';
+    }
+
     return lastPart.replace(/-/g, ' ');
   }
 }

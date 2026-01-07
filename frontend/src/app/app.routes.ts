@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './guard/auth.guard';
 import { KitchenComponent } from './pages/dashboard/kitchen/kitchen.component';
 import { MenuListComponent } from './pages/dashboard/menu-list/menu-list.component';
+import { AddMenuItemComponent } from './pages/dashboard/menu-list/add-menu-item/add-menu-item.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -16,7 +17,13 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'kitchen', pathMatch: 'full' },
       { path: 'kitchen', component: KitchenComponent },
-      { path: 'menu', component: MenuListComponent },
+      {
+        path: 'menu',
+        children: [
+          { path: '', component: MenuListComponent }, // dashboard/menu
+          { path: 'add-new-item', component: AddMenuItemComponent },
+        ],
+      },
     ],
   },
 ];
