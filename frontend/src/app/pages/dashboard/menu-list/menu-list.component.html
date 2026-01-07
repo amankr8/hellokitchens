@@ -28,7 +28,7 @@
       <thead>
         <tr class="bg-gray-50/50">
           <th
-            class="w-[40%] px-6 py-4 text-[10px] font-black uppercase text-gray-400 tracking-widest"
+            class="w-[40%] px-6 py-4 text-[10px] font-black uppercase text-gray-400 tracking-widest text-center"
           >
             Item
           </th>
@@ -50,7 +50,7 @@
           </th>
 
           <th
-            class="w-[15%] px-6 py-4 text-[10px] font-black uppercase text-gray-400 tracking-widest text-right"
+            class="w-[15%] px-6 py-4 text-[10px] font-black uppercase text-gray-400 tracking-widest text-center"
           >
             Actions
           </th>
@@ -63,7 +63,9 @@
           class="hover:bg-gray-50/50 transition-colors group"
         >
           <td class="px-6 py-4">
-            <div class="flex items-center gap-4 overflow-hidden">
+            <div
+              class="flex items-center gap-4 overflow-hiddenmax-w-full justify-start"
+            >
               <div
                 class="w-10 h-10 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0 relative"
               >
@@ -112,7 +114,7 @@
             >
           </td>
 
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 text-center">
             <div class="flex justify-center">
               <button
                 (click)="toggleAvailability(item)"
@@ -128,8 +130,8 @@
             </div>
           </td>
 
-          <td class="px-6 py-4 text-right">
-            <div class="flex justify-end gap-2">
+          <td class="px-6 py-4 text-center">
+            <div class="flex justify-center gap-2">
               <div class="relative group/tooltip">
                 <button
                   class="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all"
