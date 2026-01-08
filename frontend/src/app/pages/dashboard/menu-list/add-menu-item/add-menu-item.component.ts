@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,6 +29,8 @@ export class AddMenuItemComponent {
 
   icons = Icons;
 
+  saving = signal(true);
+
   itemForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
     desc: ['', Validators.required],
@@ -54,8 +56,9 @@ export class AddMenuItemComponent {
 
   onSubmit() {
     if (this.itemForm.valid) {
-      const formData = new FormData();
+      this.saving.set(true);
 
+      const formData = new FormData();
       Object.keys(this.itemForm.value).forEach((key) => {
         formData.append(key, this.itemForm.value[key]);
       });
@@ -72,6 +75,7 @@ export class AddMenuItemComponent {
         error: () => {
           this.uiService.showToast('Failed to create item', 'error');
         },
+        complete: () => this.saving.set(false),
       });
     }
   }

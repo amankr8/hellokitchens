@@ -32,6 +32,8 @@ export class HomepageComponent {
 
   ngOnInit(): void {
     this.kitchenService.loadKitchen();
+    const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
+    document.title = kitchenName + ' - Home';
     this.cartService.cart$.subscribe(() => {
       this.actualCartCount = this.cartService.getTotalCount();
       if (this.actualCartCount < this.displayedCount) {
