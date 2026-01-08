@@ -9,7 +9,7 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; //
 import { Icons } from '../../utils/icons'; //
 import { AuthService } from '../../service/auth.service';
-import { TenantService } from '../../service/tenant.service';
+import { KitchenService } from '../../service/kitchen.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +24,7 @@ import { TenantService } from '../../service/tenant.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  public tenantService = inject(TenantService);
+  public kitchenService = inject(KitchenService);
   private authService = inject(AuthService);
   private router = inject(Router);
 

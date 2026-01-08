@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 export class MenuService {
   private apiUrl = environment.apiBaseUrl + '/api/v1/menus';
 
+  // 🔹 State signals
   private readonly _menuItems = signal<MenuItem[] | null>(null);
   readonly menuItems = this._menuItems.asReadonly();
 

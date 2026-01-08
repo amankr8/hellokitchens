@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { KitchenService } from '../../../service/kitchen.service';
-import { TenantService } from '../../../service/tenant.service';
 import { Icons } from '../../../utils/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -19,62 +18,64 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class KitchenComponent {
   private fb = inject(FormBuilder);
   private kitchenService = inject(KitchenService);
-  public tenantService = inject(TenantService); // Public for template access
 
   icons = Icons;
-  kitchenForm!: FormGroup;
-  isSaving = false;
-  message = { type: '', text: '' };
 
-  ngOnInit() {
-    const details = this.tenantService.kitchenDetails();
+  kitchen = this.kitchenService.kitchen;
+  loading = this.kitchenService.loading;
+  error = this.kitchenService.error;
 
-    let rawPhone = details?.whatsapp || '';
-    if (rawPhone.startsWith('91')) rawPhone = rawPhone.substring(2);
-    else if (rawPhone.startsWith('+91')) rawPhone = rawPhone.substring(3);
+  saving = signal(false);
+  message = signal<{ type: 'success' | 'error'; text: string } | null>(null);
 
-    this.kitchenForm = this.fb.group({
-      name: [details?.name || '', [Validators.required]],
-      tagline: [details?.tagline || ''],
-      address: [details?.address || '', Validators.required],
-      whatsapp: [
-        rawPhone,
-        [Validators.required, Validators.pattern('^[0-9]{10}$')],
-      ],
+  kitchenForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    tagline: [''],
+    address: ['', Validators.required],
+    whatsapp: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+  });
+
+  constructor() {
+    effect(() => {
+      const kitchen = this.kitchen();
+      if (!kitchen) return;
+
+      this.kitchenForm.patchValue({
+        name: kitchen.name,
+        tagline: kitchen.tagline,
+        address: kitchen.address,
+        whatsapp: kitchen.whatsapp,
+      });
     });
   }
 
+  ngOnInit() {
+    this.kitchenService.loadKitchen();
+  }
+
   onUpdate() {
-    const currentDetails = this.tenantService.kitchenDetails();
+    const kitchen = this.kitchen();
+    if (this.kitchenForm.valid && kitchen && !this.saving()) {
+      this.saving.set(true);
+      this.message.set(null);
 
-    if (this.kitchenForm.valid && currentDetails) {
-      this.isSaving = true;
-      const formValue = this.kitchenForm.value;
+      const payload = this.kitchenForm.value;
 
-      const payload = {
-        ...formValue,
-        whatsapp: '91' + formValue.whatsapp,
-      };
-
-      this.kitchenService.updateKitchen(currentDetails.id, payload).subscribe({
+      this.kitchenService.updateKitchen(kitchen.id, payload).subscribe({
         next: (updatedKitchen) => {
-          this.tenantService.setKitchenDetails(updatedKitchen);
-
-          this.message = {
+          this.message.set({
             type: 'success',
             text: 'Kitchen details updated successfully!',
-          };
-          this.isSaving = false;
-
-          setTimeout(() => (this.message = { type: '', text: '' }), 3000);
+          });
+          this.kitchenForm.markAsPristine();
         },
-        error: (err) => {
-          this.message = {
+        error: () => {
+          this.message.set({
             type: 'error',
-            text: 'Failed to update. Please try again.',
-          };
-          this.isSaving = false;
+            text: this.error() ?? 'Failed to update kitchen details.',
+          });
         },
+        complete: () => this.saving.set(false),
       });
     }
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuItem } from '../../model/menu-item';
 import { MenuService } from '../../service/menu.service';
 import { CommonModule } from '@angular/common';
@@ -12,33 +12,19 @@ import { Icons } from '../../utils/icons';
   templateUrl: './menu.component.html',
 })
 export class MenuComponent {
-  menuItems: MenuItem[] = [];
-  loading: boolean = true;
-  skeletons = Array(6);
-  error: string = '';
   icons = Icons;
+  skeletons = Array(6);
 
-  constructor(private menuService: MenuService) {}
+  private menuService = inject(MenuService);
+  menuItems = this.menuService.menuItems;
+  loading = this.menuService.loading;
+  error = this.menuService.error;
 
   ngOnInit(): void {
-    this.fetchMenuItems();
+    this.menuService.loadMenuItems();
   }
 
   trackById(index: number, item: MenuItem) {
     return item.id;
-  }
-
-  fetchMenuItems(): void {
-    this.menuService.getMenuItems().subscribe({
-      next: (data: MenuItem[]) => {
-        this.menuItems = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching menu items:', error);
-        this.error = 'Failed to load menu items. Please try again later.';
-        this.loading = false;
-      },
-    });
   }
 }

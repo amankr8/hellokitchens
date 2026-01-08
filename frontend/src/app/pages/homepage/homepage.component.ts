@@ -1,10 +1,10 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { MenuComponent } from '../../components/menu/menu.component';
-import { TenantService } from '../../service/tenant.service';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../utils/icons';
 import { CartService } from '../../service/cart.service';
+import { KitchenService } from '../../service/kitchen.service';
 
 @Component({
   selector: 'app-homepage',
@@ -13,12 +13,13 @@ import { CartService } from '../../service/cart.service';
   styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
+  kitchenService = inject(KitchenService);
+  cartService = inject(CartService);
+
   @ViewChild('cartButton') cartButton!: ElementRef;
 
-  loading: boolean = true;
-  kitchenName: string = '';
-  kitchenTagline: string = '';
-  kitchenNumber: string = '';
+  kitchen = this.kitchenService.kitchen;
+
   displayedCount = 0;
   actualCartCount = 0;
   icons = Icons;
@@ -29,16 +30,8 @@ export class HomepageComponent {
   flyStyle = {};
   isBadgePulsing = false;
 
-  tenantService = inject(TenantService);
-  cartService = inject(CartService);
-
   ngOnInit(): void {
-    let kitchen = this.tenantService.kitchenDetails();
-    if (kitchen) {
-      this.kitchenName = kitchen.name;
-      this.kitchenTagline = kitchen.tagline;
-      this.kitchenNumber = kitchen.whatsapp;
-    }
+    this.kitchenService.loadKitchen();
     this.cartService.cart$.subscribe(() => {
       this.actualCartCount = this.cartService.getTotalCount();
       if (this.actualCartCount < this.displayedCount) {

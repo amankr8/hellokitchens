@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div *ngIf="message.text" class="mx-8 mt-6">
+    <div *ngIf="message() as message" class="mx-8 mt-6">
       <div
         [ngClass]="
           message.type === 'success'
@@ -113,10 +113,10 @@
       <div class="pt-6 flex justify-end">
         <button
           type="submit"
-          [disabled]="kitchenForm.invalid || isSaving"
+          [disabled]="kitchenForm.invalid || loading"
           class="min-w-[160px] px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl shadow-lg shadow-orange-200 transition-all transform active:scale-95 disabled:bg-gray-300 disabled:shadow-none flex items-center justify-center gap-2"
         >
-          <ng-container *ngIf="isSaving; else defaultButton">
+          <ng-container *ngIf="loading; else defaultButton">
             <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>
             <span>Saving...</span>
           </ng-container>
