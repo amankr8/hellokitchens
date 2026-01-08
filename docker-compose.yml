@@ -11,8 +11,8 @@ services:
       - spring.datasource.url=jdbc:postgresql://postgres-db:5432/livemenu_db
       - spring.datasource.username=admin
       - spring.datasource.password=postgres
-      - spring.security.jwt.secret=${JWT_SECRET}
       - spring.data.redis.host=redis-cache
+      - spring.security.jwt.secret=${JWT_SECRET}
       - cloudinary.url=${CN_URL}
       - firebase.config=${FIREBASE_CONFIG}
 
