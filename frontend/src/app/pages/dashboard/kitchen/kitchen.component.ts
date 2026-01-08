@@ -64,6 +64,7 @@ export class KitchenComponent {
       this.saving.set(true);
 
       const payload = this.kitchenForm.value;
+      this.kitchenForm.disable();
 
       this.kitchenService.updateKitchen(kitchen.id, payload).subscribe({
         next: (updatedKitchen) => {
@@ -73,7 +74,10 @@ export class KitchenComponent {
         error: () => {
           this.uiService.showToast('Failed to update profile', 'error');
         },
-        complete: () => this.saving.set(false),
+        complete: () => {
+          this.saving.set(false);
+          this.kitchenForm.enable();
+        },
       });
     }
   }

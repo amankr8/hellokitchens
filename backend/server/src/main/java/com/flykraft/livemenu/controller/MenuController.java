@@ -11,7 +11,7 @@ public interface MenuController {
     ResponseEntity<?> getMenu();
 
     @PostMapping
-    ResponseEntity<?> addMenuItem(@RequestBody MenuItemRequestDto menuItemRequestDto);
+    ResponseEntity<?> addMenuItem(@ModelAttribute MenuItemRequestDto menuItemRequestDto);
 
     @PutMapping("/{menuItemId}")
     ResponseEntity<?> updateMenuItem(@PathVariable Long menuItemId, @RequestBody MenuItemRequestDto menuItemRequestDto);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../../utils/icons';
 import { Router, RouterLink } from '@angular/router';
+import { UiService } from '../../../../service/ui.service';
 
 @Component({
   selector: 'app-add-menu-item',
@@ -18,25 +19,23 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './add-menu-item.component.scss',
 })
 export class AddMenuItemComponent {
-  itemForm: FormGroup;
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private menuService = inject(MenuService);
+  private uiService = inject(UiService);
+
   selectedFile: File | null = null;
   imagePreview: string | null = null;
 
   icons = Icons;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private menuService: MenuService
-  ) {
-    this.itemForm = this.fb.group({
-      name: ['', Validators.required],
-      desc: ['', Validators.required],
-      category: ['STARTERS', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
-      isVeg: [true],
-    });
-  }
+  itemForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    desc: ['', Validators.required],
+    category: ['STARTERS', Validators.required],
+    price: ['', [Validators.required, Validators.min(0)]],
+    isVeg: [true],
+  });
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -67,11 +66,11 @@ export class AddMenuItemComponent {
 
       this.menuService.addMenuItem(formData).subscribe({
         next: (res) => {
-          console.log('Item created successfully');
+          this.uiService.showToast('Created menu item successfully!');
           this.router.navigate(['/dashboard/menu']);
         },
-        error: (err) => {
-          console.error('Upload failed', err);
+        error: () => {
+          this.uiService.showToast('Failed to create item', 'error');
         },
       });
     }
