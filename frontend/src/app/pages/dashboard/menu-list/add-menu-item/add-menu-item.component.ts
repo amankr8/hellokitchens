@@ -29,7 +29,7 @@ export class AddMenuItemComponent {
 
   icons = Icons;
 
-  saving = signal(true);
+  saving = signal(false);
 
   itemForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -74,8 +74,8 @@ export class AddMenuItemComponent {
         },
         error: () => {
           this.uiService.showToast('Failed to create item', 'error');
+          this.saving.set(false);
         },
-        complete: () => this.saving.set(false),
       });
     }
   }

@@ -168,10 +168,18 @@
       <div class="pt-4">
         <button
           type="submit"
-          [disabled]="itemForm.invalid"
-          class="w-full md:w-auto px-12 py-4 bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-orange-700 disabled:bg-gray-200 transition-all shadow-lg shadow-orange-100"
+          [disabled]="itemForm.invalid || saving()"
+          class="w-full md:w-auto min-w-[200px] px-12 py-4 bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-orange-700 active:scale-95 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-3"
         >
-          Create Item
+          <ng-container *ngIf="saving(); else defaultCreate">
+            <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>
+            <span>Creating...</span>
+          </ng-container>
+
+          <ng-template #defaultCreate>
+            <fa-icon [icon]="icons.add"></fa-icon>
+            <span>Create Item</span>
+          </ng-template>
         </button>
       </div>
     </form>
