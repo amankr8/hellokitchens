@@ -13,18 +13,16 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './menu-list.component.scss',
 })
 export class MenuListComponent {
-  menuItems: MenuItem[] = [];
-  loading: boolean = false;
-  error: string = '';
-
+  private readonly menuService = inject(MenuService);
+  icons = Icons;
   defaultImage: string = 'images/dish.png';
 
-  icons = Icons;
-
-  menuService = inject(MenuService);
+  menuItems = this.menuService.menuItems;
+  loading = this.menuService.loading;
+  error = this.menuService.error;
 
   ngOnInit() {
-    this.fetchMenuItems();
+    this.menuService.loadMenuItems();
   }
 
   onImageError(event: any): void {
@@ -33,20 +31,6 @@ export class MenuListComponent {
 
   getImageUrl(imageUrl: string): string {
     return imageUrl || this.defaultImage;
-  }
-
-  fetchMenuItems(): void {
-    this.menuService.getMenuItems().subscribe({
-      next: (data: MenuItem[]) => {
-        this.menuItems = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching menu items:', error);
-        this.error = 'Failed to load menu items. Please try again later.';
-        this.loading = false;
-      },
-    });
   }
 
   toggleAvailability(item: MenuItem) {
