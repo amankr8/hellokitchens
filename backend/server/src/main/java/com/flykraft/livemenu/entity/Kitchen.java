@@ -9,6 +9,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -20,7 +21,7 @@ import java.util.List;
 @Filter(name = "kitchenFilter", condition = "k_id = :kitchenId")
 @Entity
 @Table(name = "kitchens")
-public class Kitchen extends Auditable {
+public class Kitchen extends Auditable implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
