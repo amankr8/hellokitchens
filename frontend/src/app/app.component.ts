@@ -6,6 +6,7 @@ import { KitchenService } from './service/kitchen.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from './utils/icons';
 import { UiToastComponent } from './components/ui-toast/ui-toast.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { UiToastComponent } from './components/ui-toast/ui-toast.component';
     NotFoundComponent,
     FontAwesomeModule,
     UiToastComponent,
+    ConfirmationModalComponent,
   ],
   templateUrl: './app.component.html',
 })
