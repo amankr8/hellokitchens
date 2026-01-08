@@ -5,7 +5,6 @@ import com.flykraft.livemenu.model.Authority;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
@@ -35,17 +34,17 @@ public class AuthUser extends Auditable implements UserDetails {
     private Authority authority;
 
     @Override
-    public @NonNull Set<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return Set.of(authority);
     }
 
     @Override
-    public @Nullable String getPassword() {
+    public String getPassword() {
         return password;
     }
 
     @Override
-    public @NonNull String getUsername() {
+    public String getUsername() {
         return username;
     }
 }

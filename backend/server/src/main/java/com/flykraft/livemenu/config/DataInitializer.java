@@ -4,7 +4,6 @@ import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.AuthUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,7 +24,7 @@ public class DataInitializer implements ApplicationRunner {
     private String adminPassword;
 
     @Override
-    public void run(@NonNull ApplicationArguments args) {
+    public void run(ApplicationArguments args) {
         if (authUserRepository.findByUsername(adminUsername).isEmpty()) {
             AuthUser admin = AuthUser.builder()
                     .username(adminUsername)

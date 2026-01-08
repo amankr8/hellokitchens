@@ -2,7 +2,6 @@ package com.flykraft.livemenu.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 
 @AllArgsConstructor
@@ -16,7 +15,7 @@ public enum Authority implements GrantedAuthority {
     private final String authority;
 
     @Override
-    public @NonNull String getAuthority() {
+    public String getAuthority() {
         return authority;
     }
 }
