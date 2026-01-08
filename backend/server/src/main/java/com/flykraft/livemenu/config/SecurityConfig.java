@@ -1,7 +1,7 @@
 package com.flykraft.livemenu.config;
 
-import com.flykraft.livemenu.util.JwtAuthFilter;
-import com.flykraft.livemenu.util.TenantResolutionFilter;
+import com.flykraft.livemenu.filter.JwtAuthFilter;
+import com.flykraft.livemenu.filter.TenantResolutionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

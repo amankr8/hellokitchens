@@ -1,4 +1,4 @@
-package com.flykraft.livemenu.util;
+package com.flykraft.livemenu.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flykraft.livemenu.config.TenantContext;
@@ -43,6 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/api/v1/orders/**")
     );
 
+    @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         return PUBLIC_MATCHERS
                 .stream()

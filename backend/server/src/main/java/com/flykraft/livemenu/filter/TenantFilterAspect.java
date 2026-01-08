@@ -1,6 +1,7 @@
-package com.flykraft.livemenu.util;
+package com.flykraft.livemenu.filter;
 
 import com.flykraft.livemenu.config.TenantContext;
+import com.flykraft.livemenu.util.AuthUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.aspectj.lang.annotation.Aspect;
