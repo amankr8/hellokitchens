@@ -16,12 +16,12 @@ import {
   faPenToSquare,
   faTrashCan,
   faArrowLeft,
-  faArrowRight,
   faExclamationCircle,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  menu: faUtensils,
   success: faCheckCircle,
   error: faExclamationCircle,
   info: faInfoCircle,
@@ -30,7 +30,6 @@ export const Icons = {
   trashCan: faTrashCan,
   phone: faPhone,
   cart: faShoppingCart,
-  logo: faUtensils,
   profile: faUser,
   kitchen: faStore,
   logout: faSignOutAlt,
