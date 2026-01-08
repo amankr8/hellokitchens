@@ -23,7 +23,7 @@
 
   <ng-container *ngIf="!loading() && !error()">
     <div
-      *ngIf="menuItems.length > 0; else emptyState"
+      *ngIf="(menuItems()?.length ?? 0) > 0; else emptyState"
       class="grid grid-cols-1 md:grid-cols-2 gap-6"
     >
       <app-menu-item-card

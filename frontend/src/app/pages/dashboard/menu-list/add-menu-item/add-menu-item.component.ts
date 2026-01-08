@@ -18,7 +18,6 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './add-menu-item.component.scss',
 })
 export class AddMenuItemComponent {
-  showAddModal = false;
   itemForm: FormGroup;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
