@@ -169,7 +169,7 @@
         <button
           type="submit"
           [disabled]="itemForm.invalid || saving()"
-          class="w-full md:w-auto min-w-[200px] px-12 py-4 bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-orange-700 active:scale-95 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-3"
+          class="w-full md:w-auto min-w-[200px] px-6 py-4 bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-orange-700 active:scale-95 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-3"
         >
           <ng-container *ngIf="saving(); else defaultCreate">
             <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>
