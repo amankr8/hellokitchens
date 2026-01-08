@@ -9,22 +9,6 @@
       </p>
     </div>
 
-    <div *ngIf="message() as message" class="mx-8 mt-6">
-      <div
-        [ngClass]="
-          message.type === 'success'
-            ? 'bg-green-50 text-green-700 border-green-100'
-            : 'bg-red-50 text-red-700 border-red-100'
-        "
-        class="p-4 rounded-xl border flex items-center gap-3"
-      >
-        <fa-icon
-          [icon]="message.type === 'success' ? icons.inStock : icons.outOfStock"
-        ></fa-icon>
-        <span class="text-sm font-semibold">{{ message.text }}</span>
-      </div>
-    </div>
-
     <form
       [formGroup]="kitchenForm"
       (ngSubmit)="onUpdate()"

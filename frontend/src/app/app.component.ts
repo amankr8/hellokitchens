@@ -5,6 +5,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { KitchenService } from './service/kitchen.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from './utils/icons';
+import { UiService } from './service/ui.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { Icons } from './utils/icons';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
+  public uiService = inject(UiService);
   public kitchenService = inject(KitchenService);
   loading = this.kitchenService.loading;
 

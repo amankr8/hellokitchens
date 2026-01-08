@@ -9,6 +9,7 @@ import {
 import { KitchenService } from '../../../service/kitchen.service';
 import { Icons } from '../../../utils/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UiService } from '../../../service/ui.service';
 
 @Component({
   selector: 'app-kitchen',
@@ -18,6 +19,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class KitchenComponent {
   private fb = inject(FormBuilder);
   private kitchenService = inject(KitchenService);
+  private uiService = inject(UiService);
 
   icons = Icons;
 
@@ -26,7 +28,6 @@ export class KitchenComponent {
   error = this.kitchenService.error;
 
   saving = signal(false);
-  message = signal<{ type: 'success' | 'error'; text: string } | null>(null);
 
   kitchenForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -57,23 +58,16 @@ export class KitchenComponent {
     const kitchen = this.kitchen();
     if (this.kitchenForm.valid && kitchen && !this.saving()) {
       this.saving.set(true);
-      this.message.set(null);
 
       const payload = this.kitchenForm.value;
 
       this.kitchenService.updateKitchen(kitchen.id, payload).subscribe({
         next: (updatedKitchen) => {
-          this.message.set({
-            type: 'success',
-            text: 'Kitchen details updated successfully!',
-          });
+          this.uiService.showToast('Kitchen profile updated successfully!');
           this.kitchenForm.markAsPristine();
         },
         error: () => {
-          this.message.set({
-            type: 'error',
-            text: this.error() ?? 'Failed to update kitchen details.',
-          });
+          this.uiService.showToast('Failed to update profile', 'error');
         },
         complete: () => this.saving.set(false),
       });

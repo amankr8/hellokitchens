@@ -17,9 +17,14 @@ import {
   faTrashCan,
   faArrowLeft,
   faArrowRight,
+  faExclamationCircle,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  success: faCheckCircle,
+  error: faExclamationCircle,
+  info: faInfoCircle,
   back: faArrowLeft,
   editPen: faPenToSquare,
   trashCan: faTrashCan,
