@@ -31,7 +31,6 @@ export class HomepageComponent {
   isBadgePulsing = false;
 
   ngOnInit(): void {
-    this.kitchenService.loadKitchen();
     const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
     document.title = kitchenName + ' - Home';
     this.cartService.cart$.subscribe(() => {

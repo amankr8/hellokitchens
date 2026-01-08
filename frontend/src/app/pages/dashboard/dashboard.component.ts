@@ -28,7 +28,14 @@ export class DashboardComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
+  kitchen = this.kitchenService.kitchen;
+
   icons = Icons;
+
+  ngOnInit() {
+    const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
+    document.title = kitchenName + ' - Dashboard';
+  }
 
   onLogout() {
     this.authService.logout();

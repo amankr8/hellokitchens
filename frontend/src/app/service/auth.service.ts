@@ -9,9 +9,10 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private jwtHelper = inject(JwtHelperService);
-  private apiUrl = environment.apiBaseUrl + '/api/v1/auth';
+  private router = inject(Router);
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private apiUrl = environment.apiBaseUrl + '/api/v1/auth';
 
   logout() {
     localStorage.removeItem('token');
