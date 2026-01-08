@@ -30,9 +30,14 @@ export class KitchenService {
     this._error.set(null);
 
     this.http.get<Kitchen>(this.apiUrl).subscribe({
-      next: (kitchen) => this._kitchen.set(kitchen),
-      error: () => this._error.set('Failed to load kitchen'),
-      complete: () => this._loading.set(false),
+      next: (kitchen) => {
+        this._kitchen.set(kitchen);
+        this._loading.set(false);
+      },
+      error: () => {
+        this._error.set('Failed to load kitchen');
+        this._loading.set(false);
+      },
     });
   }
 

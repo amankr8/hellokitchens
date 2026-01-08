@@ -30,9 +30,14 @@ export class MenuService {
     this._error.set(null);
 
     this.http.get<MenuItem[]>(this.apiUrl).subscribe({
-      next: (items) => this._menuItems.set(items),
-      error: () => this._error.set('Failed to load menu items'),
-      complete: () => this._loading.set(false),
+      next: (items) => {
+        this._menuItems.set(items);
+        this._loading.set(false);
+      },
+      error: () => {
+        this._error.set('Failed to load menu items');
+        this._loading.set(false);
+      },
     });
   }
 

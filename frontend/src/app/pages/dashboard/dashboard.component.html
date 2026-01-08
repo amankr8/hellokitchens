@@ -2,8 +2,14 @@
   <header
     class="sticky top-0 h-16 bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm z-30"
   >
-    <div class="flex items-center gap-2">
-      <fa-icon [icon]="icons.logo" class="text-orange-600 text-xl"></fa-icon>
+    <div
+      routerLink="/"
+      class="flex items-center gap-2 cursor-pointer group hover:opacity-80 transition-all active:scale-95"
+    >
+      <fa-icon
+        [icon]="icons.logo"
+        class="text-orange-600 text-xl transition-transform group-hover:rotate-12"
+      ></fa-icon>
       <span class="text-orange-600 font-bold text-xl ml-1 tracking-tight"
         >LiveMenu</span
       >
@@ -11,13 +17,14 @@
 
     <div class="flex items-center gap-6">
       <div class="hidden sm:flex flex-col items-end">
-        <span class="text-sm font-bold text-gray-800">{{
-          kitchenService.kitchen()?.name
-        }}</span>
+        <span class="text-sm font-bold text-gray-800">
+          {{ kitchenService.kitchen()?.name }}
+        </span>
         <span class="text-[10px] text-gray-400 uppercase font-bold text-right"
           >Kitchen Owner</span
         >
       </div>
+
       <button
         (click)="onLogout()"
         class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-95"

@@ -1,5 +1,5 @@
 <ng-container *ngIf="!loading(); else loadingState">
-  <div *ngIf="!kitchenService.kitchen(); else liveMenu">
+  <div *ngIf="error(); else liveMenu">
     <app-not-found></app-not-found>
   </div>
 
@@ -21,7 +21,7 @@
     <h2 class="text-lg font-bold text-gray-900">Loading LiveMenu...</h2>
 
     <div
-      *ngIf="showHelp"
+      *ngIf="showHelp()"
       class="mt-8 animate-in fade-in slide-in-from-bottom-2 duration-700"
     >
       <div

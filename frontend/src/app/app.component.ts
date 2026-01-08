@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { KitchenService } from './service/kitchen.service';
@@ -16,9 +16,10 @@ export class AppComponent {
   public uiService = inject(UiService);
   public kitchenService = inject(KitchenService);
   loading = this.kitchenService.loading;
+  error = this.kitchenService.error;
 
   icons = Icons;
-  showHelp: boolean = false;
+  showHelp = signal(false);
 
   ngOnInit(): void {
     this.startLoadingTimer();
@@ -28,7 +29,7 @@ export class AppComponent {
   startLoadingTimer() {
     setTimeout(() => {
       if (this.loading()) {
-        this.showHelp = true;
+        this.showHelp.set(true);
       }
     }, 6000);
   }
