@@ -90,6 +90,25 @@
         </tr>
       </tbody>
 
+      <tbody
+        *ngIf="!loading() && !error() && menuItems()?.length === 0"
+        class="bg-white"
+      >
+        <tr>
+          <td colspan="5" class="p-20 text-center border-none">
+            <div
+              class="w-20 h-20 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4 mx-auto"
+            >
+              <fa-icon [icon]="icons.menu" class="text-3xl"></fa-icon>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">No dishes added yet</h3>
+            <p class="text-sm text-gray-400 max-w-xs mt-1 mx-auto">
+              Start building your menu by adding your first kitchen specialty.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+
       <tbody *ngIf="!loading() && !error()" class="divide-y divide-gray-50">
         <tr
           *ngFor="let item of menuItems()"
@@ -196,20 +215,5 @@
         </tr>
       </tbody>
     </table>
-
-    <div
-      *ngIf="!loading() && !error() && menuItems()?.length === 0"
-      class="p-20 flex flex-col items-center justify-center text-center"
-    >
-      <div
-        class="w-20 h-20 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4"
-      >
-        <fa-icon [icon]="icons.add" class="text-3xl"></fa-icon>
-      </div>
-      <h3 class="text-lg font-bold text-gray-900">No dishes added yet</h3>
-      <p class="text-sm text-gray-400 max-w-xs mt-1">
-        Start building your menu by adding your first kitchen specialty.
-      </p>
-    </div>
   </div>
 </div>
