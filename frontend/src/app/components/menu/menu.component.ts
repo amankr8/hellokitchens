@@ -13,7 +13,6 @@ import { Icons } from '../../utils/icons';
 })
 export class MenuComponent {
   icons = Icons;
-  skeletons = Array(6);
 
   private menuService = inject(MenuService);
   menuItems = this.menuService.menuItems;

@@ -1,0 +1,38 @@
+<div
+  *ngIf="uiService.confirmReq() as req"
+  class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+>
+  <div
+    class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 transform animate-in zoom-in-95 duration-200"
+  >
+    <div class="flex flex-col items-center text-center">
+      <div
+        class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-4"
+      >
+        <fa-icon [icon]="icons.error" class="text-2xl"></fa-icon>
+      </div>
+
+      <h3 class="text-xl font-black text-gray-900 tracking-tight">
+        {{ req.title }}
+      </h3>
+      <p class="text-gray-500 mt-2 text-sm leading-relaxed">
+        {{ req.message }}
+      </p>
+
+      <div class="flex gap-3 mt-8 w-full">
+        <button
+          (click)="uiService.closeConfirm()"
+          class="flex-1 px-4 py-3 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition-colors"
+        >
+          {{ req.cancelText || "Cancel" }}
+        </button>
+        <button
+          (click)="req.action(); uiService.closeConfirm()"
+          class="flex-1 px-4 py-3 rounded-xl font-bold bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-200 transition-all active:scale-95"
+        >
+          {{ req.confirmText || "Delete" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

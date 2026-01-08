@@ -5,6 +5,14 @@ export interface Toast {
   type: 'success' | 'error' | 'info';
 }
 
+export interface ConfirmConfig {
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  action: () => void;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -22,5 +30,16 @@ export class UiService {
 
   clearToast() {
     this._toast.set(null);
+  }
+
+  private readonly _confirmReq = signal<ConfirmConfig | null>(null);
+  readonly confirmReq = this._confirmReq.asReadonly();
+
+  ask(config: ConfirmConfig) {
+    this._confirmReq.set(config);
+  }
+
+  closeConfirm() {
+    this._confirmReq.set(null);
   }
 }

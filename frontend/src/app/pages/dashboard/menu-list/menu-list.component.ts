@@ -5,6 +5,7 @@ import { Icons } from '../../../utils/icons';
 import { MenuItem } from '../../../model/menu-item';
 import { MenuService } from '../../../service/menu.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { UiService } from '../../../service/ui.service';
 
 @Component({
   selector: 'app-menu-list',
@@ -14,6 +15,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class MenuListComponent {
   private readonly menuService = inject(MenuService);
+  private uiService = inject(UiService);
   icons = Icons;
   defaultImage: string = 'images/dish.png';
 
@@ -36,5 +38,20 @@ export class MenuListComponent {
   toggleAvailability(item: MenuItem) {
     item.inStock = !item.inStock;
     this.menuService.toggleAvailability(item.id);
+  }
+
+  onDeleteItem(item: MenuItem) {
+    this.uiService.ask({
+      title: 'Remove Dish?',
+      message: `Are you sure you want to remove "${item.name}" from your menu? This action cannot be undone.`,
+      confirmText: 'Yes, Remove',
+      action: () => {
+        this.menuService.deleteItem(item.id).subscribe({
+          next: () => this.uiService.showToast('Item deleted successfully'),
+          error: () =>
+            this.uiService.showToast('Failed to delete item', 'error'),
+        });
+      },
+    });
   }
 }

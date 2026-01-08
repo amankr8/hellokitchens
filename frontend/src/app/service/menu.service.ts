@@ -88,7 +88,7 @@ export class MenuService {
       );
   }
 
-  deleteMenuItem(id: number): Observable<void> {
+  deleteItem(id: number): Observable<void> {
     this._error.set(null);
 
     return this.http

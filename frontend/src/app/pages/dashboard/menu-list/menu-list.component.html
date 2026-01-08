@@ -58,7 +58,54 @@
         </tr>
       </thead>
 
-      <tbody class="divide-y divide-gray-50">
+      <tbody
+        *ngIf="loading() && !menuItems()?.length"
+        class="divide-y divide-gray-50"
+      >
+        <tr *ngFor="let i of [1, 2, 3, 4, 5]" class="animate-pulse">
+          <td class="px-6 py-4" colspan="5">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-gray-100 rounded-xl"></div>
+              <div class="space-y-2">
+                <div class="h-4 w-32 bg-gray-100 rounded"></div>
+                <div class="h-3 w-48 bg-gray-50 rounded"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="error()" class="bg-white">
+        <tr>
+          <td colspan="5" class="p-20 text-center">
+            <fa-icon
+              [icon]="icons.error"
+              class="text-red-400 text-3xl mb-4"
+            ></fa-icon>
+            <h3 class="text-lg font-bold text-gray-900">Failed to load menu</h3>
+            <p class="text-sm text-gray-400 mt-1">
+              Check your connection and try again.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+
+      <div
+        *ngIf="!loading() && !error() && menuItems()?.length === 0"
+        class="p-20 flex flex-col items-center justify-center text-center"
+      >
+        <div
+          class="w-20 h-20 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4"
+        >
+          <fa-icon [icon]="icons.add" class="text-3xl"></fa-icon>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900">No dishes added yet</h3>
+        <p class="text-sm text-gray-400 max-w-xs mt-1">
+          Start building your menu by adding your first kitchen specialty.
+        </p>
+      </div>
+
+      <tbody *ngIf="!loading() && !error()" class="divide-y divide-gray-50">
         <tr
           *ngFor="let item of menuItems()"
           class="hover:bg-gray-50/50 transition-colors group"
@@ -148,6 +195,7 @@
 
               <div class="relative group/tooltip">
                 <button
+                  (click)="onDeleteItem(item)"
                   class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                 >
                   <fa-icon [icon]="icons.trashCan"></fa-icon>
@@ -163,19 +211,5 @@
         </tr>
       </tbody>
     </table>
-    <div
-      *ngIf="menuItems()?.length === 0"
-      class="p-20 flex flex-col items-center justify-center text-center"
-    >
-      <div
-        class="w-20 h-20 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4"
-      >
-        <fa-icon [icon]="icons.add" class="text-3xl"></fa-icon>
-      </div>
-      <h3 class="text-lg font-bold text-gray-900">No dishes added yet</h3>
-      <p class="text-sm text-gray-400 max-w-xs mt-1">
-        Start building your menu by adding your first kitchen specialty.
-      </p>
-    </div>
   </div>
 </div>
