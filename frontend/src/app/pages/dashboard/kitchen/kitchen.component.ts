@@ -41,12 +41,16 @@ export class KitchenComponent {
       const kitchen = this.kitchen();
       if (!kitchen) return;
 
-      this.kitchenForm.patchValue({
-        name: kitchen.name,
-        tagline: kitchen.tagline,
-        address: kitchen.address,
-        whatsapp: kitchen.whatsapp,
-      });
+      this.kitchenForm.patchValue(
+        {
+          name: kitchen.name,
+          tagline: kitchen.tagline,
+          address: kitchen.address,
+          whatsapp: kitchen.whatsapp,
+        },
+        { emitEvent: false }
+      );
+      this.kitchenForm.markAsPristine();
     });
   }
 

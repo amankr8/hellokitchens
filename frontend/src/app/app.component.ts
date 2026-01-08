@@ -5,15 +5,20 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { KitchenService } from './service/kitchen.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from './utils/icons';
-import { UiService } from './service/ui.service';
+import { UiToastComponent } from './components/ui-toast/ui-toast.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, NotFoundComponent, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NotFoundComponent,
+    FontAwesomeModule,
+    UiToastComponent,
+  ],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  public uiService = inject(UiService);
   public kitchenService = inject(KitchenService);
   loading = this.kitchenService.loading;
   error = this.kitchenService.error;
