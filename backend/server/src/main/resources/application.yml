@@ -22,6 +22,11 @@ spring:
       hibernate:
         format_sql: true
 
+  data:
+    redis:
+      host: {REDIS_HOST:localhost}
+      port: 6379
+
   security:
     username: ${ADMIN_USERNAME:livemenu}
     password: ${ADMIN_PASSWORD:admin}
