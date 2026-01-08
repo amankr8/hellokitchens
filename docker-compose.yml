@@ -30,7 +30,7 @@ services:
 
   redis-cache:
     image: redis:8
-    container_name: redis
+    container_name: redis_cache
     ports:
       - "6379:6379"
     volumes:
