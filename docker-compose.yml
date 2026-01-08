@@ -12,7 +12,7 @@ services:
       - spring.datasource.username=admin
       - spring.datasource.password=postgres
       - spring.security.jwt.secret=${JWT_SECRET}
-      - spring.data.redis.host=redis
+      - spring.data.redis.host=redis-cache
       - cloudinary.url=${CN_URL}
       - firebase.config=${FIREBASE_CONFIG}
 
@@ -28,7 +28,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  redis:
+  redis-cache:
     image: redis:8
     container_name: redis
     ports:
