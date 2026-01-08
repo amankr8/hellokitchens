@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { MenuItem } from '../../model/menu-item';
-import { MenuService } from '../../service/menu.service';
+import { MenuItem } from '../../../model/menu-item';
+import { MenuService } from '../../../service/menu.service';
 import { CommonModule } from '@angular/common';
 import { MenuItemCardComponent } from '../menu-item-card/menu-item-card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Icons } from '../../utils/icons';
+import { Icons } from '../../../utils/icons';
 
 @Component({
   selector: 'app-menu',

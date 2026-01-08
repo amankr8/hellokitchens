@@ -5,8 +5,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { KitchenService } from './service/kitchen.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from './utils/icons';
-import { UiToastComponent } from './components/ui-toast/ui-toast.component';
-import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import { UiToastComponent } from './pages/components/ui-toast/ui-toast.component';
+import { ConfirmationModalComponent } from './pages/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-root',

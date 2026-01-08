@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { MenuComponent } from '../../components/menu/menu.component';
+import { MenuComponent } from '../components/menu/menu.component';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../utils/icons';

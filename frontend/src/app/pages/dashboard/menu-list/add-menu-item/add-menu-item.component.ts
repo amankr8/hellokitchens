@@ -57,6 +57,7 @@ export class AddMenuItemComponent {
   onSubmit() {
     if (this.itemForm.valid) {
       this.saving.set(true);
+      this.itemForm.disable();
 
       const formData = new FormData();
       Object.keys(this.itemForm.value).forEach((key) => {
@@ -74,6 +75,7 @@ export class AddMenuItemComponent {
         },
         error: () => {
           this.uiService.showToast('Failed to create item', 'error');
+          this.itemForm.enable();
           this.saving.set(false);
         },
       });
