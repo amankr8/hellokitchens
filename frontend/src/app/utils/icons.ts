@@ -21,6 +21,7 @@ import {
   faCamera,
   faImage,
   faList,
+  faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
@@ -40,6 +41,7 @@ export const Icons = {
   kitchen: faStore,
   logout: faSignOutAlt,
   add: faPlus,
+  addCircled: faPlusCircle,
   delete: faTrash,
   edit: faEdit,
   inStock: faCheckCircle,
