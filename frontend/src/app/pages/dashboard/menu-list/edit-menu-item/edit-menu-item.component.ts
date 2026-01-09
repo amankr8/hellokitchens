@@ -81,6 +81,9 @@ export class EditMenuItemComponent {
 
     if (item) {
       this.itemForm.patchValue(item);
+      if (item.imageUrl) {
+        this.imagePreview.set(item.imageUrl);
+      }
       this.itemForm.markAsPristine();
     } else {
       this.uiService.showToast('Item not found', 'error');
@@ -105,19 +108,17 @@ export class EditMenuItemComponent {
         formData.append('image', this.selectedFile);
       }
 
-      this.menuService
-        .updateMenuItem(this.itemId, this.itemForm.value)
-        .subscribe({
-          next: () => {
-            this.uiService.showToast('Dish updated successfully!');
-            this.router.navigate(['/dashboard/menu']);
-          },
-          error: () => {
-            this.uiService.showToast('Update failed', 'error');
-            this.itemForm.enable();
-            this.saving.set(false);
-          },
-        });
+      this.menuService.updateMenuItem(this.itemId, formData).subscribe({
+        next: () => {
+          this.uiService.showToast('Dish updated successfully!');
+          this.router.navigate(['/dashboard/menu']);
+        },
+        error: () => {
+          this.uiService.showToast('Update failed', 'error');
+          this.itemForm.enable();
+          this.saving.set(false);
+        },
+      });
     }
   }
 }

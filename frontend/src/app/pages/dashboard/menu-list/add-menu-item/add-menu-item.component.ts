@@ -23,8 +23,8 @@ export class AddMenuItemComponent {
   private menuService = inject(MenuService);
   private uiService = inject(UiService);
 
+  imagePreview = signal<string | null>(null);
   selectedFile: File | null = null;
-  imagePreview: string | null = null;
 
   icons = Icons;
 
@@ -43,7 +43,7 @@ export class AddMenuItemComponent {
     if (file) {
       this.selectedFile = file;
       const reader = new FileReader();
-      reader.onload = () => (this.imagePreview = reader.result as string);
+      reader.onload = () => this.imagePreview.set(reader.result as string);
       reader.readAsDataURL(file);
     }
   }

@@ -14,7 +14,7 @@ public interface MenuController {
     ResponseEntity<?> addMenuItem(@ModelAttribute MenuItemRequestDto menuItemRequestDto);
 
     @PutMapping("/{menuItemId}")
-    ResponseEntity<?> updateMenuItem(@PathVariable Long menuItemId, @RequestBody MenuItemRequestDto menuItemRequestDto);
+    ResponseEntity<?> updateMenuItem(@PathVariable Long menuItemId, @ModelAttribute MenuItemRequestDto menuItemRequestDto);
 
     @PatchMapping("/{menuItemId}")
     ResponseEntity<?> toggleInStockForMenuItem(@PathVariable Long menuItemId);

@@ -37,7 +37,16 @@ export class MenuListComponent {
 
   toggleAvailability(item: MenuItem) {
     item.inStock = !item.inStock;
-    this.menuService.toggleAvailability(item.id);
+    this.menuService.toggleAvailability(item.id).subscribe({
+      next: () => this.uiService.showToast('Item status updated'),
+      error: () => {
+        item.inStock = !item.inStock;
+        this.uiService.showToast(
+          'Failed to update item status. Please try again',
+          'error'
+        );
+      },
+    });
   }
 
   onDeleteItem(item: MenuItem) {
