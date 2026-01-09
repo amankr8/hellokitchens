@@ -16,7 +16,6 @@ import { UiService } from '../../../../service/ui.service';
   selector: 'app-add-menu-item',
   imports: [CommonModule, FontAwesomeModule, RouterLink, ReactiveFormsModule],
   templateUrl: './add-menu-item.component.html',
-  styleUrl: './add-menu-item.component.scss',
 })
 export class AddMenuItemComponent {
   private fb = inject(FormBuilder);
