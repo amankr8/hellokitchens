@@ -10,6 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; //
 import { Icons } from '../../utils/icons'; //
 import { AuthService } from '../../service/auth.service';
 import { KitchenService } from '../../service/kitchen.service';
+import { UiService } from '../../service/ui.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,6 +28,7 @@ export class DashboardComponent {
   public kitchenService = inject(KitchenService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private uiService = inject(UiService);
 
   kitchen = this.kitchenService.kitchen;
 
@@ -38,7 +40,16 @@ export class DashboardComponent {
   }
 
   onLogout() {
-    this.authService.logout();
+    this.uiService.ask({
+      title: 'Logout?',
+      message:
+        'Are you sure you want to end your session? You will need to login again to manage your menu.',
+      confirmText: 'Logout',
+      cancelText: 'Stay Logged In',
+      action: () => {
+        this.authService.logout();
+      },
+    });
   }
 
   getPageRouteName(): string {
