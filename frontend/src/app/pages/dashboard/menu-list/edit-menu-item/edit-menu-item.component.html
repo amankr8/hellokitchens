@@ -46,7 +46,7 @@
               *ngIf="imagePreview()"
               type="button"
               (click)="removeImage($event)"
-              class="absolute -top-2 -right-2 w-8 h-8 bg-white border border-red-100 text-red-500 rounded-full shadow-md flex items-center justify-center hover:bg-red-50 transition-all z-10"
+              class="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-center transition-all z-10 bg-white border border-red-100 text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500 hover:scale-110 hover:shadow-red-200/50"
             >
               <fa-icon [icon]="icons.trashCan" class="text-xs"></fa-icon>
             </button>
