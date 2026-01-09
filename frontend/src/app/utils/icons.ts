@@ -49,4 +49,5 @@ export const Icons = {
   search: faSearch,
   spinner: faCircleNotch,
   remove: faMinus,
+  infoCircled: faInfoCircle,
 };

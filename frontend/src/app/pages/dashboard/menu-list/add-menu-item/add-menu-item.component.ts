@@ -11,6 +11,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../../utils/icons';
 import { Router, RouterLink } from '@angular/router';
 import { UiService } from '../../../../service/ui.service';
+import {
+  ALLOWED_FILE_TYPES,
+  MAX_FILE_SIZE,
+} from '../../../../constants/app.constant';
 
 @Component({
   selector: 'app-add-menu-item',
@@ -40,7 +44,7 @@ export class AddMenuItemComponent {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
+    if (file && this.isValid(file)) {
       this.selectedFile = file;
       this.itemForm.markAsDirty();
 
@@ -48,6 +52,18 @@ export class AddMenuItemComponent {
       reader.onload = () => this.imagePreview.set(reader.result as string);
       reader.readAsDataURL(file);
     }
+  }
+
+  isValid(file: File): boolean {
+    if (file.size > MAX_FILE_SIZE) {
+      this.uiService.showToast('File size is greater than 5MB', 'error');
+      return false;
+    }
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      this.uiService.showToast('Only JPG and PNG files are allowed', 'error');
+      return false;
+    }
+    return true;
   }
 
   toggleVeg() {
