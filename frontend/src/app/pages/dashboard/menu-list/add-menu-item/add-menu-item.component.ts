@@ -44,7 +44,7 @@ export class AddMenuItemComponent {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file && this.isValid(file)) {
+    if (file && this.isImageValid(file)) {
       this.selectedFile = file;
       this.itemForm.markAsDirty();
 
@@ -54,7 +54,7 @@ export class AddMenuItemComponent {
     }
   }
 
-  isValid(file: File): boolean {
+  isImageValid(file: File): boolean {
     if (file.size > MAX_FILE_SIZE) {
       this.uiService.showToast('File size is greater than 5MB', 'error');
       return false;

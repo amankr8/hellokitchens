@@ -11,6 +11,10 @@ import { UiService } from '../../../../service/ui.service';
 import { Icons } from '../../../../utils/icons';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  ALLOWED_FILE_TYPES,
+  MAX_FILE_SIZE,
+} from '../../../../constants/app.constant';
 
 @Component({
   selector: 'app-edit-menu-item',
@@ -42,7 +46,7 @@ export class EditMenuItemComponent {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
+    if (file && this.isImageValid(file)) {
       this.selectedFile = file;
       this.itemForm.markAsDirty();
 
@@ -50,6 +54,18 @@ export class EditMenuItemComponent {
       reader.onload = () => this.imagePreview.set(reader.result as string);
       reader.readAsDataURL(file);
     }
+  }
+
+  isImageValid(file: File): boolean {
+    if (file.size > MAX_FILE_SIZE) {
+      this.uiService.showToast('File size is greater than 5MB', 'error');
+      return false;
+    }
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      this.uiService.showToast('Only JPG and PNG files are allowed', 'error');
+      return false;
+    }
+    return true;
   }
 
   toggleVeg() {
