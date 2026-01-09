@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface CloudinaryService {
-    CloudinaryFile uploadFile(MultipartFile file, String folderPath) throws IOException;
+    CloudinaryFile uploadFile(MultipartFile file, String folderPath);
 
-    void deleteFile(String publicId) throws IOException;
+    void deleteFile(String publicId);
 }

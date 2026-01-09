@@ -18,10 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -29,6 +27,8 @@ public class MenuServiceImpl implements MenuService {
     private final DishImageRepository dishImageRepository;
     private final KitchenService kitchenService;
     private final CloudinaryService cloudinaryService;
+
+    private static final List<String> ALLOWED_FILE_TYPES = List.of("image/jpeg", "image/png");
 
     @Override
     public List<MenuItem> loadAllMenuItems() {
@@ -58,27 +58,31 @@ public class MenuServiceImpl implements MenuService {
                 .build();
         menuItem = menuItemRepository.save(menuItem);
 
-        DishImage dishImage = saveImage(menuItemRequestDto.getImage(), getFolderPathForMenuItem(kitchen.getId()));
-        if (dishImage == null) return menuItem;
+        if (menuItemRequestDto.getImage() != null) {
+            validateImage(menuItemRequestDto.getImage());
+            DishImage dishImage = saveImage(menuItemRequestDto.getImage(), getFolderPathForMenuItem(kitchen.getId()));
+            dishImage.setMenuItem(menuItem);
+            dishImageRepository.save(dishImage);
+        }
 
-        dishImage.setMenuItem(menuItem);
-        dishImageRepository.save(dishImage);
         return menuItem;
+    }
+
+    private void validateImage(MultipartFile image) {
+        if (!ALLOWED_FILE_TYPES.contains(image.getContentType())) {
+            throw new IllegalArgumentException("Only JPG and PNG images are allowed.");
+        }
     }
 
     private DishImage saveImage(MultipartFile imageFile, String folderPath) {
         if  (imageFile == null || imageFile.isEmpty()) return null;
-        try {
-            CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(imageFile, folderPath);
-            DishImage dishImage = DishImage.builder()
-                    .publicId(cloudinaryFile.getPublicId())
-                    .secureUrl(cloudinaryFile.getSecureUrl())
-                    .build();
-            return dishImageRepository.save(dishImage);
-        } catch (IOException e) {
-            log.error("Error uploading image {}: {}", imageFile.getOriginalFilename(), e.getMessage(), e);
-            return null;
-        }
+
+        CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(imageFile, folderPath);
+        DishImage dishImage = DishImage.builder()
+                .publicId(cloudinaryFile.getPublicId())
+                .secureUrl(cloudinaryFile.getSecureUrl())
+                .build();
+        return dishImageRepository.save(dishImage);
     }
 
     @Transactional
@@ -103,11 +107,7 @@ public class MenuServiceImpl implements MenuService {
 
     private void deleteImage(DishImage existingImage) {
         if (existingImage == null) return;
-        try {
-            cloudinaryService.deleteFile(existingImage.getPublicId());
-        } catch (IOException e) {
-            log.error("Error deleting image with Public ID - {}: {}", existingImage.getPublicId(), e.getMessage(), e);
-        }
+        cloudinaryService.deleteFile(existingImage.getPublicId());
     }
 
     @Override

@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
                 .body(new ErrorResponseDto(HttpStatus.PAYLOAD_TOO_LARGE.value(), "File size exceeds the maximum allowed limit!"));
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+    }
 }
