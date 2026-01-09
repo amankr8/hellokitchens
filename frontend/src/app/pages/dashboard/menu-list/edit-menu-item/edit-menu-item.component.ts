@@ -53,8 +53,17 @@ export class EditMenuItemComponent {
   }
 
   toggleVeg() {
-    const current = this.itemForm.get('isVeg')?.value;
-    this.itemForm.patchValue({ isVeg: !current });
+    const currentValue = this.itemForm.get('isVeg')?.value;
+    this.itemForm.get('isVeg')?.setValue(!currentValue);
+    this.itemForm.markAsDirty();
+  }
+
+  removeImage(event: Event) {
+    event.stopPropagation();
+    this.imagePreview.set(null);
+    this.selectedFile = null;
+    this.itemForm.get('imageUrl')?.setValue('');
+    this.itemForm.markAsDirty();
   }
 
   ngOnInit() {
