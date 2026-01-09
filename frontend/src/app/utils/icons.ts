@@ -22,10 +22,11 @@ import {
   faImage,
   faList,
   faPlusCircle,
+  faClipboardList,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
-  menu: faList,
+  menu: faClipboardList,
   camera: faCamera,
   image: faImage,
   logo: faUtensils,

@@ -27,6 +27,11 @@ spring:
       host: ${REDIS_HOST:localhost}
       port: 6379
 
+  servlet:
+    multipart:
+      max-file-size: 2MB     # Maximum size of a single uploaded file
+      max-request-size: 10MB # Maximum size of a complete request (all files + form data)
+
   security:
     username: ${ADMIN_USERNAME:livemenu}
     password: ${ADMIN_PASSWORD:admin}
