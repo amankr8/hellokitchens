@@ -1,0 +1,27 @@
+<div
+  class="h-screen flex flex-col items-center justify-center bg-gray-50 p-6 text-center"
+>
+  <div
+    class="w-24 h-24 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-orange-100 animate-bounce"
+    style="animation-duration: 3s"
+  >
+    <fa-icon [icon]="icons.error" class="text-4xl"></fa-icon>
+  </div>
+  <h1 class="text-6xl font-black text-gray-900 mb-2">404</h1>
+  <p class="text-xl font-bold text-gray-800 mb-6">
+    Oops! This dish isn't on our menu.
+  </p>
+  <p class="text-gray-400 max-w-sm mb-10 font-medium">
+    The page you're looking for doesn't exist or has been moved.
+  </p>
+  <button
+    (click)="goBack()"
+    class="px-10 py-4 bg-gray-900 text-white font-black rounded-2xl transition-all duration-300 flex items-center gap-3 group hover:bg-orange-600 hover:-translate-y-1 hover:shadow-2xl hover:shadow-orange-200 active:scale-95 shadow-xl shadow-gray-200"
+  >
+    <fa-icon
+      [icon]="icons.back"
+      class="transition-transform group-hover:-translate-x-1"
+    ></fa-icon>
+    <span>Go Back to Previous Page</span>
+  </button>
+</div>
