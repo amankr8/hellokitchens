@@ -53,8 +53,8 @@ export class EditMenuItemComponent {
   }
 
   toggleVeg() {
-    const currentValue = this.itemForm.get('isVeg')?.value;
-    this.itemForm.get('isVeg')?.setValue(!currentValue);
+    const current = this.itemForm.get('isVeg')?.value;
+    this.itemForm.patchValue({ isVeg: !current });
     this.itemForm.markAsDirty();
   }
 

@@ -42,6 +42,8 @@ export class AddMenuItemComponent {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+      this.itemForm.markAsDirty();
+
       const reader = new FileReader();
       reader.onload = () => this.imagePreview.set(reader.result as string);
       reader.readAsDataURL(file);
@@ -51,6 +53,7 @@ export class AddMenuItemComponent {
   toggleVeg() {
     const current = this.itemForm.get('isVeg')?.value;
     this.itemForm.patchValue({ isVeg: !current });
+    this.itemForm.markAsDirty();
   }
 
   removeImage(event: Event) {
