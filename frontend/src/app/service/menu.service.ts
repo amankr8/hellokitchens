@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { MenuItem } from '../model/menu-item';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -57,8 +57,6 @@ export class MenuService {
   }
 
   updateMenuItem(itemId: number, formData: FormData): Observable<MenuItem> {
-    this._error.set(null);
-
     return this.http
       .put<MenuItem>(`${this.apiUrl}/${itemId}`, formData)
       .pipe(
@@ -72,25 +70,24 @@ export class MenuService {
   }
 
   toggleAvailability(itemId: number): Observable<void> {
-    this._error.set(null);
+    // Optimistic update and rollback on failure
+    const previousItems = this._menuItems();
+    this._menuItems.update(
+      (items) =>
+        items?.map((i) =>
+          i.id === itemId ? { ...i, inStock: !i.inStock } : i
+        ) ?? null
+    );
 
-    return this.http
-      .patch<void>(`${this.apiUrl}/${itemId}`, null)
-      .pipe(
-        tap(() =>
-          this._menuItems.update(
-            (items) =>
-              items?.map((i) =>
-                i.id === itemId ? { ...i, inStock: !i.inStock } : i
-              ) ?? null
-          )
-        )
-      );
+    return this.http.patch<void>(`${this.apiUrl}/${itemId}`, null).pipe(
+      catchError((err) => {
+        this._menuItems.set(previousItems);
+        return throwError(() => err);
+      })
+    );
   }
 
   deleteItem(id: number): Observable<void> {
-    this._error.set(null);
-
     return this.http
       .delete<void>(`${this.apiUrl}/${id}`)
       .pipe(
