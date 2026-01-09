@@ -6,6 +6,7 @@ import { authGuard } from './guard/auth.guard';
 import { KitchenComponent } from './pages/dashboard/kitchen/kitchen.component';
 import { MenuListComponent } from './pages/dashboard/menu-list/menu-list.component';
 import { AddMenuItemComponent } from './pages/dashboard/menu-list/add-menu-item/add-menu-item.component';
+import { EditMenuItemComponent } from './pages/dashboard/menu-list/edit-menu-item/edit-menu-item.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -20,8 +21,9 @@ export const routes: Routes = [
       {
         path: 'menu',
         children: [
-          { path: '', component: MenuListComponent }, // dashboard/menu
-          { path: 'add-new-item', component: AddMenuItemComponent },
+          { path: '', component: MenuListComponent },
+          { path: 'add', component: AddMenuItemComponent },
+          { path: 'edit/:id', component: EditMenuItemComponent },
         ],
       },
     ],

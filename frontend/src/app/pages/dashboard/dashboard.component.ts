@@ -48,13 +48,15 @@ export class DashboardComponent {
       cancelText: 'Stay Logged In',
       action: () => {
         this.authService.logout();
+        this.uiService.showToast('Logged out successfully!');
       },
     });
   }
 
   getPageRouteName(): string {
     const url = this.router.url;
-    if (url.includes('/add-new-item')) return 'Add New Item';
+    if (url.includes('/menu/add')) return 'Add New Item';
+    if (url.includes('/menu/edit')) return 'Edit Menu Item';
     if (url.includes('/menu')) return 'Menu Items';
     if (url.includes('/kitchen')) return 'Kitchen Profile';
     return 'Welcome';
@@ -66,8 +68,10 @@ export class DashboardComponent {
 
     if (url.includes('/menu')) {
       crumbs.push('Menu Items');
-      if (url.includes('/add-new-item')) {
+      if (url.includes('/add')) {
         crumbs.push('Add New Item');
+      } else if (url.includes('/edit')) {
+        crumbs.push('Edit Item');
       }
     } else if (url.includes('/kitchen')) {
       crumbs.push('Kitchen Profile');

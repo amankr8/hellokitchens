@@ -56,11 +56,11 @@ export class MenuService {
       );
   }
 
-  updateMenuItem(itemId: number, item: MenuItem): Observable<MenuItem> {
+  updateMenuItem(itemId: number, formData: FormData): Observable<MenuItem> {
     this._error.set(null);
 
     return this.http
-      .put<MenuItem>(`${this.apiUrl}/${itemId}`, item)
+      .put<MenuItem>(`${this.apiUrl}/${itemId}`, formData)
       .pipe(
         tap((updated) =>
           this._menuItems.update(
