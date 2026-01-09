@@ -53,6 +53,14 @@ export class AddMenuItemComponent {
     this.itemForm.patchValue({ isVeg: !current });
   }
 
+  removeImage(event: Event) {
+    event.stopPropagation();
+    this.imagePreview.set(null);
+    this.selectedFile = null;
+    this.itemForm.get('imageUrl')?.setValue('');
+    this.itemForm.markAsDirty();
+  }
+
   onSubmit() {
     if (this.itemForm.valid) {
       this.saving.set(true);
