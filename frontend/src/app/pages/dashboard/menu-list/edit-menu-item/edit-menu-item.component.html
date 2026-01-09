@@ -21,26 +21,43 @@
     class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8 md:p-12"
   >
     <form [formGroup]="itemForm" (ngSubmit)="onUpdate()" class="space-y-8">
-      <div class="flex flex-col items-center sm:items-start gap-4">
+      <div class="space-y-4 border-b border-gray-50">
         <label
-          class="text-xs font-black uppercase tracking-widest text-gray-400"
-          >Dish Image</label
+          class="text-xs font-black uppercase tracking-widest text-gray-400 block ml-1"
         >
+          Dish Image
+        </label>
 
-        <div class="relative group cursor-pointer" (click)="fileInput.click()">
+        <div
+          class="flex flex-col md:flex-row items-center md:items-stretch gap-6"
+        >
           <div
-            class="w-32 h-32 rounded-3xl bg-gray-100 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center transition-all group-hover:border-orange-300"
+            class="relative group cursor-pointer flex-shrink-0"
+            (click)="fileInput.click()"
           >
-            <img
-              *ngIf="imagePreview()"
-              [src]="imagePreview()"
-              class="w-full h-full object-cover"
-            />
-            <fa-icon
-              *ngIf="!imagePreview()"
-              [icon]="icons.image"
-              class="text-2xl text-gray-300"
-            ></fa-icon>
+            <div
+              class="w-32 h-32 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center transition-all group-hover:border-orange-300"
+            >
+              <img
+                *ngIf="imagePreview()"
+                [src]="imagePreview()"
+                class="w-full h-full object-cover"
+              />
+              <fa-icon
+                *ngIf="!imagePreview()"
+                [icon]="icons.image"
+                class="text-2xl text-gray-300"
+              ></fa-icon>
+
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+              >
+                <fa-icon
+                  [icon]="icons.camera"
+                  class="text-white text-xl"
+                ></fa-icon>
+              </div>
+            </div>
 
             <button
               *ngIf="imagePreview()"
@@ -51,27 +68,49 @@
               <fa-icon [icon]="icons.trashCan" class="text-xs"></fa-icon>
             </button>
 
-            <div
-              class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
-            >
-              <fa-icon
-                [icon]="icons.camera"
-                class="text-white text-xl"
-              ></fa-icon>
-            </div>
+            <input
+              #fileInput
+              type="file"
+              (change)="onFileSelected($event)"
+              accept="image/jpeg, image/png"
+              class="hidden"
+            />
           </div>
 
-          <input
-            #fileInput
-            type="file"
-            (change)="onFileSelected($event)"
-            accept="image/*"
-            class="hidden"
-          />
+          <div
+            class="flex-1 p-4 bg-orange-50/50 rounded-2xl border border-orange-100/50 flex flex-col justify-center"
+          >
+            <p
+              class="text-[11px] text-orange-700 font-black uppercase tracking-wider flex items-center gap-2 mb-2"
+            >
+              <fa-icon [icon]="icons.infoCircled"></fa-icon>
+              <span>Requirements</span>
+            </p>
+            <ul class="text-[10px] text-gray-500 font-medium space-y-1.5 ml-1">
+              <li class="flex items-center gap-2">
+                <div class="w-1 h-1 bg-orange-400 rounded-full"></div>
+                Max size: <b class="text-gray-700">5MB</b>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="w-1 h-1 bg-orange-400 rounded-full"></div>
+                Formats: <b class="text-gray-700">JPG, PNG</b>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="w-1 h-1 bg-orange-400 rounded-full"></div>
+                Ratio: <b class="text-gray-700">Square (1:1)</b>
+              </li>
+            </ul>
+          </div>
         </div>
-        <p class="text-[10px] text-gray-400 italic">
-          Click to change the dish photo
-        </p>
+
+        <div class="pt-2">
+          <h4 class="text-sm font-bold text-gray-900 mb-1">
+            Click to change Dish Photo
+          </h4>
+          <p class="text-[11px] text-gray-400 italic leading-relaxed">
+            Showcase your specialty with a clear, appetizing photo.
+          </p>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
