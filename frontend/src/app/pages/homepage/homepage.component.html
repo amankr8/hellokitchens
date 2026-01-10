@@ -87,3 +87,10 @@
     class="w-full h-full object-cover rounded-full border-2 border-orange-500 shadow-lg"
   />
 </div>
+
+<app-otp-login
+  *ngIf="showLoginModal()"
+  (close)="showLoginModal.set(false)"
+  (success)="onLoginSuccess()"
+>
+</app-otp-login>

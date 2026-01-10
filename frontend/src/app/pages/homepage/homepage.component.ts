@@ -13,10 +13,11 @@ import { CartService } from '../../service/cart.service';
 import { KitchenService } from '../../service/kitchen.service';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
+import { OtpLoginComponent } from './otp-login/otp-login.component';
 
 @Component({
   selector: 'app-homepage',
-  imports: [MenuComponent, CommonModule, FontAwesomeModule],
+  imports: [MenuComponent, CommonModule, FontAwesomeModule, OtpLoginComponent],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',
 })
