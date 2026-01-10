@@ -62,7 +62,7 @@ public class MenuServiceImpl implements MenuService {
             validateImage(menuItemRequestDto.getImage());
             DishImage dishImage = saveImage(menuItemRequestDto.getImage(), getFolderPathForMenuItem(kitchen.getId()));
             dishImage.setMenuItem(menuItem);
-            dishImageRepository.save(dishImage);
+            menuItem.setDishImage(dishImageRepository.save(dishImage));
         }
 
         return menuItem;
