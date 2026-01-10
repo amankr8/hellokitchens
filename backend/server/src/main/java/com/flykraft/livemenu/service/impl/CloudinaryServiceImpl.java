@@ -18,22 +18,10 @@ import java.util.Map;
 public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
 
-    private Map<?, ?> getUploadParams(String folderPath) {
-        return ObjectUtils.asMap(
-                "folder", folderPath,
-                "resource_type", "image",
-                "quality", "auto",
-                "fetch_format", "auto",
-                "width", 1024,
-                "height", 1024,
-                "crop", "limit"
-        );
-    }
-
     @Override
-    public CloudinaryFile uploadFile(MultipartFile file, String folderPath) {
+    public CloudinaryFile uploadFile(CloudinaryFile cloudinaryFile, MultipartFile file, String folderPath) {
         try {
-            Map<?, ?> params = getUploadParams(folderPath);
+            Map<?, ?> params = cloudinaryFile.getUploadParams(folderPath);
             Map<?, ?> result = cloudinary.uploader().upload(file.getBytes(), params);
             return CloudinaryFile.builder()
                     .publicId(result.get("public_id").toString())

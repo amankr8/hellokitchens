@@ -77,7 +77,7 @@ public class MenuServiceImpl implements MenuService {
     private DishImage saveImage(MultipartFile imageFile, String folderPath) {
         if  (imageFile == null || imageFile.isEmpty()) return null;
 
-        CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(imageFile, folderPath);
+        CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(new DishImage(), imageFile, folderPath);
         DishImage dishImage = DishImage.builder()
                 .publicId(cloudinaryFile.getPublicId())
                 .secureUrl(cloudinaryFile.getSecureUrl())
