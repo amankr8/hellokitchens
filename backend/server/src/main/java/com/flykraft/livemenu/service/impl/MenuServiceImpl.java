@@ -59,7 +59,6 @@ public class MenuServiceImpl implements MenuService {
         menuItem = menuItemRepository.save(menuItem);
 
         if (menuItemRequestDto.getImage() != null) {
-            validateImage(menuItemRequestDto.getImage());
             DishImage dishImage = saveImage(menuItemRequestDto.getImage(), getFolderPathForMenuItem(kitchen.getId()));
             dishImage.setMenuItem(menuItem);
             menuItem.setDishImage(dishImageRepository.save(dishImage));
@@ -77,6 +76,7 @@ public class MenuServiceImpl implements MenuService {
     private DishImage saveImage(MultipartFile imageFile, String folderPath) {
         if  (imageFile == null || imageFile.isEmpty()) return null;
 
+        validateImage(imageFile);
         CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(new DishImage(), imageFile, folderPath);
         return DishImage.builder()
                 .publicId(cloudinaryFile.getPublicId())
@@ -88,11 +88,12 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuItem updateMenuItem(Long menuItemId, MenuItemRequestDto menuItemRequestDto) {
         MenuItem selectedMenuItem = loadMenuItemById(menuItemId);
-        if (menuItemRequestDto.getImage() != null && menuItemRequestDto.getImage().isEmpty()) {
+        if (menuItemRequestDto.getImage() != null && !menuItemRequestDto.getImage().isEmpty()) {
             DishImage existingImage = selectedMenuItem.getDishImage();
             String folderPath = getFolderPathForMenuItem(selectedMenuItem.getKitchen().getId());
             DishImage dishImage = saveImage(menuItemRequestDto.getImage(), folderPath);
-            selectedMenuItem.setDishImage(dishImage);
+            dishImage.setMenuItem(selectedMenuItem);
+            selectedMenuItem.setDishImage(dishImageRepository.save(dishImage));
             deleteImage(existingImage);
         }
         selectedMenuItem.setName(menuItemRequestDto.getName());
