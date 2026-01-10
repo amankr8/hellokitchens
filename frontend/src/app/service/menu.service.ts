@@ -25,6 +25,15 @@ export class MenuService {
   // --------------------
   loadMenuItems(): void {
     if (this._menuItems() !== null || this._loading()) return;
+    this.fetchMenuItems();
+  }
+
+  refreshMenuItems(): void {
+    this.fetchMenuItems();
+  }
+
+  private fetchMenuItems(): void {
+    if (this._loading()) return;
 
     this._loading.set(true);
     this._error.set(null);
@@ -47,13 +56,19 @@ export class MenuService {
   addMenuItem(formData: FormData): Observable<MenuItem> {
     this._error.set(null);
 
-    return this.http
-      .post<MenuItem>(this.apiUrl, formData)
-      .pipe(
-        tap((item) =>
-          this._menuItems.update((items) => (items ? [...items, item] : [item]))
-        )
-      );
+    return this.http.post<MenuItem>(this.apiUrl, formData).pipe(
+      tap((item) => {
+        if (this._menuItems() === null) {
+          this.refreshMenuItems();
+        } else {
+          this.appendMenuItem(item);
+        }
+      })
+    );
+  }
+
+  private appendMenuItem(item: MenuItem): void {
+    this._menuItems.update((items) => [...items!, item]);
   }
 
   updateMenuItem(itemId: number, formData: FormData): Observable<MenuItem> {
