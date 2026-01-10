@@ -56,7 +56,10 @@ export class MenuListComponent {
         this.menuService.deleteItem(item.id).subscribe({
           next: () => this.uiService.showToast('Item deleted successfully'),
           error: () =>
-            this.uiService.showToast('Failed to delete item', 'error'),
+            this.uiService.showToast(
+              'Failed to delete item. Please try again later',
+              'error'
+            ),
         });
       },
     });

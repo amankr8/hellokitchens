@@ -72,26 +72,28 @@ export class MenuService {
   }
 
   updateMenuItem(itemId: number, formData: FormData): Observable<MenuItem> {
-    return this.http
-      .put<MenuItem>(`${this.apiUrl}/${itemId}`, formData)
-      .pipe(
-        tap((updated) =>
-          this._menuItems.update(
-            (items) =>
-              items?.map((i) => (i.id === updated.id ? updated : i)) ?? null
-          )
-        )
-      );
+    return this.http.put<MenuItem>(`${this.apiUrl}/${itemId}`, formData).pipe(
+      tap((updated) => {
+        if (this._menuItems() === null) {
+          this.refreshMenuItems();
+        } else {
+          this.replaceMenuItem(updated);
+        }
+      })
+    );
+  }
+
+  private replaceMenuItem(updated: MenuItem): void {
+    this._menuItems.update((items) =>
+      items!.map((i) => (i.id === updated.id ? updated : i))
+    );
   }
 
   toggleAvailability(itemId: number): Observable<void> {
     // Optimistic update and rollback on failure
     const previousItems = this._menuItems();
-    this._menuItems.update(
-      (items) =>
-        items?.map((i) =>
-          i.id === itemId ? { ...i, inStock: !i.inStock } : i
-        ) ?? null
+    this._menuItems.update((items) =>
+      items!.map((i) => (i.id === itemId ? { ...i, inStock: !i.inStock } : i))
     );
 
     return this.http.patch<void>(`${this.apiUrl}/${itemId}`, null).pipe(
@@ -103,15 +105,16 @@ export class MenuService {
   }
 
   deleteItem(id: number): Observable<void> {
-    return this.http
-      .delete<void>(`${this.apiUrl}/${id}`)
-      .pipe(
-        tap(() =>
-          this._menuItems.update(
-            (items) => items?.filter((i) => i.id !== id) ?? null
-          )
-        )
-      );
+    // Optimistic delete and rollback on failure
+    const previousItems = this._menuItems();
+    this._menuItems.update((items) => items!.filter((i) => i.id !== id));
+
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError((err) => {
+        this._menuItems.set(previousItems);
+        return throwError(() => err);
+      })
+    );
   }
 
   // --------------------
