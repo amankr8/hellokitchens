@@ -78,7 +78,6 @@ export class EditMenuItemComponent {
     event.stopPropagation();
     this.imagePreview.set(null);
     this.selectedFile = null;
-    this.itemForm.get('imageUrl')?.setValue('');
     this.itemForm.markAsDirty();
   }
 

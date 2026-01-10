@@ -76,7 +76,6 @@ export class AddMenuItemComponent {
     event.stopPropagation();
     this.imagePreview.set(null);
     this.selectedFile = null;
-    this.itemForm.get('imageUrl')?.setValue('');
     this.itemForm.markAsDirty();
   }
 
