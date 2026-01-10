@@ -89,7 +89,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuItem updateMenuItem(Long menuItemId, MenuItemRequestDto menuItemRequestDto) {
         MenuItem selectedMenuItem = loadMenuItemById(menuItemId);
-        if (menuItemRequestDto.getImage() != null) {
+        if (menuItemRequestDto.getImage() != null && menuItemRequestDto.getImage().isEmpty()) {
             DishImage existingImage = selectedMenuItem.getDishImage();
             String folderPath = getFolderPathForMenuItem(selectedMenuItem.getKitchen().getId());
             DishImage dishImage = saveImage(menuItemRequestDto.getImage(), folderPath);
