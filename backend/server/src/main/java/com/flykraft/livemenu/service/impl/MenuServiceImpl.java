@@ -15,6 +15,7 @@ import com.flykraft.livemenu.service.MenuService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,9 @@ public class MenuServiceImpl implements MenuService {
     private final CloudinaryService cloudinaryService;
 
     private static final List<String> ALLOWED_FILE_TYPES = List.of("image/jpeg", "image/png");
+
+    @Value("${spring.application.name}")
+    private String appName;
 
     @Override
     public List<MenuItem> loadAllMenuItems() {
@@ -126,6 +130,6 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private String getFolderPathForMenuItem(Long kitchenId) {
-        return "kitchens/" + kitchenId;
+        return appName + "/kitchens/" + kitchenId;
     }
 }
