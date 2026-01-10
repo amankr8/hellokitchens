@@ -78,11 +78,10 @@ public class MenuServiceImpl implements MenuService {
         if  (imageFile == null || imageFile.isEmpty()) return null;
 
         CloudinaryFile cloudinaryFile = cloudinaryService.uploadFile(new DishImage(), imageFile, folderPath);
-        DishImage dishImage = DishImage.builder()
+        return DishImage.builder()
                 .publicId(cloudinaryFile.getPublicId())
                 .secureUrl(cloudinaryFile.getSecureUrl())
                 .build();
-        return dishImageRepository.save(dishImage);
     }
 
     @Transactional
