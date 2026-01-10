@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { UserRole } from '../enum/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +20,19 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  public isAuthenticated(): boolean {
+  isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
-  public getDecodedToken() {
+  getDecodedToken() {
     const token = localStorage.getItem('token');
     return token ? this.jwtHelper.decodeToken(token) : null;
+  }
+
+  hasRole(role: UserRole) {
+    const decodedToken = this.getDecodedToken();
+    return role === decodedToken?.role;
   }
 
   login(credentials: { username: string; password: string }) {

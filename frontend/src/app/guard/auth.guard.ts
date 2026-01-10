@@ -3,17 +3,21 @@ import { AuthService } from '../service/auth.service';
 import { inject } from '@angular/core';
 import { UserRole } from '../enum/user-role.enum';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+export const authGuard =
+  (allowedRole: UserRole): CanActivateFn =>
+  () => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
-    const decodedToken = authService.getDecodedToken();
-    if (decodedToken?.role === UserRole.KITCHEN_OWNER) {
-      return true;
+    if (!authService.isAuthenticated()) {
+      router.navigate(['/login']);
+      return false;
     }
-  }
 
-  router.navigate(['/login']);
-  return false;
-};
+    if (!authService.hasRole(allowedRole)) {
+      router.navigate(['/not-found']);
+      return false;
+    }
+
+    return true;
+  };

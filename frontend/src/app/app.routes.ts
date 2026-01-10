@@ -8,6 +8,7 @@ import { MenuListComponent } from './pages/dashboard/menu-list/menu-list.compone
 import { AddMenuItemComponent } from './pages/dashboard/menu-list/add-menu-item/add-menu-item.component';
 import { EditMenuItemComponent } from './pages/dashboard/menu-list/edit-menu-item/edit-menu-item.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { UserRole } from './enum/user-role.enum';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -15,7 +16,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard(UserRole.KITCHEN_OWNER)],
     children: [
       { path: '', redirectTo: 'kitchen', pathMatch: 'full' },
       { path: 'kitchen', component: KitchenComponent },
