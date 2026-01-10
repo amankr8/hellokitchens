@@ -56,7 +56,7 @@ export class AddMenuItemComponent {
 
   isImageValid(file: File): boolean {
     if (file.size > MAX_FILE_SIZE) {
-      this.uiService.showToast('File size is greater than 2MB', 'error');
+      this.uiService.showToast('File size is greater than 5MB', 'error');
       return false;
     }
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
