@@ -9,7 +9,7 @@ public interface JwtService {
 
     String extractUsername(String token);
 
-    Long extractKitchenId(String token);
+    Long extractClaim(String token, String claim);
 
     String generateToken(AuthUser authUser);
 

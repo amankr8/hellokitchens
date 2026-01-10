@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flykraft.livemenu.config.TenantContext;
 import com.flykraft.livemenu.dto.ErrorResponseDto;
 import com.flykraft.livemenu.service.JwtService;
+import com.flykraft.livemenu.util.JwtConstants;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -64,7 +65,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String jwtToken = authHeader.substring(7);
             String username = jwtService.extractUsername(jwtToken);
-            Long kitchenIdFromJwt = jwtService.extractKitchenId(jwtToken);
+            Long kitchenIdFromJwt = jwtService.extractClaim(jwtToken, JwtConstants.KITCHEN_ID_CLAIM);
 
             if (kitchenIdFromJwt != null) {
                 TenantContext.setKitchenId(kitchenIdFromJwt);

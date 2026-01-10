@@ -4,6 +4,7 @@ import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.KitchenOwnerRepository;
 import com.flykraft.livemenu.service.JwtService;
+import com.flykraft.livemenu.util.JwtConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,16 +31,14 @@ public class JwtServiceImpl implements JwtService {
     @Value("${spring.security.jwt.expiration}")
     private Long JWT_EXPIRATION;
 
-    private final String KITCHEN_ID_CLAIM = "kitchenId";
-
     @Override
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
     @Override
-    public Long extractKitchenId(String token) {
-        return extractAllClaims(token).get(KITCHEN_ID_CLAIM, Long.class);
+    public Long extractClaim(String token, String claim) {
+        return extractAllClaims(token).get(claim, Long.class);
     }
 
     private Claims extractAllClaims(String token) {
@@ -73,9 +72,10 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String generateToken(AuthUser authUser) {
         Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put(JwtConstants.ROLE_CLAIM, authUser.getAuthority());
         if (authUser.getAuthority().equals(Authority.KITCHEN_OWNER)) {
             kitchenOwnerRepository.findByAuthUser(authUser).ifPresent(ko ->
-                    extraClaims.put(KITCHEN_ID_CLAIM, ko.getId())
+                    extraClaims.put(JwtConstants.KITCHEN_ID_CLAIM, ko.getId())
             );
         }
         return generateToken(extraClaims, authUser.getUsername());
