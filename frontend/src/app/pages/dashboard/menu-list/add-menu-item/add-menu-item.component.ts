@@ -74,6 +74,8 @@ export class AddMenuItemComponent {
 
   removeImage(event: Event) {
     event.stopPropagation();
+    if (this.saving()) return;
+
     this.imagePreview.set(null);
     this.selectedFile = null;
     this.itemForm.markAsDirty();
