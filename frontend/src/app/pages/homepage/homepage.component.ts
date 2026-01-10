@@ -1,10 +1,18 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../utils/icons';
 import { CartService } from '../../service/cart.service';
 import { KitchenService } from '../../service/kitchen.service';
+import { AuthService } from '../../service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -13,15 +21,19 @@ import { KitchenService } from '../../service/kitchen.service';
   styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
-  kitchenService = inject(KitchenService);
-  cartService = inject(CartService);
+  private kitchenService = inject(KitchenService);
+  private cartService = inject(CartService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   @ViewChild('cartButton') cartButton!: ElementRef;
 
   kitchen = this.kitchenService.kitchen;
+  showLoginModal = signal(false);
 
   displayedCount = 0;
   actualCartCount = 0;
+
   icons = Icons;
 
   flyX = 0;
@@ -76,5 +88,18 @@ export class HomepageComponent {
         this.isBadgePulsing = false;
       }, 300);
     }, 750);
+  }
+
+  onViewCart() {
+    if (this.authService.isUserLogin()) {
+      this.router.navigate(['/cart']);
+    } else {
+      this.showLoginModal.set(true);
+    }
+  }
+
+  onLoginSuccess() {
+    this.showLoginModal.set(false);
+    this.router.navigate(['/cart']);
   }
 }
