@@ -21,7 +21,12 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     private Map<?, ?> getUploadParams(String folderPath) {
         return ObjectUtils.asMap(
                 "folder", folderPath,
-                "resource_type", "auto"
+                "resource_type", "image",
+                "quality", "auto",
+                "fetch_format", "auto",
+                "width", 1024,
+                "height", 1024,
+                "crop", "limit"
         );
     }
 
