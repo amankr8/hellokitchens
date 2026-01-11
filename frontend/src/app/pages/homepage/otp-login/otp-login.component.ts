@@ -30,8 +30,8 @@ export class OtpLoginComponent {
   recaptchaVerifier: any;
   confirmationResult: ConfirmationResult | null = null;
 
-  close = output<void>();
   success = output<void>();
+  close = output<void>();
 
   ngOnInit() {
     this.setupRecaptcha();
