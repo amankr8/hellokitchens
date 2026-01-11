@@ -65,7 +65,7 @@ export class HomepageComponent {
 
     const rect = this.cartButton.nativeElement.getBoundingClientRect();
 
-    const targetX = rect.left + rect.width / 2 - 24; // subtract half ghost width
+    const targetX = rect.left + rect.width / 2 - 24;
     const targetY = rect.top + rect.height / 2 - 24;
 
     setTimeout(() => {
@@ -73,7 +73,7 @@ export class HomepageComponent {
       this.flyY = targetY;
       this.flyStyle = {
         opacity: '0',
-        transform: 'scale(0.2) rotate(720deg)', // Extra spin for flair!
+        transform: 'scale(0.2) rotate(720deg)',
         transition: 'all 0.8s cubic-bezier(0.42, 0, 0.58, 1)',
       };
     }, 10);
