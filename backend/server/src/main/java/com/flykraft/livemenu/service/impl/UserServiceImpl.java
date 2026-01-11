@@ -20,6 +20,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CustomerProfileRepository customerProfileRepository;
 
+    @Override
+    public User getUserDetails() {
+        AuthUser authUser = AuthUtil.getLoggedInUser();
+        return userRepository.findByAuthUser(authUser).orElseGet(User::new);
+    }
+
     @Transactional
     @Override
     public User addUserDetails(UserReqDto userReqDto) {

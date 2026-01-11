@@ -23,7 +23,7 @@ export class OtpLoginComponent {
 
   icons = Icons;
 
-  step = signal<'phone' | 'otp' | 'profile'>('phone');
+  step = signal<'phone' | 'otp'>('phone');
   loading = signal(false);
   error = signal<string | null>(null);
   countdown = signal(0);

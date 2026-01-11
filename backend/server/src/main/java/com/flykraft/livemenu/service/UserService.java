@@ -6,5 +6,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
     @PreAuthorize("hasAuthority('USER')")
+    User getUserDetails();
+
+    @PreAuthorize("hasAuthority('USER')")
     User addUserDetails(UserReqDto userReqDto);
 }
