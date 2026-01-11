@@ -65,6 +65,13 @@
   </div>
 </div>
 
+<app-otp-login
+  *ngIf="showLoginModal()"
+  (close)="showLoginModal.set(false)"
+  (success)="onLoginSuccess()"
+>
+</app-otp-login>
+
 <a
   [href]="'tel:+91' + kitchen()?.whatsapp"
   class="fixed bottom-6 right-6 z-[60] flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-2xl shadow-2xl shadow-green-200 hover:bg-green-600 transition-all active:scale-90 md:w-auto md:px-6 md:gap-3"
@@ -87,10 +94,3 @@
     class="w-full h-full object-cover rounded-full border-2 border-orange-500 shadow-lg"
   />
 </div>
-
-<app-otp-login
-  *ngIf="showLoginModal()"
-  (close)="showLoginModal.set(false)"
-  (success)="onLoginSuccess()"
->
-</app-otp-login>

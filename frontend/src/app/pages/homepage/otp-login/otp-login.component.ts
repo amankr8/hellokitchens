@@ -66,6 +66,7 @@ export class OtpLoginComponent {
 
   async sendOtp() {
     this.loading.set(true);
+    this.error.set(null);
     try {
       const formattedPhone = `+91${this.phoneNumber}`;
       this.confirmationResult = await signInWithPhoneNumber(
@@ -74,8 +75,9 @@ export class OtpLoginComponent {
         this.recaptchaVerifier
       );
       this.step.set('otp');
+      this.startTimer();
     } catch (error) {
-      console.error('SMS Send Error', error);
+      this.error.set('Failed to send SMS. Please try again.');
     } finally {
       this.loading.set(false);
     }
@@ -83,6 +85,7 @@ export class OtpLoginComponent {
 
   async verifyOtp() {
     this.loading.set(true);
+    this.error.set(null);
     try {
       const result = await this.confirmationResult?.confirm(this.otpValue);
       const firebaseToken = await result?.user.getIdToken();
@@ -94,7 +97,8 @@ export class OtpLoginComponent {
         });
       }
     } catch (error) {
-      console.error('Invalid OTP', error);
+      this.error.set('Invalid code. Please check and try again.');
+      this.otpValue = '';
     } finally {
       this.loading.set(false);
     }
