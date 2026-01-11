@@ -53,8 +53,7 @@ export class HomepageComponent {
       }
     });
     this.cartService.animate$.subscribe((data) => {
-      // this.startFlyAnimation(data);
-      this.pulseBadge();
+      this.startFlyAnimation(data);
     });
   }
 
