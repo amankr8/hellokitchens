@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   apiBaseUrl: 'https://livemenu-server.onrender.com',
   firebaseConfig: {
-    apiKey: 'AIzaSyAyXeRoekSZO0UvTVhu6wF8HhiU2DtaHqY',
+    apiKey: import.meta.env.NG_APP_FIREBASE_API_KEY,
     authDomain: 'livemenu-app.firebaseapp.com',
     projectId: 'livemenu-app',
     storageBucket: 'livemenu-app.firebasestorage.app',
