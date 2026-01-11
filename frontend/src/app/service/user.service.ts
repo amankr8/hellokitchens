@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { User } from 'firebase/auth';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root',

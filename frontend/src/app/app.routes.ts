@@ -9,9 +9,11 @@ import { AddMenuItemComponent } from './pages/dashboard/menu-list/add-menu-item/
 import { EditMenuItemComponent } from './pages/dashboard/menu-list/edit-menu-item/edit-menu-item.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { UserRole } from './enum/user-role.enum';
+import { CartComponent } from './pages/homepage/cart/cart.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
+  { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',

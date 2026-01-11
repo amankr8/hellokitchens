@@ -34,7 +34,7 @@ export class AuthService {
       )
       .pipe(
         tap((res) => {
-          // localStorage.setItem('token', res.token);
+          localStorage.setItem('token', res.token);
         })
       );
   }

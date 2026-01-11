@@ -20,13 +20,21 @@ import {
   faInfoCircle,
   faCamera,
   faImage,
-  faList,
   faPlusCircle,
   faClipboardList,
   faClose,
+  faLocation,
+  faCircle,
+  faArrowRight,
+  faReceipt,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  receipt: faReceipt,
+  arrowRight: faArrowRight,
+  location: faLocation,
+  circle: faCircle,
+  checkCircle: faCheckCircle,
   close: faClose,
   menu: faClipboardList,
   camera: faCamera,
