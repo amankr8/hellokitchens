@@ -17,7 +17,7 @@ import {
   templateUrl: './otp-login.component.html',
 })
 export class OtpLoginComponent {
-  // private auth = inject(Auth);
+  private auth = inject(Auth);
   private authService = inject(AuthService);
 
   icons = Icons;
@@ -38,30 +38,30 @@ export class OtpLoginComponent {
   }
 
   setupRecaptcha() {
-    // this.recaptchaVerifier = new RecaptchaVerifier(
-    //   this.auth,
-    //   'recaptcha-container',
-    //   {
-    //     size: 'invisible',
-    //   }
-    // );
+    this.recaptchaVerifier = new RecaptchaVerifier(
+      this.auth,
+      'recaptcha-container',
+      {
+        size: 'invisible',
+      }
+    );
   }
 
   async sendOtp() {
-    // this.loading.set(true);
-    // try {
-    //   const formattedPhone = `+91${this.phoneNumber}`;
-    //   this.confirmationResult = await signInWithPhoneNumber(
-    //     this.auth,
-    //     formattedPhone,
-    //     this.recaptchaVerifier
-    //   );
-    //   this.step.set('otp');
-    // } catch (error) {
-    //   console.error('SMS Send Error', error);
-    // } finally {
-    //   this.loading.set(false);
-    // }
+    this.loading.set(true);
+    try {
+      const formattedPhone = `+91${this.phoneNumber}`;
+      this.confirmationResult = await signInWithPhoneNumber(
+        this.auth,
+        formattedPhone,
+        this.recaptchaVerifier
+      );
+      this.step.set('otp');
+    } catch (error) {
+      console.error('SMS Send Error', error);
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async verifyOtp() {
