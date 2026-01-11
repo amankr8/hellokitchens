@@ -4,8 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+import java.util.List;
+
 @Getter
 @Setter
+@Builder
 public class UserResDto {
+    private Long id;
+    private String name;
+    private String phone;
+    private Long defaultAddressId;
+    private List<ProfileResDto> addresses;
 }

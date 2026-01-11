@@ -1,18 +1,18 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.config.TenantContext;
-import com.flykraft.livemenu.dto.customer.CustomerReqDto;
 import com.flykraft.livemenu.dto.order.OrderRequestDto;
+import com.flykraft.livemenu.dto.user.UserReqDto;
 import com.flykraft.livemenu.entity.*;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.model.OrderStatus;
-import com.flykraft.livemenu.repository.CustomerProfileRepository;
 import com.flykraft.livemenu.repository.UserRepository;
 import com.flykraft.livemenu.repository.OrderItemRepository;
 import com.flykraft.livemenu.repository.OrderRepository;
 import com.flykraft.livemenu.service.KitchenService;
 import com.flykraft.livemenu.service.MenuService;
 import com.flykraft.livemenu.service.OrderService;
+import com.flykraft.livemenu.service.UserService;
 import com.flykraft.livemenu.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +28,9 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
-    private final CustomerProfileRepository customerProfileRepository;
     private final KitchenService kitchenService;
     private final MenuService menuService;
+    private final UserService userService;
 
     @Override
     public List<Order> loadOrdersByKitchen(Long kitchenId) {
@@ -52,12 +52,22 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(OrderRequestDto orderRequestDto) {
         Kitchen kitchen = kitchenService.loadKitchenById(TenantContext.getKitchenId());
-        User user = userRepository.findByAuthUser(AuthUtil.getLoggedInUser())
-                .orElseGet(() -> registerLoggedInUser(orderRequestDto.getCustomerDetails()));
+        AuthUser authUser = AuthUtil.getLoggedInUser();
+
+        UserReqDto userReqDto = orderRequestDto.getUserDetails();
+        if (userReqDto.getPhone() == null || userReqDto.getPhone().isEmpty()) {
+            userReqDto.setPhone(authUser.getUsername());
+        }
+
+        User user = userRepository.findByAuthUser(authUser)
+                .orElseGet(() -> userService.addUserDetails(userReqDto));
 
         Order order = Order.builder()
                 .kitchen(kitchen)
                 .user(user)
+                .customerName(userReqDto.getName())
+                .customerPhone(userReqDto.getPhone())
+                .customerAddress(userReqDto.getAddress())
                 .status(OrderStatus.PENDING)
                 .totalPrice(BigDecimal.ZERO)
                 .build();
@@ -79,23 +89,6 @@ public class OrderServiceImpl implements OrderService {
         orderItemRepository.saveAll(orderItems);
         order.setTotalPrice(totalPrice);
         return order;
-    }
-
-    private User registerLoggedInUser(CustomerReqDto customerReqDto) {
-        User user = User.builder()
-                .authUser(AuthUtil.getLoggedInUser())
-                .name(customerReqDto.getName())
-                .build();
-        user = userRepository.save(user);
-        CustomerProfile customerProfile = CustomerProfile.builder()
-                .user(user)
-                .name(customerReqDto.getName())
-                .phone(customerReqDto.getPhone())
-                .address(customerReqDto.getAddress())
-                .build();
-        customerProfileRepository.save(customerProfile);
-        user.setDefaultProfileId(customerProfile.getId());
-        return user;
     }
 
     @Override

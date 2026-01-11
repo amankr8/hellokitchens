@@ -39,6 +39,15 @@ public class Order extends Auditable {
     @JoinColumn(name = "u_id")
     private User user;
 
+    @Column(name = "o_customer_name", nullable = false)
+    private String customerName;
+
+    @Column(name = "o_customer_phone", nullable = false)
+    private String customerPhone;
+
+    @Column(name = "o_customer_address", nullable = false)
+    private String customerAddress;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "o_status", nullable = false)
     private OrderStatus status;
@@ -53,7 +62,9 @@ public class Order extends Auditable {
         return OrderResponseDto.builder()
                 .id(this.id)
                 .kitchenId(this.kitchen.getId())
-                .customerDetails(this.user.toResponseDto())
+                .customerName(this.customerName)
+                .customerPhone(this.customerPhone)
+                .customerAddress(this.customerAddress)
                 .status(this.status)
                 .totalPrice(this.totalPrice)
                 .orderItems(this.orderItems.stream()

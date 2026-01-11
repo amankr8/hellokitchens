@@ -1,6 +1,6 @@
 package com.flykraft.livemenu.entity;
 
-import com.flykraft.livemenu.dto.customer.UserResDto;
+import com.flykraft.livemenu.dto.user.UserResDto;
 import com.flykraft.livemenu.model.Auditable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,6 +45,11 @@ public class User extends Auditable {
         return UserResDto.builder()
                 .id(this.id)
                 .name(this.name)
+                .phone(this.phone)
+                .addresses(customerProfiles.stream()
+                        .map(CustomerProfile::toResponseDto)
+                        .toList()
+                )
                 .build();
     }
 }

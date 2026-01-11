@@ -1,5 +1,6 @@
 package com.flykraft.livemenu.entity;
 
+import com.flykraft.livemenu.dto.user.ProfileResDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +29,10 @@ public class CustomerProfile {
 
     @Column(name = "cp_address", nullable = false)
     private String address;
+
+    public ProfileResDto toResponseDto() {
+        return ProfileResDto.builder()
+                .address(this.address)
+                .build();
+    }
 }

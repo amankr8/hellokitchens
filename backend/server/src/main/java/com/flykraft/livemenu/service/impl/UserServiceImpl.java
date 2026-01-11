@@ -25,12 +25,12 @@ public class UserServiceImpl implements UserService {
     public User addUserDetails(UserReqDto userReqDto) {
         AuthUser authUser = AuthUtil.getLoggedInUser();
         User user = User.builder()
-                .name(userReqDto.getFullName())
+                .name(userReqDto.getName())
                 .phone(authUser.getUsername())
                 .build();
         user = userRepository.save(user);
         CustomerProfile customerProfile = CustomerProfile.builder()
-                .name(userReqDto.getFullName())
+                .name(userReqDto.getName())
                 .phone(authUser.getUsername())
                 .address(userReqDto.getAddress())
                 .user(user)

@@ -1,4 +1,4 @@
-package com.flykraft.livemenu.dto.customer;
+package com.flykraft.livemenu.dto.user;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserResDto {
+public class ProfileResDto {
     private Long id;
-    private String name;
+    private String address;
 }

@@ -9,6 +9,7 @@ import { MenuItem } from '../model/menu-item';
 export class CartService {
   private cartItems: CartItem[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
+  cart$ = this.cartSubject.asObservable();
 
   private animateSubject = new Subject<{
     x: number;
@@ -16,7 +17,6 @@ export class CartService {
     imageUrl: string;
   }>();
   animate$ = this.animateSubject.asObservable();
-  cart$ = this.cartSubject.asObservable();
 
   triggerAnimation(x: number, y: number, imageUrl: string) {
     this.animateSubject.next({ x, y, imageUrl });
