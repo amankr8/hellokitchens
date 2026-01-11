@@ -1,6 +1,5 @@
 package com.flykraft.livemenu.service.impl;
 
-import com.flykraft.livemenu.dto.auth.AuthResponseDto;
 import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.model.Authority;
 import com.flykraft.livemenu.repository.AuthUserRepository;
@@ -20,8 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequiredArgsConstructor
 @Service
@@ -54,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public AuthResponseDto firebaseLogin(String firebaseToken) {
+    public String firebaseLogin(String firebaseToken) {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(firebaseToken);
             UserRecord userRecord = FirebaseAuth.getInstance().getUser(decodedToken.getUid());
@@ -63,28 +60,22 @@ public class AuthServiceImpl implements AuthService {
                 throw new IllegalArgumentException("Phone number not found in Firebase user record");
             }
 
-            AtomicBoolean isNew = new AtomicBoolean(false);
             AuthUser authUser = authUserRepository.findByUsername(phoneNumber)
                 .orElseGet(() -> {
-                    isNew.set(true);
                     AuthUser newUser = AuthUser.builder()
                         .username(phoneNumber)
                         .authority(Authority.USER)
                         .build();
                     return authUserRepository.save(newUser);
                 });
-            String token = jwtService.generateToken(authUser);
-            return AuthResponseDto.builder()
-                    .token(token)
-                    .isNew(isNew.get())
-                    .build();
+            return jwtService.generateToken(authUser);
         } catch (FirebaseAuthException e) {
             throw new IllegalArgumentException("Invalid Firebase token");
         }
     }
 
     @Override
-    public AuthResponseDto login(String username, String password) {
+    public String login(String username, String password) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -93,11 +84,7 @@ public class AuthServiceImpl implements AuthService {
                 )
             );
             AuthUser authUser = AuthUtil.getAuthUser(authentication);
-            String token = jwtService.generateToken(authUser);
-            return AuthResponseDto.builder()
-                    .token(token)
-                    .isNew(false)
-                    .build();
+            return jwtService.generateToken(authUser);
         } catch (AuthenticationException e) {
             throw new IllegalArgumentException("Invalid username or password");
         }

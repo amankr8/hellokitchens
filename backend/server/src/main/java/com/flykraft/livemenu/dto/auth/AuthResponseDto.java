@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 @Builder
 public class AuthResponseDto {
-    private Boolean isNew;
     private String token;
 }
