@@ -10,6 +10,7 @@ import {
   signInWithPhoneNumber,
   ConfirmationResult,
 } from '@angular/fire/auth';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-otp-login',
@@ -24,6 +25,10 @@ export class OtpLoginComponent {
 
   step = signal<'phone' | 'otp'>('phone');
   loading = signal(false);
+  error = signal<string | null>(null);
+  countdown = signal(0);
+  timerSubscription?: Subscription;
+
   phoneNumber = '';
   otpValue = '';
 
@@ -35,6 +40,18 @@ export class OtpLoginComponent {
 
   ngAfterViewInit() {
     this.setupRecaptcha();
+  }
+
+  startTimer() {
+    this.countdown.set(30);
+    this.timerSubscription?.unsubscribe();
+    this.timerSubscription = interval(1000).subscribe(() => {
+      if (this.countdown() > 0) {
+        this.countdown.update((v) => v - 1);
+      } else {
+        this.timerSubscription?.unsubscribe();
+      }
+    });
   }
 
   setupRecaptcha() {
@@ -81,5 +98,10 @@ export class OtpLoginComponent {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  ngOnDestroy() {
+    this.timerSubscription?.unsubscribe();
+    this.recaptchaVerifier?.clear();
   }
 }
