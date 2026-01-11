@@ -16,13 +16,11 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     public ResponseEntity<?> phoneLogin(String firebaseToken) {
-        String token = authService.firebaseLogin(firebaseToken);
-        return ResponseEntity.ok(AuthResponseDto.builder().token(token).build());
+        return ResponseEntity.ok(authService.firebaseLogin(firebaseToken));
     }
 
     @Override
     public ResponseEntity<?> login(AuthRequestDto authRequestDto) {
-        String token = authService.login(authRequestDto.getUsername(), authRequestDto.getPassword());
-        return ResponseEntity.ok(AuthResponseDto.builder().token(token).build());
+        return ResponseEntity.ok(authService.login(authRequestDto.getUsername(), authRequestDto.getPassword()));
     }
 }
