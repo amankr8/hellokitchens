@@ -33,7 +33,7 @@ export class OtpLoginComponent {
   success = output<void>();
   close = output<void>();
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.setupRecaptcha();
   }
 
