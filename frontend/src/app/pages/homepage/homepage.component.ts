@@ -53,7 +53,8 @@ export class HomepageComponent {
       }
     });
     this.cartService.animate$.subscribe((data) => {
-      this.startFlyAnimation(data);
+      // this.startFlyAnimation(data);
+      this.pulseBadge();
     });
   }
 
@@ -83,12 +84,16 @@ export class HomepageComponent {
     }, 800);
 
     setTimeout(() => {
-      this.displayedCount = this.actualCartCount;
-      this.isBadgePulsing = true;
-      setTimeout(() => {
-        this.isBadgePulsing = false;
-      }, 300);
+      this.pulseBadge();
     }, 750);
+  }
+
+  pulseBadge() {
+    this.displayedCount = this.actualCartCount;
+    this.isBadgePulsing = true;
+    setTimeout(() => {
+      this.isBadgePulsing = false;
+    }, 300);
   }
 
   onViewCart() {
