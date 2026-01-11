@@ -11,10 +11,10 @@ import com.flykraft.livemenu.repository.KitchenOwnerRepository;
 import com.flykraft.livemenu.service.AuthService;
 import com.flykraft.livemenu.service.KitchenService;
 import com.flykraft.livemenu.service.RegistrationService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,5 +47,4 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new RuntimeException("Error registering Kitchen: " + e.getMessage());
         }
     }
-
 }
