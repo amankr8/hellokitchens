@@ -59,6 +59,7 @@ export const Icons = {
   outOfStock: faTimesCircle,
   search: faSearch,
   spinner: faCircleNotch,
+  plus: faPlus,
   remove: faMinus,
   infoCircled: faInfoCircle,
 };
