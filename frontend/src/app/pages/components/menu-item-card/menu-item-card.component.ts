@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { MenuItem } from '../../../model/menu-item';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,23 +14,18 @@ import { CartService } from '../../../service/cart.service';
 export class MenuItemCardComponent {
   @Input() menuItem!: MenuItem;
   cartService = inject(CartService);
-  quantity = 0;
+
+  quantity = this.cartService.itemQuantity(this.menuItem?.id);
 
   defaultImage: string = 'images/dish.png';
 
   icons = Icons;
 
-  ngOnInit(): void {
-    this.cartService.cart$.subscribe(() => {
-      this.quantity = this.cartService.getItemQuantity(this.menuItem.id);
-    });
-  }
-
-  onIncrease(event: MouseEvent) {
+  onIncrease(event: MouseEvent): void {
     this.onAddClick(event);
   }
 
-  onDecrease() {
+  onDecrease(): void {
     this.cartService.removeFromCart(this.menuItem);
   }
 
@@ -42,7 +37,7 @@ export class MenuItemCardComponent {
     return this.menuItem.imageUrl || this.defaultImage;
   }
 
-  onAddClick(event: MouseEvent) {
+  onAddClick(event: MouseEvent): void {
     this.cartService.addToCart(this.menuItem);
     this.cartService.triggerAnimation(
       event.clientX,

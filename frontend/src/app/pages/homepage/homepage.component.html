@@ -36,10 +36,10 @@
           <span class="hidden sm:inline">My Cart</span>
 
           <span
-            [class.animate-badge-pulse]="isBadgePulsing"
+            [class.animate-badge-pulse]="isBadgePulsing()"
             class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white group-hover:bg-white group-hover:text-orange-600 transition-colors"
           >
-            {{ displayedCount }}
+            {{ displayedCount() }}
           </span>
         </button>
       </div>
@@ -83,14 +83,14 @@
 </a>
 
 <div
-  *ngIf="flyingItem"
-  [style.left.px]="flyX"
-  [style.top.px]="flyY"
+  *ngIf="flyingItem()"
+  [style.left.px]="flyX()"
+  [style.top.px]="flyY()"
   class="fixed w-12 h-12 z-[100] pointer-events-none transition-all duration-700 ease-in-out"
-  [ngStyle]="flyStyle"
+  [ngStyle]="flyStyle()"
 >
   <img
-    [src]="flyingItem.imageUrl"
+    [src]="flyingItem()?.imageUrl"
     class="w-full h-full object-cover rounded-full border-2 border-orange-500 shadow-lg"
   />
 </div>

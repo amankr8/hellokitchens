@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   ElementRef,
   inject,
   signal,
@@ -32,54 +33,75 @@ export class HomepageComponent {
   kitchen = this.kitchenService.kitchen;
   showLoginModal = signal(false);
 
-  displayedCount = 0;
-  actualCartCount = 0;
+  actualCartCount = this.cartService.totalCount;
+
+  displayedCount = signal(0);
+  isBadgePulsing = signal(false);
 
   icons = Icons;
 
-  flyX = 0;
-  flyY = 0;
-  flyingItem: any = null;
-  flyStyle = {};
-  isBadgePulsing = false;
+  defaultImage: string = 'images/dish.png';
 
-  ngOnInit(): void {
-    const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
-    document.title = kitchenName + ' - Home';
-    this.cartService.cart$.subscribe(() => {
-      this.actualCartCount = this.cartService.getTotalCount();
-      if (this.actualCartCount < this.displayedCount) {
-        this.displayedCount = this.actualCartCount;
+  flyingItem = signal<{
+    x: number;
+    y: number;
+    imageUrl: string;
+  } | null>(null);
+
+  flyX = signal(0);
+  flyY = signal(0);
+  flyStyle = signal<Record<string, string>>({});
+
+  constructor() {
+    effect(() => {
+      const actual = this.actualCartCount();
+      const displayed = this.displayedCount();
+
+      if (actual < displayed) {
+        this.displayedCount.set(actual);
       }
     });
-    this.cartService.animate$.subscribe((data) => {
-      this.startFlyAnimation(data);
+
+    effect(() => {
+      const data = this.cartService.animate();
+      if (data) {
+        this.startFlyAnimation(data);
+      }
+    });
+
+    effect(() => {
+      const name = this.kitchen()?.name ?? 'LiveMenu';
+      document.title = `${name} - Home`;
     });
   }
 
-  startFlyAnimation(data: any) {
-    this.flyingItem = data;
-    this.flyX = data.x;
-    this.flyY = data.y;
-    this.flyStyle = { opacity: '1', transform: 'scale(1)' };
+  ngOnInit() {
+    const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
+    document.title = kitchenName + ' - Home';
+  }
+
+  private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {
+    this.flyingItem.set(data);
+    this.flyX.set(data.x);
+    this.flyY.set(data.y);
+    this.flyStyle.set({ opacity: '1', transform: 'scale(1)' });
 
     const rect = this.cartButton.nativeElement.getBoundingClientRect();
-
     const targetX = rect.left + rect.width / 2 - 24;
     const targetY = rect.top + rect.height / 2 - 24;
 
     setTimeout(() => {
-      this.flyX = targetX;
-      this.flyY = targetY;
-      this.flyStyle = {
+      this.flyX.set(targetX);
+      this.flyY.set(targetY);
+      this.flyStyle.set({
         opacity: '0',
         transform: 'scale(0.2) rotate(720deg)',
         transition: 'all 0.8s cubic-bezier(0.42, 0, 0.58, 1)',
-      };
+      });
     }, 10);
 
     setTimeout(() => {
-      this.flyingItem = null;
+      this.flyingItem.set(null);
     }, 800);
 
     setTimeout(() => {
@@ -87,15 +109,16 @@ export class HomepageComponent {
     }, 750);
   }
 
-  pulseBadge() {
-    this.displayedCount = this.actualCartCount;
-    this.isBadgePulsing = true;
+  private pulseBadge() {
+    this.displayedCount.set(this.actualCartCount());
+    this.isBadgePulsing.set(true);
+
     setTimeout(() => {
-      this.isBadgePulsing = false;
+      this.isBadgePulsing.set(false);
     }, 300);
   }
 
-  onViewCart() {
+  onViewCart(): void {
     if (this.authService.isUserLogin()) {
       this.router.navigate(['/cart']);
     } else {
@@ -103,7 +126,7 @@ export class HomepageComponent {
     }
   }
 
-  onLoginSuccess() {
+  onLoginSuccess(): void {
     this.showLoginModal.set(false);
     this.router.navigate(['/cart']);
   }

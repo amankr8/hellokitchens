@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { CartItem } from '../model/cart-item';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MenuItem } from '../model/menu-item';
@@ -7,58 +7,66 @@ import { MenuItem } from '../model/menu-item';
   providedIn: 'root',
 })
 export class CartService {
-  private cartItems: CartItem[] = [];
-  private cartSubject = new BehaviorSubject<CartItem[]>([]);
-  cart$ = this.cartSubject.asObservable();
+  private readonly _cartItems = signal<CartItem[]>([]);
+  readonly cartItems = this._cartItems.asReadonly();
 
-  private animateSubject = new Subject<{
+  itemQuantity(itemId: number) {
+    return computed(
+      () =>
+        this._cartItems().find((i) => i.menuItem.id === itemId)?.quantity ?? 0
+    );
+  }
+
+  readonly totalCount = computed(() =>
+    this._cartItems().reduce((acc, item) => acc + item.quantity, 0)
+  );
+
+  readonly isEmpty = computed(() => this._cartItems().length === 0);
+
+  private readonly _animate = signal<{
     x: number;
     y: number;
     imageUrl: string;
-  }>();
-  animate$ = this.animateSubject.asObservable();
+  } | null>(null);
+
+  readonly animate = this._animate.asReadonly();
 
   triggerAnimation(x: number, y: number, imageUrl: string) {
-    this.animateSubject.next({ x, y, imageUrl });
+    this._animate.set({ x, y, imageUrl });
+
+    queueMicrotask(() => this._animate.set(null));
   }
 
   addToCart(item: MenuItem) {
-    const existingItem = this.cartItems.find((i) => i.menuItem.id === item.id);
+    this._cartItems.update((items) => {
+      const existing = items.find((i) => i.menuItem.id === item.id);
 
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      this.cartItems.push({ menuItem: item, quantity: 1 });
-    }
+      if (existing) {
+        return items.map((i) =>
+          i.menuItem.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      }
 
-    this.cartSubject.next([...this.cartItems]);
-  }
-
-  getTotalCount(): number {
-    return this.cartItems.reduce((acc, item) => acc + item.quantity, 0);
+      return [...items, { menuItem: item, quantity: 1 }];
+    });
   }
 
   removeFromCart(item: MenuItem) {
-    const existingItem = this.cartItems.find((i) => i.menuItem.id === item.id);
-    if (existingItem) {
-      if (existingItem.quantity > 1) {
-        existingItem.quantity -= 1;
-      } else {
-        this.cartItems = this.cartItems.filter(
-          (i) => i.menuItem.id !== item.id
+    this._cartItems.update((items) => {
+      const existing = items.find((i) => i.menuItem.id === item.id);
+      if (!existing) return items;
+
+      if (existing.quantity > 1) {
+        return items.map((i) =>
+          i.menuItem.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
         );
       }
-    }
-    this.cartSubject.next([...this.cartItems]);
+
+      return items.filter((i) => i.menuItem.id !== item.id);
+    });
   }
 
-  getItemQuantity(itemId: number): number {
-    const item = this.cartItems.find((i) => i.menuItem.id === itemId);
-    return item ? item.quantity : 0;
-  }
-
-  clearCart() {
-    this.cartItems = [];
-    this.cartSubject.next([]);
+  clearCart(): void {
+    this._cartItems.set([]);
   }
 }
