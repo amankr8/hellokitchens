@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { CartItem } from '../model/cart-item';
 import { MenuItem } from '../model/menu-item';
 
@@ -6,7 +6,18 @@ import { MenuItem } from '../model/menu-item';
   providedIn: 'root',
 })
 export class CartService {
-  private readonly _cartItems = signal<CartItem[]>([]);
+  STORAGE_KEY = 'cart';
+
+  private loadFromStorage(): CartItem[] {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as CartItem[]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private readonly _cartItems = signal<CartItem[]>(this.loadFromStorage());
   readonly cartItems = this._cartItems.asReadonly();
 
   readonly totalCount = computed(() =>
@@ -22,6 +33,13 @@ export class CartService {
   } | null>(null);
 
   readonly animate = this._animate.asReadonly();
+
+  constructor() {
+    effect(() => {
+      const items = this._cartItems();
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+    });
+  }
 
   triggerAnimation(x: number, y: number, imageUrl: string) {
     this._animate.set({ x, y, imageUrl });

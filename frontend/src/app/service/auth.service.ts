@@ -10,6 +10,8 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
+  STORAGE_KEY = 'token';
+
   private jwtHelper = inject(JwtHelperService);
   private router = inject(Router);
   private http = inject(HttpClient);
@@ -21,7 +23,7 @@ export class AuthService {
       .post<{ token: string }>(`${this.apiUrl}/login`, credentials)
       .pipe(
         tap((res) => {
-          localStorage.setItem('token', res.token);
+          localStorage.setItem(this.STORAGE_KEY, res.token);
         })
       );
   }
@@ -34,23 +36,23 @@ export class AuthService {
       )
       .pipe(
         tap((res) => {
-          localStorage.setItem('token', res.token);
+          localStorage.setItem(this.STORAGE_KEY, res.token);
         })
       );
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem(this.STORAGE_KEY);
     this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(this.STORAGE_KEY);
     return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
   getDecodedToken() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(this.STORAGE_KEY);
     return token ? this.jwtHelper.decodeToken(token) : null;
   }
 
