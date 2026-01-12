@@ -15,7 +15,9 @@ export class MenuItemCardComponent {
   @Input() menuItem!: MenuItem;
   cartService = inject(CartService);
 
-  quantity = this.cartService.itemQuantity(this.menuItem?.id);
+  quantity = computed(() =>
+    this.cartService.getItemQuantity(this.menuItem?.id)
+  );
 
   defaultImage: string = 'images/dish.png';
 

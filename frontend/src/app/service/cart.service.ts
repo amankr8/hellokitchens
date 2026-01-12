@@ -1,6 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { CartItem } from '../model/cart-item';
-import { BehaviorSubject, Subject } from 'rxjs';
 import { MenuItem } from '../model/menu-item';
 
 @Injectable({
@@ -9,13 +8,6 @@ import { MenuItem } from '../model/menu-item';
 export class CartService {
   private readonly _cartItems = signal<CartItem[]>([]);
   readonly cartItems = this._cartItems.asReadonly();
-
-  itemQuantity(itemId: number) {
-    return computed(
-      () =>
-        this._cartItems().find((i) => i.menuItem.id === itemId)?.quantity ?? 0
-    );
-  }
 
   readonly totalCount = computed(() =>
     this._cartItems().reduce((acc, item) => acc + item.quantity, 0)
@@ -33,11 +25,9 @@ export class CartService {
 
   triggerAnimation(x: number, y: number, imageUrl: string) {
     this._animate.set({ x, y, imageUrl });
-
-    queueMicrotask(() => this._animate.set(null));
   }
 
-  addToCart(item: MenuItem) {
+  addToCart(item: MenuItem): void {
     this._cartItems.update((items) => {
       const existing = items.find((i) => i.menuItem.id === item.id);
 
@@ -51,7 +41,7 @@ export class CartService {
     });
   }
 
-  removeFromCart(item: MenuItem) {
+  removeFromCart(item: MenuItem): void {
     this._cartItems.update((items) => {
       const existing = items.find((i) => i.menuItem.id === item.id);
       if (!existing) return items;
@@ -64,6 +54,12 @@ export class CartService {
 
       return items.filter((i) => i.menuItem.id !== item.id);
     });
+  }
+
+  getItemQuantity(itemId: number): number {
+    return (
+      this._cartItems().find((i) => i.menuItem.id === itemId)?.quantity ?? 0
+    );
   }
 
   clearCart(): void {
