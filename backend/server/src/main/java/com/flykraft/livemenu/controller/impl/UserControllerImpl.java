@@ -1,6 +1,7 @@
 package com.flykraft.livemenu.controller.impl;
 
 import com.flykraft.livemenu.controller.UserController;
+import com.flykraft.livemenu.dto.user.ProfileReqDto;
 import com.flykraft.livemenu.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,5 +15,10 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<?> getUserDetails() {
         return ResponseEntity.ok().body(userService.getUserDetails().toResponseDto());
+    }
+
+    @Override
+    public ResponseEntity<?> addProfileForUser(ProfileReqDto profileReqDto) {
+        return ResponseEntity.ok().body(userService.addProfileForUser(profileReqDto).toResponseDto());
     }
 }

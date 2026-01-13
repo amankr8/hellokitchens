@@ -1,9 +1,11 @@
 package com.flykraft.livemenu.service.impl;
 
+import com.flykraft.livemenu.dto.user.ProfileReqDto;
 import com.flykraft.livemenu.dto.user.UserReqDto;
 import com.flykraft.livemenu.entity.AuthUser;
 import com.flykraft.livemenu.entity.CustomerProfile;
 import com.flykraft.livemenu.entity.User;
+import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.repository.CustomerProfileRepository;
 import com.flykraft.livemenu.repository.UserRepository;
 import com.flykraft.livemenu.service.UserService;
@@ -21,9 +23,19 @@ public class UserServiceImpl implements UserService {
     private final CustomerProfileRepository customerProfileRepository;
 
     @Override
-    public User getUserDetails() {
+    public User loadCurrentUser() {
         AuthUser authUser = AuthUtil.getLoggedInUser();
-        return userRepository.findByAuthUser(authUser).orElseGet(User::new);
+        return userRepository.findByAuthUser(authUser)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Override
+    public User getUserDetails() {
+        try {
+            return loadCurrentUser();
+        } catch (ResourceNotFoundException e) {
+            return new User();
+        }
     }
 
     @Transactional
@@ -46,5 +58,24 @@ public class UserServiceImpl implements UserService {
         user.setDefaultProfileId(customerProfile.getId());
         user.setCustomerProfiles(List.of(customerProfile));
         return user;
+    }
+
+    @Transactional
+    @Override
+    public CustomerProfile addProfileForUser(ProfileReqDto profileReqDto) {
+        User user = loadCurrentUser();
+        CustomerProfile customerProfile = new CustomerProfile();
+        if (profileReqDto.getName() != null) {
+            customerProfile.setName(profileReqDto.getName());
+        } else {
+            customerProfile.setName(user.getName());
+        }
+        if (profileReqDto.getPhone() != null) {
+            customerProfile.setPhone(profileReqDto.getPhone());
+        } else {
+            customerProfile.setPhone(user.getPhone());
+        }
+        customerProfile.setAddress(profileReqDto.getAddress());
+        return customerProfileRepository.save(customerProfile);
     }
 }
