@@ -61,9 +61,14 @@
               formControlName="name"
               type="text"
               placeholder="e.g. John Doe"
-              class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20"
+              class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
+              [ngClass]="{
+                'ring-2 ring-red-500/20':
+                  userForm.get('name')?.invalid && userForm.get('name')?.touched
+              }"
             />
           </div>
+
           <div class="space-y-1">
             <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
               >Complete Address</label
@@ -72,7 +77,12 @@
               formControlName="address"
               placeholder="House No, Street, Landmark..."
               rows="3"
-              class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20"
+              class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all resize-none"
+              [ngClass]="{
+                'ring-2 ring-red-500/20':
+                  userForm.get('address')?.invalid &&
+                  userForm.get('address')?.touched
+              }"
             ></textarea>
           </div>
         </div>
@@ -271,13 +281,18 @@
     >
       <button
         (click)="placeOrder()"
-        [disabled]="
-          userForm.invalid || cartItems().length === 0 || isPlacingOrder()
-        "
+        [disabled]="isPlacingOrder() || cartItems().length === 0"
         class="w-full max-w-2xl mx-auto py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-orange-200/50 transition-all flex items-center justify-center gap-4 active:scale-95 disabled:bg-gray-200 disabled:shadow-none"
       >
-        <span>Place Order</span>
-        <fa-icon [icon]="icons.arrowRight"></fa-icon>
+        <ng-container *ngIf="!isPlacingOrder(); else loadingState">
+          <span>Place Order</span>
+          <fa-icon [icon]="icons.arrowRight"></fa-icon>
+        </ng-container>
+
+        <ng-template #loadingState>
+          <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>
+          <span>Processing...</span>
+        </ng-template>
       </button>
     </div>
   </div>
