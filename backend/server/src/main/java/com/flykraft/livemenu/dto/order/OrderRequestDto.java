@@ -10,5 +10,6 @@ import java.util.List;
 @Setter
 public class OrderRequestDto {
     private UserReqDto userDetails;
+    private String specialInstructions;
     private List<OrderItemRequestDto> orderItems;
 }
