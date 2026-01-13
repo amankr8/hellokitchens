@@ -35,7 +35,8 @@ export class DashboardComponent {
   icons = Icons;
 
   ngOnInit() {
-    document.title = document.title + ' - Dashboard';
+    const title = document.title;
+    document.title = title.split('-')[0] + '- Dashboard';
   }
 
   onLogout() {

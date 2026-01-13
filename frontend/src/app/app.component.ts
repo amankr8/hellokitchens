@@ -36,7 +36,7 @@ export class AppComponent {
 
       if (!kitchen) return;
 
-      document.title = kitchen.name ?? 'LiveMenu';
+      document.title = (kitchen.name ?? 'LiveMenu') + ' -';
     });
   }
 

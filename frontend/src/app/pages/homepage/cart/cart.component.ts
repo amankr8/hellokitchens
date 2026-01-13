@@ -36,7 +36,8 @@ export class CartComponent {
 
   ngOnInit() {
     this.userService.loadUser();
-    document.title = document.title + ' - Cart';
+    const title = document.title;
+    document.title = title.split('-')[0] + '- Cart';
   }
 
   increaseQty(item: any) {

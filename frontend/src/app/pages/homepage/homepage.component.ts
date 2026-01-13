@@ -72,7 +72,8 @@ export class HomepageComponent {
   }
 
   ngOnInit() {
-    document.title = document.title + ' - Home';
+    const title = document.title;
+    document.title = title.split('-')[0] + '- Home';
   }
 
   private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {
