@@ -47,7 +47,7 @@ export class CartComponent {
   icons = Icons;
 
   ngOnInit() {
-    this.userService.loadUser();
+    // this.userService.loadUser();
     if (this.user()?.defaultAddressId) {
       this.selectedAddressId.set(this.user()?.defaultAddressId ?? null);
     }
