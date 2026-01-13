@@ -45,6 +45,9 @@ export class CartComponent {
   specialInstructions = signal('');
   isPlacingOrder = signal(false);
 
+  isAddingNewAddress = signal(false);
+  savingNewAddress = signal(false);
+
   icons = Icons;
 
   userForm: FormGroup = this.fb.group({
@@ -81,6 +84,12 @@ export class CartComponent {
     document.title = kitchenName + ' - Cart';
   }
 
+  startAddingAddress() {
+    this.isAddingNewAddress.set(true);
+    this.selectedAddressId.set(null);
+    this.userForm.patchValue({ address: '' });
+  }
+
   increaseQty(item: any) {
     this.cartService.addToCart(item.menuItem);
   }
@@ -108,6 +117,36 @@ export class CartComponent {
     () => this.subtotal() + this.deliveryFee() + this.platformFee()
   );
 
+  saveNewAddress() {
+    const addressValue = this.userForm.get('address')?.value;
+
+    if (!addressValue) {
+      this.userForm.get('address')?.markAsTouched();
+      return;
+    }
+
+    this.savingNewAddress.set(true);
+
+    const payload = {
+      name: this.user()?.name ?? null,
+      phone: this.user()?.phone ?? null,
+      address: addressValue,
+    };
+
+    this.userService.addProfile(payload).subscribe({
+      next: (newProfile) => {
+        this.savingNewAddress.set(false);
+        this.isAddingNewAddress.set(false);
+        this.selectedAddressId.set(newProfile.id);
+        this.uiService.showToast('Address added successfully!');
+      },
+      error: () => {
+        this.savingNewAddress.set(false);
+        this.uiService.showToast('Failed to save address', 'error');
+      },
+    });
+  }
+
   placeOrder() {
     if (
       this.userForm.invalid ||
@@ -115,7 +154,7 @@ export class CartComponent {
       this.isPlacingOrder()
     ) {
       this.userForm.markAllAsTouched();
-      this.uiService.showToast('Please fill all the required details', 'error');
+      this.uiService.showToast('Please fill in the delivery details', 'error');
       return;
     }
 

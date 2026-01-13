@@ -109,7 +109,7 @@
         </div>
 
         <ng-template #existingUser>
-          <div class="grid gap-3">
+          <div class="grid gap-3" *ngIf="!isAddingNewAddress()">
             <div
               *ngFor="let addr of user()?.addresses"
               (click)="selectAddress(addr)"
@@ -133,10 +133,49 @@
 
             <button
               type="button"
-              class="flex items-center gap-2 text-[11px] font-black text-orange-600 uppercase tracking-widest mt-2 px-2"
+              (click)="startAddingAddress()"
+              class="flex items-center gap-2 text-[11px] font-black text-orange-600 uppercase tracking-widest mt-2 px-2 hover:translate-x-1 transition-transform"
             >
               <fa-icon [icon]="icons.plus"></fa-icon>
               <span>Add New Address</span>
+            </button>
+          </div>
+
+          <div class="space-y-4 animate-fade-in" *ngIf="isAddingNewAddress()">
+            <div class="space-y-1">
+              <div class="flex justify-between items-end px-1">
+                <label class="text-[10px] font-black uppercase text-gray-400"
+                  >New Delivery Address</label
+                >
+                <button
+                  (click)="isAddingNewAddress.set(false)"
+                  class="text-[9px] font-black text-gray-400 uppercase"
+                >
+                  Cancel
+                </button>
+              </div>
+              <textarea
+                formControlName="address"
+                placeholder="House No, Street, Landmark..."
+                rows="3"
+                class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all resize-none"
+              ></textarea>
+            </div>
+
+            <button
+              type="button"
+              (click)="saveNewAddress()"
+              [disabled]="savingNewAddress()"
+              class="w-full py-3 bg-gray-900 text-white rounded-xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2"
+            >
+              <fa-icon
+                *ngIf="savingNewAddress()"
+                [icon]="icons.spinner"
+                [animation]="'spin'"
+              ></fa-icon>
+              <span>{{
+                savingNewAddress() ? "Saving..." : "Save & Deliver Here"
+              }}</span>
             </button>
           </div>
         </ng-template>

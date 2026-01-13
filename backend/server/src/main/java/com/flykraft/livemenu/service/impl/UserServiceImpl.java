@@ -65,15 +65,16 @@ public class UserServiceImpl implements UserService {
     public CustomerProfile addProfileForUser(ProfileReqDto profileReqDto) {
         User user = loadCurrentUser();
         CustomerProfile customerProfile = new CustomerProfile();
-        if (profileReqDto.getName() != null) {
-            customerProfile.setName(profileReqDto.getName());
-        } else {
+        customerProfile.setUser(user);
+        if (profileReqDto.getName() == null || profileReqDto.getName().isEmpty()) {
             customerProfile.setName(user.getName());
-        }
-        if (profileReqDto.getPhone() != null) {
-            customerProfile.setPhone(profileReqDto.getPhone());
         } else {
-            customerProfile.setPhone(user.getPhone());
+            customerProfile.setName(profileReqDto.getName());
+        }
+        if (profileReqDto.getPhone() == null || profileReqDto.getPhone().isEmpty()) {
+            customerProfile.setName(user.getPhone());
+        } else {
+            customerProfile.setName(profileReqDto.getPhone());
         }
         customerProfile.setAddress(profileReqDto.getAddress());
         return customerProfileRepository.save(customerProfile);

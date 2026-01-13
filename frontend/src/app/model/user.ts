@@ -10,3 +10,9 @@ export interface Profile {
   id: number;
   address: string;
 }
+
+export interface ProfilePayload {
+  name: string | null;
+  phone: string | null;
+  address: string;
+}

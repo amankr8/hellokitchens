@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Profile, User } from '../model/user';
+import { Profile, ProfilePayload, User } from '../model/user';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -46,7 +46,7 @@ export class UserService {
   // --------------------
   // Mutations
   // --------------------
-  addProfile(payload: { address: string }): Observable<Profile> {
+  addProfile(payload: ProfilePayload): Observable<Profile> {
     this._error.set(null);
 
     return this.http.post<Profile>(`${this.apiUrl}/profiles`, payload).pipe(
