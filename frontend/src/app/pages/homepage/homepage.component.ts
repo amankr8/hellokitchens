@@ -69,11 +69,10 @@ export class HomepageComponent {
         this.startFlyAnimation(data);
       }
     });
+  }
 
-    effect(() => {
-      const name = this.kitchen()?.name ?? 'LiveMenu';
-      document.title = `${name} - Home`;
-    });
+  ngOnInit() {
+    document.title = document.title + ' - Home';
   }
 
   private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {

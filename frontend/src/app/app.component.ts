@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { KitchenService } from './service/kitchen.service';
@@ -25,8 +25,20 @@ export class AppComponent {
   loading = this.kitchenService.loading;
   error = this.kitchenService.error;
 
+  kitchen = this.kitchenService.kitchen;
+
   icons = Icons;
   showHelp = signal(false);
+
+  constructor() {
+    effect(() => {
+      const kitchen = this.kitchen();
+
+      if (!kitchen) return;
+
+      document.title = kitchen.name ?? 'LiveMenu';
+    });
+  }
 
   ngOnInit(): void {
     this.startLoadingTimer();

@@ -25,7 +25,7 @@ import { UiService } from '../../service/ui.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  public kitchenService = inject(KitchenService);
+  private kitchenService = inject(KitchenService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private uiService = inject(UiService);
@@ -35,8 +35,7 @@ export class DashboardComponent {
   icons = Icons;
 
   ngOnInit() {
-    const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
-    document.title = kitchenName + ' - Dashboard';
+    document.title = document.title + ' - Dashboard';
   }
 
   onLogout() {

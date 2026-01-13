@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserService } from '../../../service/user.service';
 import { Icons } from '../../../utils/icons';
@@ -22,6 +22,23 @@ export class CartComponent {
 
   cartItems = this.cartService.cartItems;
 
+  icons = Icons;
+
+  constructor() {
+    effect(() => {
+      const user = this.user();
+
+      if (!user) return;
+
+      this.selectedAddressId.set(user.defaultAddressId);
+    });
+  }
+
+  ngOnInit() {
+    this.userService.loadUser();
+    document.title = document.title + ' - Cart';
+  }
+
   increaseQty(item: any) {
     this.cartService.addToCart(item.menuItem);
   }
@@ -43,13 +60,4 @@ export class CartComponent {
   totalAmount = computed(
     () => this.subtotal() + this.deliveryFee() + this.platformFee()
   );
-
-  icons = Icons;
-
-  ngOnInit() {
-    // this.userService.loadUser();
-    if (this.user()?.defaultAddressId) {
-      this.selectedAddressId.set(this.user()?.defaultAddressId ?? null);
-    }
-  }
 }
