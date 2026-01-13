@@ -43,7 +43,7 @@ export class CartComponent {
   ngOnInit() {
     this.userService.loadUser();
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
-    document.title = kitchenName + '- Home';
+    document.title = kitchenName + ' - Cart';
   }
 
   increaseQty(item: any) {

@@ -37,7 +37,7 @@ export class DashboardComponent {
 
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
-    document.title = kitchenName + '- Home';
+    document.title = kitchenName + ' - Dashboard';
   }
 
   onLogout() {
