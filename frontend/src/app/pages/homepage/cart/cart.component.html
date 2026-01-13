@@ -156,6 +156,14 @@
                   </button>
                 </div>
               </div>
+              <button
+                type="button"
+                (click)="startAddingAddress()"
+                class="flex items-center gap-2 text-[11px] font-black text-orange-600 uppercase tracking-widest mt-2 px-2 hover:translate-x-1 transition-transform"
+              >
+                <fa-icon [icon]="icons.plus"></fa-icon>
+                <span>Add New Address</span>
+              </button>
             </div>
 
             <div class="space-y-4 animate-fade-in" *ngIf="isAddingNewAddress()">
