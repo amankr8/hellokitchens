@@ -87,6 +87,7 @@ public class OrderServiceImpl implements OrderService {
             totalPrice = totalPrice.add(menuItem.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity())));
         }
         orderItemRepository.saveAll(orderItems);
+        order.setOrderItems(orderItems);
         order.setTotalPrice(totalPrice);
         return order;
     }

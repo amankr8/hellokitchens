@@ -1,9 +1,11 @@
-export interface Order {}
+export interface Order {
+  id: number;
+}
 
 export interface OrderPayload {
   userDetails: CustomerDetails;
   specialInstructions: string;
-  orderItems: [OrderItemPayload];
+  orderItems: OrderItemPayload[];
 }
 
 export interface CustomerDetails {

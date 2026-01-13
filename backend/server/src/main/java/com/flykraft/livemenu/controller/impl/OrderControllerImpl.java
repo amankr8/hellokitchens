@@ -20,7 +20,7 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequestDto) {
-        return ResponseEntity.ok(orderService.createOrder(orderRequestDto));
+        return ResponseEntity.ok(orderService.createOrder(orderRequestDto).toResponseDto());
     }
 
     @Override

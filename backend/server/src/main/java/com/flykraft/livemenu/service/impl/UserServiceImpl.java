@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
     public User addUserDetails(UserReqDto userReqDto) {
         AuthUser authUser = AuthUtil.getLoggedInUser();
         User user = User.builder()
+                .authUser(authUser)
                 .name(userReqDto.getName())
                 .phone(authUser.getUsername())
                 .build();
