@@ -51,7 +51,6 @@ export const Icons = {
   profile: faUser,
   kitchen: faStore,
   logout: faSignOutAlt,
-  add: faPlus,
   addCircled: faPlusCircle,
   delete: faTrash,
   edit: faEdit,
@@ -60,6 +59,6 @@ export const Icons = {
   search: faSearch,
   spinner: faCircleNotch,
   plus: faPlus,
-  remove: faMinus,
+  minus: faMinus,
   infoCircled: faInfoCircle,
 };

@@ -20,6 +20,14 @@ export class CartComponent {
 
   cartItems = this.cartService.cartItems;
 
+  increaseQty(item: any) {
+    this.cartService.addToCart(item.menuItem);
+  }
+
+  decreaseQty(item: any) {
+    this.cartService.removeFromCart(item.menuItem);
+  }
+
   subtotal = computed(() =>
     this.cartItems().reduce(
       (acc, item) => acc + item.menuItem.price * item.quantity,
@@ -37,7 +45,7 @@ export class CartComponent {
   icons = Icons;
 
   ngOnInit() {
-    // this.userService.loadUser();
+    this.userService.loadUser();
     if (this.user()?.defaultAddressId) {
       this.selectedAddressId.set(this.user()?.defaultAddressId ?? null);
     }

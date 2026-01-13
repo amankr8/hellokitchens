@@ -85,7 +85,7 @@
             class="w-7 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-l-full"
           >
             <fa-icon
-              [icon]="quantity() === 1 ? icons.delete : icons.remove"
+              [icon]="quantity() === 1 ? icons.delete : icons.minus"
               class="text-[8px]"
             ></fa-icon>
           </button>
@@ -98,7 +98,7 @@
             (click)="onIncrease($event)"
             class="w-7 h-full flex items-center justify-center hover:bg-orange-700 transition-colors rounded-r-full"
           >
-            <fa-icon [icon]="icons.add" class="text-[8px]"></fa-icon>
+            <fa-icon [icon]="icons.plus" class="text-[8px]"></fa-icon>
           </button>
         </div>
       </div>
