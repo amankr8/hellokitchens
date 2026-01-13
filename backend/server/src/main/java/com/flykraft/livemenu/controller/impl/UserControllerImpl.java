@@ -18,7 +18,18 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<?> addProfileForUser(ProfileReqDto profileReqDto) {
+    public ResponseEntity<?> addProfile(ProfileReqDto profileReqDto) {
         return ResponseEntity.ok().body(userService.addProfileForUser(profileReqDto).toResponseDto());
+    }
+
+    @Override
+    public ResponseEntity<?> updateProfile(Long id, ProfileReqDto profileReqDto) {
+        return ResponseEntity.ok().body(userService.updateProfileForUser(id, profileReqDto).toResponseDto());
+    }
+
+    @Override
+    public ResponseEntity<?> deleteProfile(Long id) {
+        userService.deleteProfile(id);
+        return ResponseEntity.ok().build();
     }
 }

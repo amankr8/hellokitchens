@@ -79,4 +79,21 @@ public class UserServiceImpl implements UserService {
         customerProfile.setAddress(profileReqDto.getAddress());
         return customerProfileRepository.save(customerProfile);
     }
+
+    @Override
+    public CustomerProfile updateProfileForUser(Long profileId, ProfileReqDto profileReqDto) {
+        CustomerProfile selectedProfile = customerProfileRepository.findById(profileId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer Profile with id " + profileId + " not found"));
+
+        selectedProfile.setName(profileReqDto.getName());
+        selectedProfile.setPhone(profileReqDto.getPhone());
+        selectedProfile.setAddress(profileReqDto.getAddress());
+
+        return customerProfileRepository.save(selectedProfile);
+    }
+
+    @Override
+    public void deleteProfile(Long profileId) {
+        customerProfileRepository.deleteById(profileId);
+    }
 }

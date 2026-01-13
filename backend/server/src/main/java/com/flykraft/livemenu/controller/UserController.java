@@ -2,10 +2,7 @@ package com.flykraft.livemenu.controller;
 
 import com.flykraft.livemenu.dto.user.ProfileReqDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/users")
 public interface UserController {
@@ -14,5 +11,11 @@ public interface UserController {
     ResponseEntity<?> getUserDetails();
 
     @PostMapping("/profiles")
-    ResponseEntity<?> addProfileForUser(@RequestBody ProfileReqDto profileReqDto);
+    ResponseEntity<?> addProfile(@RequestBody ProfileReqDto profileReqDto);
+
+    @PutMapping("/profiles/{id}")
+    ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody ProfileReqDto profileReqDto);
+
+    @DeleteMapping("/profiles/{id}")
+    ResponseEntity<?> deleteProfile(@PathVariable Long id);
 }

@@ -17,4 +17,8 @@ public interface UserService {
 
     @PreAuthorize("hasAuthority('USER')")
     CustomerProfile addProfileForUser(ProfileReqDto profileReqDto);
+
+    CustomerProfile updateProfileForUser(Long profileId, ProfileReqDto profileReqDto);
+
+    void deleteProfile(Long profileId);
 }
