@@ -4,6 +4,7 @@ import {
   ElementRef,
   inject,
   signal,
+  viewChild,
   ViewChild,
 } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
@@ -29,7 +30,7 @@ export class HomepageComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  @ViewChild('cartButton') cartButton!: ElementRef;
+  cartButton = viewChild<ElementRef>('cartButton');
 
   kitchen = this.kitchenService.kitchen;
   showLoginModal = signal(false);
@@ -78,12 +79,15 @@ export class HomepageComponent {
   }
 
   private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {
+    const cartButton = this.cartButton();
+    if (!cartButton) return;
+
     this.flyingItem.set(data);
     this.flyX.set(data.x);
     this.flyY.set(data.y);
     this.flyStyle.set({ opacity: '1', transform: 'scale(1)' });
 
-    const rect = this.cartButton.nativeElement.getBoundingClientRect();
+    const rect = cartButton.nativeElement.getBoundingClientRect();
     const targetX = rect.left + rect.width / 2 - 24;
     const targetY = rect.top + rect.height / 2 - 24;
 

@@ -32,6 +32,7 @@ public class CustomerProfile {
 
     public ProfileResDto toResponseDto() {
         return ProfileResDto.builder()
+                .id(this.id)
                 .address(this.address)
                 .build();
     }

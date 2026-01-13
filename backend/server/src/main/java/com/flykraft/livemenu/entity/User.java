@@ -46,6 +46,7 @@ public class User extends Auditable {
                 .id(this.id)
                 .name(this.name)
                 .phone(this.phone)
+                .defaultAddressId(this.defaultProfileId)
                 .addresses(this.customerProfiles == null ? List.of() : this.customerProfiles.stream()
                         .map(CustomerProfile::toResponseDto)
                         .toList()

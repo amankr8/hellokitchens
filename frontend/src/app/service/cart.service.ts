@@ -20,19 +20,18 @@ export class CartService {
   private readonly _cartItems = signal<CartItem[]>(this.loadFromStorage());
   readonly cartItems = this._cartItems.asReadonly();
 
-  readonly totalCount = computed(() =>
-    this._cartItems().reduce((acc, item) => acc + item.quantity, 0)
-  );
-
-  readonly isEmpty = computed(() => this._cartItems().length === 0);
-
   private readonly _animate = signal<{
     x: number;
     y: number;
     imageUrl: string;
   } | null>(null);
-
   readonly animate = this._animate.asReadonly();
+
+  readonly totalCount = computed(() =>
+    this._cartItems().reduce((acc, item) => acc + item.quantity, 0)
+  );
+
+  readonly isEmpty = computed(() => this._cartItems().length === 0);
 
   constructor() {
     effect(() => {
