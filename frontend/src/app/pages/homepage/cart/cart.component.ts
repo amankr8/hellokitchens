@@ -16,6 +16,7 @@ import { KitchenService } from '../../../service/kitchen.service';
 import { APP_NAME } from '../../../constants/app.constant';
 import { OrderService } from '../../../service/order.service';
 import { UiService } from '../../../service/ui.service';
+import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
 
 @Component({
   selector: 'app-cart',
@@ -25,6 +26,7 @@ import { UiService } from '../../../service/ui.service';
     RouterLink,
     FormsModule,
     ReactiveFormsModule,
+    EmptyCartComponent,
   ],
   templateUrl: './cart.component.html',
 })

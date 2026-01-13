@@ -1,0 +1,45 @@
+<div
+  class="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in"
+>
+  <div
+    class="w-64 h-64 mb-8 bg-orange-50 rounded-full flex items-center justify-center relative"
+  >
+    <div
+      class="absolute inset-0 bg-orange-100 rounded-full animate-ping opacity-20"
+    ></div>
+    <fa-icon
+      [icon]="icons.cart"
+      class="text-7xl text-orange-200 relative z-10"
+    ></fa-icon>
+
+    <fa-icon
+      [icon]="icons.plus"
+      class="absolute top-10 right-10 text-orange-300 animate-bounce"
+    ></fa-icon>
+  </div>
+
+  <div class="space-y-3 mb-10">
+    <h1 class="text-3xl font-black text-gray-900 tracking-tight">
+      Your cart is empty
+    </h1>
+    <p class="text-gray-500 font-medium max-w-xs mx-auto">
+      Looks like you haven't added anything to your cart yet. Let's find
+      something delicious!
+    </p>
+  </div>
+
+  <button
+    routerLink="/"
+    class="w-full max-w-xs py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-orange-600 shadow-xl shadow-gray-200 transition-all active:scale-95 flex items-center justify-center gap-3"
+  >
+    <fa-icon [icon]="icons.back" class="text-xs"></fa-icon>
+    <span>Browse Menu</span>
+  </button>
+
+  <button
+    routerLink="/"
+    class="mt-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-orange-600 transition-colors"
+  >
+    View Past Orders
+  </button>
+</div>
