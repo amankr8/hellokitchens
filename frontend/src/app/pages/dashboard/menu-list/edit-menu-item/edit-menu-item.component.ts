@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MenuService } from '../../../../service/menu.service';
 import {
@@ -31,8 +31,10 @@ export class EditMenuItemComponent {
   imagePreview = signal<string | null>(null);
   selectedFile: File | null = null;
 
-  itemId!: number;
+  menuItems = this.menuService.menuItems;
+  itemId = signal<number | null>(null);
   saving = signal(false);
+
   icons = Icons;
 
   itemForm: FormGroup = this.fb.group({
@@ -43,6 +45,36 @@ export class EditMenuItemComponent {
     isVeg: [true],
     imageUrl: [''],
   });
+
+  constructor() {
+    effect(() => {
+      const itemId = this.itemId();
+      const menuItems = this.menuItems();
+
+      if (!itemId || !menuItems) return;
+
+      const item = menuItems?.find((i) => i.id === itemId);
+
+      if (item) {
+        this.itemForm.patchValue(item);
+        if (item.imageUrl) {
+          this.imagePreview.set(item.imageUrl);
+        }
+        this.itemForm.markAsPristine();
+      } else {
+        this.uiService.showToast('Item not found', 'error');
+        this.router.navigate(['/dashboard/menu']);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.menuService.loadMenuItems();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.itemId.set(+id);
+    }
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -83,31 +115,6 @@ export class EditMenuItemComponent {
     this.itemForm.markAsDirty();
   }
 
-  ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.itemId = +id;
-      this.loadItemData();
-    }
-  }
-
-  loadItemData() {
-    const item = this.menuService
-      .menuItems()
-      ?.find((i) => i.id === this.itemId);
-
-    if (item) {
-      this.itemForm.patchValue(item);
-      if (item.imageUrl) {
-        this.imagePreview.set(item.imageUrl);
-      }
-      this.itemForm.markAsPristine();
-    } else {
-      this.uiService.showToast('Item not found', 'error');
-      this.router.navigate(['/dashboard/menu']);
-    }
-  }
-
   onUpdate() {
     if (this.itemForm.valid && this.itemForm.dirty && !this.saving()) {
       this.saving.set(true);
@@ -125,7 +132,7 @@ export class EditMenuItemComponent {
         formData.append('image', this.selectedFile);
       }
 
-      this.menuService.updateMenuItem(this.itemId, formData).subscribe({
+      this.menuService.updateMenuItem(this.itemId()!!, formData).subscribe({
         next: () => {
           this.uiService.showToast('Dish updated successfully!');
           this.router.navigate(['/dashboard/menu']);
