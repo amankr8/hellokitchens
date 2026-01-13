@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from './utils/icons';
 import { UiToastComponent } from './pages/components/ui-toast/ui-toast.component';
 import { ConfirmationModalComponent } from './pages/components/confirmation-modal/confirmation-modal.component';
+import { APP_NAME } from './constants/app.constant';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +23,10 @@ import { ConfirmationModalComponent } from './pages/components/confirmation-moda
 })
 export class AppComponent {
   public kitchenService = inject(KitchenService);
-  loading = this.kitchenService.loading;
-  error = this.kitchenService.error;
 
   kitchen = this.kitchenService.kitchen;
+  loading = this.kitchenService.loading;
+  error = this.kitchenService.error;
 
   icons = Icons;
   showHelp = signal(false);
@@ -36,7 +37,7 @@ export class AppComponent {
 
       if (!kitchen) return;
 
-      document.title = (kitchen.name ?? 'LiveMenu') + ' -';
+      document.title = kitchen.name ?? APP_NAME;
     });
   }
 

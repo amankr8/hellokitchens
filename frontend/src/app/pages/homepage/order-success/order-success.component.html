@@ -1,17 +1,6 @@
 <div
   class="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center"
 >
-  <div class="w-64 h-64 mb-8 relative">
-    <div
-      class="absolute inset-0 bg-orange-50 rounded-full animate-ping opacity-20"
-    ></div>
-    <img
-      src="https://cdn.pixabay.com/animation/2022/11/16/11/48/11-48-12-321_512.gif"
-      alt="Success"
-      class="relative z-10 w-full h-full object-contain"
-    />
-  </div>
-
   <div class="space-y-3 mb-10">
     <h1 class="text-4xl font-black text-gray-900 tracking-tight">
       Order Placed!
@@ -27,7 +16,7 @@
         >Order ID:
       </span>
       <span class="text-xs font-black text-orange-600"
-        >#{{ orderId() || "LM-78291" }}</span
+        >#{{ id() || "LM-78291" }}</span
       >
     </div>
   </div>

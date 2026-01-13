@@ -3,9 +3,11 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserService } from '../../../service/user.service';
 import { Icons } from '../../../utils/icons';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../../service/cart.service';
 import { FormsModule } from '@angular/forms';
+import { KitchenService } from '../../../service/kitchen.service';
+import { APP_NAME } from '../../../constants/app.constant';
 
 @Component({
   selector: 'app-cart',
@@ -13,8 +15,12 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './cart.component.html',
 })
 export class CartComponent {
+  kitchenService = inject(KitchenService);
   userService = inject(UserService);
   cartService = inject(CartService);
+  router = inject(Router);
+
+  kitchen = this.kitchenService.kitchen;
 
   user = this.userService.user;
   selectedAddressId = signal<number | null>(null);
@@ -36,8 +42,8 @@ export class CartComponent {
 
   ngOnInit() {
     this.userService.loadUser();
-    const title = document.title;
-    document.title = title.split('-')[0] + '- Cart';
+    const kitchenName = this.kitchen()?.name ?? APP_NAME;
+    document.title = kitchenName + '- Home';
   }
 
   increaseQty(item: any) {
@@ -61,4 +67,9 @@ export class CartComponent {
   totalAmount = computed(
     () => this.subtotal() + this.deliveryFee() + this.platformFee()
   );
+
+  placeOrder() {
+    this.cartService.clearCart();
+    this.router.navigate(['/order-success', 1], { replaceUrl: true });
+  }
 }

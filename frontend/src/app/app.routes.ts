@@ -10,10 +10,15 @@ import { EditMenuItemComponent } from './pages/dashboard/menu-list/edit-menu-ite
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { UserRole } from './enum/user-role.enum';
 import { CartComponent } from './pages/homepage/cart/cart.component';
+import { OrderSuccessComponent } from './pages/homepage/order-success/order-success.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'cart', component: CartComponent },
+  {
+    path: 'order-success/:id',
+    component: OrderSuccessComponent,
+  },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',

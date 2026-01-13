@@ -1,15 +1,20 @@
 import { Component, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-order-success',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, RouterLink],
   templateUrl: './order-success.component.html',
 })
 export class OrderSuccessComponent {
-  orderId = input<string>(); // From route params
+  id = input.required<string>();
   icons = Icons;
+
+  ngOnInit() {
+    document.title = 'Thank you for ordering with us!';
+  }
 
   // You can use a library like 'ngx-lottie' or a simple <img> for the GIF/Lottie
   confettiAnimation =

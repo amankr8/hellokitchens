@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MenuService } from '../../../../service/menu.service';
 import {
@@ -22,6 +22,7 @@ import {
   templateUrl: './edit-menu-item.component.html',
 })
 export class EditMenuItemComponent {
+  id = input.required<string>();
   private route = inject(ActivatedRoute);
   private menuService = inject(MenuService);
   private fb = inject(FormBuilder);
@@ -32,7 +33,6 @@ export class EditMenuItemComponent {
   selectedFile: File | null = null;
 
   menuItems = this.menuService.menuItems;
-  itemId = signal<number | null>(null);
   saving = signal(false);
 
   icons = Icons;
@@ -48,7 +48,7 @@ export class EditMenuItemComponent {
 
   constructor() {
     effect(() => {
-      const itemId = this.itemId();
+      const itemId = Number(this.id());
       const menuItems = this.menuItems();
 
       if (!itemId || !menuItems) return;
@@ -70,10 +70,6 @@ export class EditMenuItemComponent {
 
   ngOnInit() {
     this.menuService.loadMenuItems();
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.itemId.set(+id);
-    }
   }
 
   onFileSelected(event: any) {
@@ -132,7 +128,8 @@ export class EditMenuItemComponent {
         formData.append('image', this.selectedFile);
       }
 
-      this.menuService.updateMenuItem(this.itemId()!!, formData).subscribe({
+      const itemId = Number(this.id());
+      this.menuService.updateMenuItem(itemId, formData).subscribe({
         next: () => {
           this.uiService.showToast('Dish updated successfully!');
           this.router.navigate(['/dashboard/menu']);

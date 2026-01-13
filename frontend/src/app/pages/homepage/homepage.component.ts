@@ -15,6 +15,7 @@ import { KitchenService } from '../../service/kitchen.service';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { OtpLoginComponent } from './otp-login/otp-login.component';
+import { APP_NAME } from '../../constants/app.constant';
 
 @Component({
   selector: 'app-homepage',
@@ -72,8 +73,8 @@ export class HomepageComponent {
   }
 
   ngOnInit() {
-    const title = document.title;
-    document.title = title.split('-')[0] + '- Home';
+    const kitchenName = this.kitchen()?.name ?? APP_NAME;
+    document.title = kitchenName + ' - Home';
   }
 
   private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {

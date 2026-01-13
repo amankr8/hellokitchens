@@ -11,6 +11,7 @@ import { Icons } from '../../utils/icons'; //
 import { AuthService } from '../../service/auth.service';
 import { KitchenService } from '../../service/kitchen.service';
 import { UiService } from '../../service/ui.service';
+import { APP_NAME } from '../../constants/app.constant';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,8 +36,8 @@ export class DashboardComponent {
   icons = Icons;
 
   ngOnInit() {
-    const title = document.title;
-    document.title = title.split('-')[0] + '- Dashboard';
+    const kitchenName = this.kitchen()?.name ?? APP_NAME;
+    document.title = kitchenName + '- Home';
   }
 
   onLogout() {
