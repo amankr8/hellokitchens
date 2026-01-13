@@ -14,7 +14,7 @@ import { CartService } from '../../service/cart.service';
 import { KitchenService } from '../../service/kitchen.service';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
-import { OtpLoginComponent } from './otp-login/otp-login.component';
+import { OtpLoginComponent } from '../components/otp-login/otp-login.component';
 import { APP_NAME } from '../../constants/app.constant';
 
 @Component({
