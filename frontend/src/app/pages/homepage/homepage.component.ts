@@ -35,7 +35,7 @@ export class HomepageComponent {
 
   isCartEmpty = this.cartService.isEmpty;
   actualCartCount = this.cartService.totalCount;
-  displayedCount = signal(0);
+  displayedCount = signal(this.actualCartCount());
 
   isBadgePulsing = signal(false);
 
@@ -54,14 +54,6 @@ export class HomepageComponent {
   flyStyle = signal<Record<string, string>>({});
 
   constructor() {
-    effect(() => {
-      const actual = this.actualCartCount();
-
-      if (this.displayedCount() === 0 && actual > 0) {
-        this.displayedCount.set(actual);
-      }
-    });
-
     effect(() => {
       const actual = this.actualCartCount();
       const displayed = this.displayedCount();
@@ -123,6 +115,9 @@ export class HomepageComponent {
   }
 
   onViewCart(): void {
+    if (this.isCartEmpty()) {
+      return;
+    }
     if (this.authService.isUserLogin()) {
       this.router.navigate(['/cart']);
     } else {

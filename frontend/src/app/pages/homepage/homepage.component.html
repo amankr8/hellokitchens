@@ -29,7 +29,8 @@
         <button
           #cartButton
           (click)="onViewCart()"
-          class="group relative flex items-center gap-2 bg-gray-900 text-white px-5 py-3 rounded-2xl text-sm font-black hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+          [disabled]="isCartEmpty()"
+          class="group relative flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-lg active:scale-95 bg-gray-900 text-white hover:bg-orange-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
           aria-label="View Cart"
         >
           <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
@@ -37,7 +38,7 @@
 
           <span
             [class.animate-badge-pulse]="isBadgePulsing()"
-            class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white group-hover:bg-white group-hover:text-orange-600 transition-colors"
+            class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
           >
             {{ displayedCount() }}
           </span>
