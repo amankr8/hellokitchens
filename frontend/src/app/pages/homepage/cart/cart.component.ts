@@ -88,8 +88,17 @@ export class CartComponent {
 
   startAddingAddress() {
     this.isAddingNewAddress.set(true);
-    this.selectedAddressId.set(null);
     this.userForm.patchValue({ address: '' });
+  }
+
+  cancelAddingAddress() {
+    this.isAddingNewAddress.set(false);
+    const addr = this.user()?.addresses.find(
+      (a: any) => a.id === this.selectedAddressId()
+    );
+    if (addr) {
+      this.userForm.patchValue({ address: addr.address });
+    }
   }
 
   increaseQty(item: any) {
