@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Profile, ProfilePayload, User } from '../model/user';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -71,6 +71,63 @@ export class UserService {
             addresses: [...user.addresses, profile],
           }
         : user
+    );
+  }
+
+  updateProfile(
+    profileId: number,
+    payload: ProfilePayload
+  ): Observable<Profile> {
+    this._error.set(null);
+
+    return this.http
+      .put<Profile>(`${this.apiUrl}/profiles/${profileId}`, payload)
+      .pipe(
+        tap((updatedProfile) => {
+          const user = this._user();
+
+          if (!user) {
+            this.loadUser();
+            return;
+          }
+
+          this.replaceProfile(updatedProfile);
+        })
+      );
+  }
+
+  private replaceProfile(updated: Profile): void {
+    this._user.update((user) =>
+      user
+        ? {
+            ...user,
+            addresses: user.addresses.map((p) =>
+              p.id === updated.id ? updated : p
+            ),
+          }
+        : user
+    );
+  }
+
+  deleteProfile(profileId: number): Observable<void> {
+    this._error.set(null);
+
+    const previousUser = this._user();
+
+    this._user.update((user) =>
+      user
+        ? {
+            ...user,
+            addresses: user.addresses.filter((p) => p.id !== profileId),
+          }
+        : user
+    );
+
+    return this.http.delete<void>(`${this.apiUrl}/profiles/${profileId}`).pipe(
+      catchError((err) => {
+        this._user.set(previousUser);
+        return throwError(() => err);
+      })
     );
   }
 
