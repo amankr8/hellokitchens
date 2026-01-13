@@ -140,6 +140,13 @@ export class CartComponent {
 
   deleteAddress(event: Event, profileId: number) {
     event.stopPropagation();
+    if (this.selectedAddressId() === profileId) return;
+
+    if (this.user()?.defaultAddressId === profileId) {
+      this.uiService.showToast('Cannot delete the default address', 'error');
+      return;
+    }
+
     this.uiService.ask({
       title: 'Delete Address?',
       message: `Are you sure you want to delete this address?`,

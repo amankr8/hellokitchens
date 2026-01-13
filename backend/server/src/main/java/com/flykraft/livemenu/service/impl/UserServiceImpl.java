@@ -94,6 +94,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteProfile(Long profileId) {
+        User user = loadCurrentUser();
+        if (user.getDefaultProfileId().equals(profileId)) {
+            throw new IllegalArgumentException("Default customer profile cannot be deleted");
+        }
         customerProfileRepository.deleteById(profileId);
     }
 }
