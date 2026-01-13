@@ -44,6 +44,7 @@ export class CartComponent {
   cartItems = this.cartService.cartItems;
 
   selectedAddressId = signal<number | null>(null);
+  editingAddressId = signal<number | null>(null);
   specialInstructions = signal('');
   isPlacingOrder = signal(false);
 
@@ -91,14 +92,20 @@ export class CartComponent {
     this.userForm.patchValue({ address: '' });
   }
 
+  startEditingAddress(event: Event, addr: any) {
+    event.stopPropagation();
+    this.editingAddressId.set(addr.id);
+    this.isAddingNewAddress.set(true);
+    this.userForm.patchValue({ address: addr.address });
+  }
+
   cancelAddingAddress() {
     this.isAddingNewAddress.set(false);
+    this.editingAddressId.set(null);
     const addr = this.user()?.addresses.find(
-      (a: any) => a.id === this.selectedAddressId()
+      (a) => a.id === this.selectedAddressId()
     );
-    if (addr) {
-      this.userForm.patchValue({ address: addr.address });
-    }
+    this.userForm.patchValue({ address: addr?.address ?? '' });
   }
 
   increaseQty(item: any) {
@@ -128,13 +135,29 @@ export class CartComponent {
     () => this.subtotal() + this.deliveryFee() + this.platformFee()
   );
 
+  deleteAddress(event: Event, profileId: number) {
+    event.stopPropagation();
+    this.uiService.ask({
+      title: 'Delete Address?',
+      message: `Are you sure you want to delete this address?`,
+      confirmText: 'Yes, Delete',
+      action: () => {
+        this.userService.deleteProfile(profileId).subscribe({
+          next: () => {
+            if (this.selectedAddressId() === profileId) {
+              this.selectedAddressId.set(null);
+              this.userForm.get('address')?.setValue('');
+            }
+            this.uiService.showToast('Address deleted!');
+          },
+        });
+      },
+    });
+  }
+
   saveNewAddress() {
     const addressValue = this.userForm.get('address')?.value;
-
-    if (!addressValue) {
-      this.userForm.get('address')?.markAsTouched();
-      return;
-    }
+    if (!addressValue) return;
 
     this.savingNewAddress.set(true);
 
@@ -144,12 +167,19 @@ export class CartComponent {
       address: addressValue,
     };
 
-    this.userService.addProfile(payload).subscribe({
-      next: (newProfile) => {
+    const isEditing = this.editingAddressId();
+    const request$ = isEditing
+      ? this.userService.updateProfile(isEditing, payload)
+      : this.userService.addProfile(payload);
+
+    request$.subscribe({
+      next: (profile) => {
         this.savingNewAddress.set(false);
-        this.isAddingNewAddress.set(false);
-        this.selectedAddressId.set(newProfile.id);
-        this.uiService.showToast('Address added successfully!');
+        this.cancelAddingAddress();
+        this.selectAddress(profile);
+        this.uiService.showToast(
+          isEditing ? 'Address updated!' : 'Address added successfully!'
+        );
       },
       error: () => {
         this.savingNewAddress.set(false);

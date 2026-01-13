@@ -118,7 +118,7 @@
                 (click)="selectAddress(addr)"
                 [class.border-orange-500]="selectedAddressId() === addr.id"
                 [class.bg-orange-50]="selectedAddressId() === addr.id"
-                class="p-5 border-2 border-gray-100 rounded-3xl cursor-pointer transition-all flex items-center gap-4"
+                class="p-5 border-2 border-gray-100 rounded-3xl cursor-pointer transition-all flex items-center gap-4 group"
               >
                 <fa-icon
                   [icon]="
@@ -135,24 +135,39 @@
                 >
                   {{ addr.address }}
                 </span>
-              </div>
 
-              <button
-                type="button"
-                (click)="startAddingAddress()"
-                class="flex items-center gap-2 text-[11px] font-black text-orange-600 uppercase tracking-widest mt-2 px-2 hover:translate-x-1 transition-transform"
-              >
-                <fa-icon [icon]="icons.plus"></fa-icon>
-                <span>Add New Address</span>
-              </button>
+                <div
+                  class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <button
+                    (click)="startEditingAddress($event, addr)"
+                    class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-orange-600 hover:bg-orange-100 transition-all"
+                  >
+                    <fa-icon [icon]="icons.edit" class="text-[10px]"></fa-icon>
+                  </button>
+                  <button
+                    (click)="deleteAddress($event, addr.id)"
+                    class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all"
+                  >
+                    <fa-icon
+                      [icon]="icons.trashCan"
+                      class="text-[10px]"
+                    ></fa-icon>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div class="space-y-4 animate-fade-in" *ngIf="isAddingNewAddress()">
               <div class="space-y-1">
                 <div class="flex justify-between items-end px-1">
-                  <label class="text-[10px] font-black uppercase text-gray-400"
-                    >New Delivery Address</label
-                  >
+                  <label class="text-[10px] font-black uppercase text-gray-400">
+                    {{
+                      editingAddressId()
+                        ? "Update Address"
+                        : "New Delivery Address"
+                    }}
+                  </label>
                   <button
                     (click)="cancelAddingAddress()"
                     class="text-[9px] font-black text-gray-400 uppercase"
@@ -180,7 +195,7 @@
                   [animation]="'spin'"
                 ></fa-icon>
                 <span>{{
-                  savingNewAddress() ? "Saving..." : "Save & Deliver Here"
+                  editingAddressId() ? "Update Address" : "Save & Deliver Here"
                 }}</span>
               </button>
             </div>
