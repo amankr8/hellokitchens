@@ -5,10 +5,11 @@ import { UserService } from '../../../service/user.service';
 import { Icons } from '../../../utils/icons';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../service/cart.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, FontAwesomeModule, RouterLink],
+  imports: [CommonModule, FontAwesomeModule, RouterLink, FormsModule],
   templateUrl: './cart.component.html',
 })
 export class CartComponent {
@@ -17,6 +18,7 @@ export class CartComponent {
 
   user = this.userService.user;
   selectedAddressId = signal<number | null>(null);
+  specialInstructions = signal('');
 
   cartItems = this.cartService.cartItems;
 

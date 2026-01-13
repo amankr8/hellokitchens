@@ -27,9 +27,11 @@ import {
   faCircle,
   faArrowRight,
   faReceipt,
+  faNoteSticky,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const Icons = {
+  notes: faNoteSticky,
   receipt: faReceipt,
   arrowRight: faArrowRight,
   location: faLocation,
