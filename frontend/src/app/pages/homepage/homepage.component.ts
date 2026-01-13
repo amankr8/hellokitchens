@@ -5,7 +5,6 @@ import {
   inject,
   signal,
   viewChild,
-  ViewChild,
 } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { CommonModule } from '@angular/common';
@@ -93,7 +92,7 @@ export class HomepageComponent {
     const targetX = rect.left + rect.width / 2 - 24;
     const targetY = rect.top + rect.height / 2 - 24;
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.flyX.set(targetX);
       this.flyY.set(targetY);
       this.flyStyle.set({
@@ -101,7 +100,7 @@ export class HomepageComponent {
         transform: 'scale(0.2) rotate(720deg)',
         transition: 'all 0.8s cubic-bezier(0.42, 0, 0.58, 1)',
       });
-    }, 10);
+    });
 
     setTimeout(() => {
       this.flyingItem.set(null);
