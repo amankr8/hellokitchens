@@ -33,6 +33,7 @@ export class HomepageComponent {
   kitchen = this.kitchenService.kitchen;
   showLoginModal = signal(false);
 
+  isCartEmpty = this.cartService.isEmpty;
   actualCartCount = this.cartService.totalCount;
   displayedCount = signal(0);
 
@@ -81,11 +82,6 @@ export class HomepageComponent {
       const name = this.kitchen()?.name ?? 'LiveMenu';
       document.title = `${name} - Home`;
     });
-  }
-
-  ngOnInit() {
-    const kitchenName = this.kitchen()?.name ?? 'LiveMenu';
-    document.title = kitchenName + ' - Home';
   }
 
   private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {
