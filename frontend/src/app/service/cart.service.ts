@@ -20,12 +20,9 @@ export class CartService {
   private readonly _cartItems = signal<CartItem[]>(this.loadFromStorage());
   readonly cartItems = this._cartItems.asReadonly();
 
-  private readonly _animate = signal<{
-    x: number;
-    y: number;
-    imageUrl: string;
-  } | null>(null);
-  readonly animate = this._animate.asReadonly();
+  private animationQueue = signal<{ x: number; y: number; imageUrl: string }[]>(
+    []
+  );
 
   readonly totalCount = computed(() =>
     this._cartItems().reduce((acc, item) => acc + item.quantity, 0)
@@ -41,7 +38,16 @@ export class CartService {
   }
 
   triggerAnimation(x: number, y: number, imageUrl: string) {
-    this._animate.set({ x, y, imageUrl });
+    this.animationQueue.update((q) => [...q, { x, y, imageUrl }]);
+  }
+
+  consumeAnimation() {
+    const queue = this.animationQueue();
+    if (queue.length === 0) return null;
+
+    const [next, ...rest] = queue;
+    this.animationQueue.set(rest);
+    return next;
   }
 
   addToCart(item: MenuItem): void {

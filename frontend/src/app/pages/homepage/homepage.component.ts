@@ -66,10 +66,12 @@ export class HomepageComponent {
     });
 
     effect(() => {
-      const data = this.cartService.animate();
-      if (data) {
-        this.startFlyAnimation(data);
-      }
+      const animation = this.cartService.consumeAnimation();
+      const cartButton = this.cartButton();
+
+      if (!animation || !cartButton) return;
+
+      this.startFlyAnimation(animation, cartButton);
     });
   }
 
@@ -78,10 +80,10 @@ export class HomepageComponent {
     document.title = kitchenName + ' - Home';
   }
 
-  private startFlyAnimation(data: { x: number; y: number; imageUrl: string }) {
-    const cartButton = this.cartButton();
-    if (!cartButton) return;
-
+  private startFlyAnimation(
+    data: { x: number; y: number; imageUrl: string },
+    cartButton: ElementRef
+  ) {
     this.flyingItem.set(data);
     this.flyX.set(data.x);
     this.flyY.set(data.y);
