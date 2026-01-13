@@ -17,6 +17,8 @@ import { APP_NAME } from '../../../constants/app.constant';
 import { OrderService } from '../../../service/order.service';
 import { UiService } from '../../../service/ui.service';
 import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
+import { CartItem } from '../../../model/cart-item';
+import { Profile } from '../../../model/user';
 
 @Component({
   selector: 'app-cart',
@@ -62,7 +64,8 @@ export class CartComponent {
   constructor() {
     effect(() => {
       const user = this.user();
-      if (!user) return;
+      const selectedAddressId = this.selectedAddressId();
+      if (!user || selectedAddressId) return;
 
       this.userForm.patchValue({
         name: user.name,
@@ -92,7 +95,7 @@ export class CartComponent {
     this.userForm.patchValue({ address: '' });
   }
 
-  startEditingAddress(event: Event, addr: any) {
+  startEditingAddress(event: Event, addr: Profile) {
     event.stopPropagation();
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
@@ -108,15 +111,15 @@ export class CartComponent {
     this.userForm.patchValue({ address: addr?.address ?? '' });
   }
 
-  increaseQty(item: any) {
+  increaseQty(item: CartItem) {
     this.cartService.addToCart(item.menuItem);
   }
 
-  decreaseQty(item: any) {
+  decreaseQty(item: CartItem) {
     this.cartService.removeFromCart(item.menuItem);
   }
 
-  selectAddress(addr: any) {
+  selectAddress(addr: Profile) {
     this.selectedAddressId.set(addr.id);
     this.userForm.patchValue({ address: addr.address });
   }
