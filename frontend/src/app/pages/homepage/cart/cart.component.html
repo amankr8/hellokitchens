@@ -118,7 +118,7 @@
                 (click)="selectAddress(addr)"
                 [class.border-orange-500]="selectedAddressId() === addr.id"
                 [class.bg-orange-50]="selectedAddressId() === addr.id"
-                class="p-5 border-2 border-gray-100 rounded-3xl cursor-pointer transition-all flex items-start gap-4"
+                class="p-5 border-2 border-gray-100 rounded-3xl cursor-pointer transition-all flex items-center gap-4"
               >
                 <fa-icon
                   [icon]="
@@ -127,11 +127,14 @@
                       : icons.circle
                   "
                   [class.text-orange-600]="selectedAddressId() === addr.id"
-                  class="mt-1 text-gray-200 transition-colors"
+                  class="text-gray-200 transition-colors flex-shrink-0"
                 ></fa-icon>
-                <span class="text-sm font-bold text-gray-700 leading-relaxed">{{
-                  addr.address
-                }}</span>
+
+                <span
+                  class="text-sm font-bold text-gray-700 leading-tight flex-1"
+                >
+                  {{ addr.address }}
+                </span>
               </div>
 
               <button
