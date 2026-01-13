@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { User } from '../model/user';
+import { Profile, User } from '../model/user';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,47 @@ export class UserService {
         this._loading.set(false);
       },
     });
+  }
+
+  // --------------------
+  // Mutations
+  // --------------------
+  addProfile(payload: { address: string }): Observable<Profile> {
+    this._error.set(null);
+
+    return this.http.post<Profile>(`${this.apiUrl}/profiles`, payload).pipe(
+      tap((profile) => {
+        const user = this._user();
+
+        if (!user) {
+          this.loadUser();
+          return;
+        }
+
+        this.appendProfile(profile);
+      })
+    );
+  }
+
+  private appendProfile(profile: Profile): void {
+    this._user.update((user) =>
+      user
+        ? {
+            ...user,
+            addresses: [...user.addresses, profile],
+          }
+        : user
+    );
+  }
+
+  // --------------------
+  // Utilities
+  // --------------------
+  clearCache(): void {
+    this._user.set(null);
+  }
+
+  clearError(): void {
+    this._error.set(null);
   }
 }

@@ -54,9 +54,19 @@
           class="space-y-4"
         >
           <div class="space-y-1">
-            <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
-              >Full Name</label
-            >
+            <div class="flex justify-between items-end px-1">
+              <label class="text-[10px] font-black uppercase text-gray-400"
+                >Full Name</label
+              >
+              <span
+                *ngIf="
+                  userForm.get('name')?.invalid && userForm.get('name')?.touched
+                "
+                class="text-[9px] font-bold text-red-500 uppercase tracking-tight animate-fade-in"
+              >
+                Name is required
+              </span>
+            </div>
             <input
               formControlName="name"
               type="text"
@@ -70,9 +80,20 @@
           </div>
 
           <div class="space-y-1">
-            <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
-              >Complete Address</label
-            >
+            <div class="flex justify-between items-end px-1">
+              <label class="text-[10px] font-black uppercase text-gray-400"
+                >Complete Address</label
+              >
+              <span
+                *ngIf="
+                  userForm.get('address')?.invalid &&
+                  userForm.get('address')?.touched
+                "
+                class="text-[9px] font-bold text-red-500 uppercase tracking-tight animate-fade-in"
+              >
+                Address is required
+              </span>
+            </div>
             <textarea
               formControlName="address"
               placeholder="House No, Street, Landmark..."

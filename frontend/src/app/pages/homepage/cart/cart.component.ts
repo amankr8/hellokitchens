@@ -115,6 +115,7 @@ export class CartComponent {
       this.isPlacingOrder()
     ) {
       this.userForm.markAllAsTouched();
+      this.uiService.showToast('Please fill all the required details', 'error');
       return;
     }
 

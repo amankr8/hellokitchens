@@ -12,6 +12,6 @@ public interface UserController {
     @GetMapping
     ResponseEntity<?> getUserDetails();
 
-    @PostMapping("/profile")
+    @PostMapping("/profiles")
     ResponseEntity<?> addProfileForUser(ProfileReqDto profileReqDto);
 }

@@ -3,7 +3,7 @@ export interface User {
   name: string;
   phone: string;
   defaultAddressId: number;
-  addresses: [Profile];
+  addresses: Profile[];
 }
 
 export interface Profile {
