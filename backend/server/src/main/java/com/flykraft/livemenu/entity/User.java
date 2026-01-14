@@ -35,20 +35,20 @@ public class User extends Auditable {
     @Column(name = "u_phone")
     private String phone;
 
-    @Column(name = "u_default_profile_id")
-    private Long defaultProfileId;
+    @Column(name = "u_default_address_id")
+    private Long defaultAddressId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CustomerProfile> customerProfiles;
+    private List<Address> addresses;
 
     public UserResDto toResponseDto() {
         return UserResDto.builder()
                 .id(this.id)
                 .name(this.name)
                 .phone(this.phone)
-                .defaultAddressId(this.defaultProfileId)
-                .addresses(this.customerProfiles == null ? List.of() : this.customerProfiles.stream()
-                        .map(CustomerProfile::toResponseDto)
+                .defaultAddressId(this.defaultAddressId)
+                .addresses(this.addresses == null ? List.of() : this.addresses.stream()
+                        .map(Address::toResponseDto)
                         .toList()
                 )
                 .build();

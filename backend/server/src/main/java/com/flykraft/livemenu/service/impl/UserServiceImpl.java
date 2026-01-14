@@ -1,12 +1,12 @@
 package com.flykraft.livemenu.service.impl;
 
-import com.flykraft.livemenu.dto.user.ProfileReqDto;
+import com.flykraft.livemenu.dto.user.AddressReqDto;
 import com.flykraft.livemenu.dto.user.UserReqDto;
 import com.flykraft.livemenu.entity.AuthUser;
-import com.flykraft.livemenu.entity.CustomerProfile;
+import com.flykraft.livemenu.entity.Address;
 import com.flykraft.livemenu.entity.User;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
-import com.flykraft.livemenu.repository.CustomerProfileRepository;
+import com.flykraft.livemenu.repository.AddressRepository;
 import com.flykraft.livemenu.repository.UserRepository;
 import com.flykraft.livemenu.service.UserService;
 import com.flykraft.livemenu.util.AuthUtil;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final CustomerProfileRepository customerProfileRepository;
+    private final AddressRepository addressRepository;
 
     @Override
     public User loadCurrentUser() {
@@ -48,56 +48,40 @@ public class UserServiceImpl implements UserService {
                 .phone(authUser.getUsername())
                 .build();
         user = userRepository.save(user);
-        CustomerProfile customerProfile = CustomerProfile.builder()
-                .name(userReqDto.getName())
-                .phone(authUser.getUsername())
+        Address address = Address.builder()
                 .address(userReqDto.getAddress())
                 .user(user)
                 .build();
-        customerProfile = customerProfileRepository.save(customerProfile);
-        user.setDefaultProfileId(customerProfile.getId());
-        user.setCustomerProfiles(List.of(customerProfile));
+        address = addressRepository.save(address);
+        user.setDefaultAddressId(address.getId());
+        user.setAddresses(List.of(address));
         return user;
     }
 
     @Transactional
     @Override
-    public CustomerProfile addProfileForUser(ProfileReqDto profileReqDto) {
+    public Address addAddressForUser(AddressReqDto addressReqDto) {
         User user = loadCurrentUser();
-        CustomerProfile customerProfile = new CustomerProfile();
-        customerProfile.setUser(user);
-        if (profileReqDto.getName() == null || profileReqDto.getName().isEmpty()) {
-            customerProfile.setName(user.getName());
-        } else {
-            customerProfile.setName(profileReqDto.getName());
-        }
-        if (profileReqDto.getPhone() == null || profileReqDto.getPhone().isEmpty()) {
-            customerProfile.setPhone(user.getPhone());
-        } else {
-            customerProfile.setPhone(profileReqDto.getPhone());
-        }
-        customerProfile.setAddress(profileReqDto.getAddress());
-        return customerProfileRepository.save(customerProfile);
+        Address address = new Address();
+        address.setUser(user);
+        address.setAddress(addressReqDto.getAddress());
+        return addressRepository.save(address);
     }
 
     @Override
-    public CustomerProfile updateProfileForUser(Long profileId, ProfileReqDto profileReqDto) {
-        CustomerProfile selectedProfile = customerProfileRepository.findById(profileId)
+    public Address updateAddressForUser(Long profileId, AddressReqDto addressReqDto) {
+        Address selectedProfile = addressRepository.findById(profileId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer Profile with id " + profileId + " not found"));
-
-        selectedProfile.setName(profileReqDto.getName());
-        selectedProfile.setPhone(profileReqDto.getPhone());
-        selectedProfile.setAddress(profileReqDto.getAddress());
-
-        return customerProfileRepository.save(selectedProfile);
+        selectedProfile.setAddress(addressReqDto.getAddress());
+        return addressRepository.save(selectedProfile);
     }
 
     @Override
-    public void deleteProfile(Long profileId) {
+    public void deleteAddressForUser(Long addressId) {
         User user = loadCurrentUser();
-        if (user.getDefaultProfileId().equals(profileId)) {
+        if (user.getDefaultAddressId().equals(addressId)) {
             throw new IllegalArgumentException("Default customer profile cannot be deleted");
         }
-        customerProfileRepository.deleteById(profileId);
+        addressRepository.deleteById(addressId);
     }
 }

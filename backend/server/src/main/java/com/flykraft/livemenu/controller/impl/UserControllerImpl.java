@@ -1,7 +1,7 @@
 package com.flykraft.livemenu.controller.impl;
 
 import com.flykraft.livemenu.controller.UserController;
-import com.flykraft.livemenu.dto.user.ProfileReqDto;
+import com.flykraft.livemenu.dto.user.AddressReqDto;
 import com.flykraft.livemenu.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,18 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<?> addProfile(ProfileReqDto profileReqDto) {
-        return ResponseEntity.ok().body(userService.addProfileForUser(profileReqDto).toResponseDto());
+    public ResponseEntity<?> addAddress(AddressReqDto addressReqDto) {
+        return ResponseEntity.ok().body(userService.addAddressForUser(addressReqDto).toResponseDto());
     }
 
     @Override
-    public ResponseEntity<?> updateProfile(Long id, ProfileReqDto profileReqDto) {
-        return ResponseEntity.ok().body(userService.updateProfileForUser(id, profileReqDto).toResponseDto());
+    public ResponseEntity<?> updateAddress(Long id, AddressReqDto addressReqDto) {
+        return ResponseEntity.ok().body(userService.updateAddressForUser(id, addressReqDto).toResponseDto());
     }
 
     @Override
-    public ResponseEntity<?> deleteProfile(Long id) {
-        userService.deleteProfile(id);
+    public ResponseEntity<?> deleteAddress(Long id) {
+        userService.deleteAddressForUser(id);
         return ResponseEntity.ok().build();
     }
 }

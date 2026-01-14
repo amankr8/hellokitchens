@@ -14,5 +14,5 @@ public class UserResDto {
     private String name;
     private String phone;
     private Long defaultAddressId;
-    private List<ProfileResDto> addresses;
+    private List<AddressResDto> addresses;
 }

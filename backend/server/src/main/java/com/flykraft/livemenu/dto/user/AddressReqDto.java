@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProfileReqDto {
+public class AddressReqDto {
     private String name;
     private String phone;
     private String address;

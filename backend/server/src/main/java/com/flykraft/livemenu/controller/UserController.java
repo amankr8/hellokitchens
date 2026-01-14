@@ -1,6 +1,6 @@
 package com.flykraft.livemenu.controller;
 
-import com.flykraft.livemenu.dto.user.ProfileReqDto;
+import com.flykraft.livemenu.dto.user.AddressReqDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,12 +10,12 @@ public interface UserController {
     @GetMapping
     ResponseEntity<?> getUserDetails();
 
-    @PostMapping("/profiles")
-    ResponseEntity<?> addProfile(@RequestBody ProfileReqDto profileReqDto);
+    @PostMapping("/addresses")
+    ResponseEntity<?> addAddress(@RequestBody AddressReqDto addressReqDto);
 
-    @PutMapping("/profiles/{id}")
-    ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody ProfileReqDto profileReqDto);
+    @PutMapping("/addresses/{id}")
+    ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody AddressReqDto addressReqDto);
 
-    @DeleteMapping("/profiles/{id}")
-    ResponseEntity<?> deleteProfile(@PathVariable Long id);
+    @DeleteMapping("/addresses/{id}")
+    ResponseEntity<?> deleteAddress(@PathVariable Long id);
 }

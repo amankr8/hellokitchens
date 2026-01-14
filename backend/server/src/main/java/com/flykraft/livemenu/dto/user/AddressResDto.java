@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ProfileResDto {
+public class AddressResDto {
     private Long id;
     private String address;
 }
