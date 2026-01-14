@@ -25,11 +25,16 @@ export class OrderSuccessComponent {
 
   constructor() {
     const navigation = history.state;
-    this.orderData.set(navigation.orderData || null);
     this.cartItems.set(navigation.cartItems || null);
-    this.whatsappUrl.set(
-      this.whatsappService.generateWhatsAppLink(this.orderData()!!)
-    );
+    this.orderData.set(navigation.orderData || null);
+
+    const cartItems = this.cartItems();
+    const orderData = this.orderData();
+    if (cartItems && orderData) {
+      this.whatsappUrl.set(
+        this.whatsappService.generateWhatsAppLink(cartItems, orderData)
+      );
+    }
   }
 
   ngOnInit() {

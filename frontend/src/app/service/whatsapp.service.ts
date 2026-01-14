@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Order } from '../model/order';
 import { KitchenService } from './kitchen.service';
+import { CartItem } from '../model/cart-item';
 
 @Injectable({
   providedIn: 'root',
@@ -9,30 +10,32 @@ export class WhatsappService {
   kitchenService = inject(KitchenService);
   kitchen = this.kitchenService.kitchen;
 
-  generateWhatsAppLink(order: Order): string {
-    const itemsList = order.orderItems
+  generateWhatsAppLink(cartItems: CartItem[], orderData: Order): string {
+    const itemsList = cartItems
       .map(
-        (item: any) =>
-          `• ${item.name} x ${item.quantity} (₹${item.price * item.quantity})`
+        (item: CartItem) =>
+          `• ${item.menuItem.name} x ${item.quantity} (₹${
+            item.menuItem.price * item.quantity
+          })`
       )
       .join('\n');
 
     const message = [
       `*NEW ORDER RECEIVED!* 🍕`,
-      `*Order ID:* #${order.id}`,
+      `*Order ID:* #${orderData.id}`,
       `--------------------------`,
       `*Customer Details:*`,
-      `👤 ${order.customerName}`,
-      `📍 ${order.customerAddress}`,
-      `📞 ${order.customerPhone || 'N/A'}`,
+      `👤 ${orderData.customerName}`,
+      `📍 ${orderData.customerAddress}`,
+      `📞 ${orderData.customerPhone || 'N/A'}`,
       `\n*Items:*`,
       itemsList,
       `\n*Bill Summary:*`,
-      `Subtotal: ₹${order.subtotal || ''}`,
-      `Delivery: ₹${order.deliveryFee || '40'}`,
-      `*Total Payable: ₹${order.totalAmount}*`,
+      `Subtotal: ₹${orderData.subtotal || ''}`,
+      `Delivery: ₹${orderData.deliveryFee || '40'}`,
+      `*Total Payable: ₹${orderData.totalAmount}*`,
       `--------------------------`,
-      `*Notes:* ${order.specialInstructions || 'NIL'}`,
+      `*Notes:* ${orderData.specialInstructions || 'NIL'}`,
       `\n👉 Please share the *UPI QR Code* to confirm this order.`,
     ].join('\n');
 

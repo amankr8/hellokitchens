@@ -230,8 +230,8 @@ export class CartComponent {
         this.cartService.clearCart();
         this.router.navigate(['/order-success', order.id], {
           state: {
-            orderData: order,
             cartItems: cartItems,
+            orderData: order,
           },
           replaceUrl: true,
         });
