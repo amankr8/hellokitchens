@@ -51,7 +51,10 @@
           </div>
 
           <div
-            *ngIf="(user()?.addresses?.length ?? 0) === 0; else existingUser"
+            *ngIf="
+              !isUserLoading() && (user()?.addresses?.length ?? 0) === 0;
+              else existingUser
+            "
             class="space-y-4"
           >
             <div class="space-y-1">
@@ -111,8 +114,25 @@
             </div>
           </div>
 
-          <ng-template #existingUser>
-            <div class="grid gap-3" *ngIf="!isAddingNewAddress()">
+          <ng-template #existingUser
+            ><div class="grid gap-3" *ngIf="isUserLoading()">
+              <div
+                *ngFor="let i of [1]"
+                class="p-5 border-2 border-gray-50 rounded-3xl flex items-center gap-4 animate-pulse"
+              >
+                <div
+                  class="w-5 h-5 bg-gray-100 rounded-full flex-shrink-0"
+                ></div>
+                <div class="flex-1 space-y-2">
+                  <div class="h-3 bg-gray-100 rounded-full w-3/4"></div>
+                  <div class="h-3 bg-gray-50 rounded-full w-1/2"></div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="grid gap-3"
+              *ngIf="!isUserLoading() && !isAddingNewAddress()"
+            >
               <div
                 *ngFor="let addr of user()?.addresses"
                 (click)="selectAddress(addr)"
@@ -162,7 +182,10 @@
               </button>
             </div>
 
-            <div class="space-y-4 animate-fade-in" *ngIf="isAddingNewAddress()">
+            <div
+              class="space-y-4 animate-fade-in"
+              *ngIf="!isUserLoading() && isAddingNewAddress()"
+            >
               <div class="space-y-1">
                 <div class="flex justify-between items-end px-1">
                   <label class="text-[10px] font-black uppercase text-gray-400">

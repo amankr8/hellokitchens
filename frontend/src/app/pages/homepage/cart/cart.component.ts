@@ -42,8 +42,11 @@ export class CartComponent {
   private fb = inject(FormBuilder);
 
   kitchen = this.kitchenService.kitchen;
-  user = this.userService.user;
   cartItems = this.cartService.cartItems;
+
+  user = this.userService.user;
+  isUserLoading = this.userService.loading;
+  errorLoadingUser = this.userService.error;
 
   selectedAddressId = signal<number | null>(null);
   editingAddressId = signal<number | null>(null);
