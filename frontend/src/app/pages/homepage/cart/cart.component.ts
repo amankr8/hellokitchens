@@ -18,7 +18,8 @@ import { OrderService } from '../../../service/order.service';
 import { UiService } from '../../../service/ui.service';
 import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
 import { CartItem } from '../../../model/cart-item';
-import { Address } from '../../../model/user';
+import { Address, User } from '../../../model/user';
+import { WhatsappService } from '../../../service/whatsapp.service';
 
 @Component({
   selector: 'app-cart',
@@ -39,6 +40,7 @@ export class CartComponent {
   orderService = inject(OrderService);
   router = inject(Router);
   uiService = inject(UiService);
+  private whatsappService = inject(WhatsappService);
   private fb = inject(FormBuilder);
 
   kitchen = this.kitchenService.kitchen;
@@ -75,7 +77,7 @@ export class CartComponent {
       if (user.defaultAddressId) {
         this.selectedAddressId.set(user.defaultAddressId);
         const defaultAddr = user.addresses.find(
-          (a: any) => a.id === user.defaultAddressId
+          (a: Address) => a.id === user.defaultAddressId
         );
         if (defaultAddr) {
           this.userForm.patchValue({ address: defaultAddr.address });
@@ -223,8 +225,10 @@ export class CartComponent {
 
     this.orderService.placeOrder(payload).subscribe({
       next: (order) => {
+        const waLink = this.whatsappService.generateWhatsAppLink(order);
         this.cartService.clearCart();
         this.router.navigate(['/order-success', order.id], {
+          state: { whatsappUrl: waLink, orderData: order },
           replaceUrl: true,
         });
       },

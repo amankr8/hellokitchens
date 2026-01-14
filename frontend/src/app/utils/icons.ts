@@ -28,9 +28,14 @@ import {
   faArrowRight,
   faReceipt,
   faNoteSticky,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+
 export const Icons = {
+  check: faCheck,
+  whatsapp: faWhatsapp,
   notes: faNoteSticky,
   receipt: faReceipt,
   arrowRight: faArrowRight,

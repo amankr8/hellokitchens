@@ -18,6 +18,6 @@ public class OrderResponseDto {
     private String customerPhone;
     private String customerAddress;
     private OrderStatus status;
-    private BigDecimal totalPrice;
+    private BigDecimal totalAmount;
     private List<OrderItemResponseDto> orderItems;
 }

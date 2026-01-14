@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -66,7 +64,7 @@ public class Order extends Auditable {
                 .customerPhone(this.customerPhone)
                 .customerAddress(this.customerAddress)
                 .status(this.status)
-                .totalPrice(this.totalPrice)
+                .totalAmount(this.totalPrice)
                 .orderItems(this.orderItems.stream()
                         .map(OrderItem::toResponseDto)
                         .toList())

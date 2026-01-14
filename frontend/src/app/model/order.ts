@@ -1,5 +1,21 @@
 export interface Order {
   id: number;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  status: string;
+  subtotal: number;
+  deliveryFee: number;
+  totalAmount: number;
+  specialInstructions: string;
+  orderItems: OrderItem[];
+}
+
+export interface OrderItem {
+  id: number;
+  menuItemId: number;
+  quantity: number;
+  price: number;
 }
 
 export interface OrderPayload {

@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Order } from '../../../model/order';
 
 @Component({
   selector: 'app-order-success',
@@ -10,13 +11,18 @@ import { RouterLink } from '@angular/router';
 })
 export class OrderSuccessComponent {
   id = input.required<string>();
+  whatsappUrl = signal<string>('');
+  orderData = signal<Order | null>(null);
+
   icons = Icons;
+
+  constructor(private router: Router) {
+    const navigation = this.router.getCurrentNavigation();
+    this.whatsappUrl.set(navigation?.extras.state?.['whatsappUrl'] || '');
+    this.orderData.set(navigation?.extras.state?.['orderData'] || '');
+  }
 
   ngOnInit() {
     document.title = 'Thank you for ordering with us!';
   }
-
-  // You can use a library like 'ngx-lottie' or a simple <img> for the GIF/Lottie
-  confettiAnimation =
-    'https://assets9.lottiefiles.com/packages/lf20_u4y3699e.json';
 }
