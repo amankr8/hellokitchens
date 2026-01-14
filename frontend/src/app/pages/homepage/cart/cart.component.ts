@@ -213,7 +213,7 @@ export class CartComponent {
     this.isPlacingOrder.set(true);
 
     const payload = {
-      userDetails: this.userForm.value,
+      customerDetails: this.userForm.value,
       specialInstructions: this.specialInstructions(),
       orderItems: this.cartItems().map((item) => ({
         menuItemId: item.menuItem.id,

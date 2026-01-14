@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderRequestDto {
-    private UserReqDto userDetails;
+    private UserReqDto customerDetails;
     private String specialInstructions;
     private List<OrderItemRequestDto> orderItems;
 }

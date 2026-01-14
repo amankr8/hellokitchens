@@ -3,7 +3,7 @@ export interface Order {
 }
 
 export interface OrderPayload {
-  userDetails: CustomerDetails;
+  customerDetails: CustomerDetails;
   specialInstructions: string;
   orderItems: OrderItemPayload[];
 }

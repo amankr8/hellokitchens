@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         Kitchen kitchen = kitchenService.loadKitchenById(TenantContext.getKitchenId());
         AuthUser authUser = AuthUtil.getLoggedInUser();
 
-        UserReqDto userReqDto = orderRequestDto.getUserDetails();
+        UserReqDto userReqDto = orderRequestDto.getCustomerDetails();
         if (userReqDto.getPhone() == null || userReqDto.getPhone().isEmpty()) {
             userReqDto.setPhone(authUser.getUsername());
         }
