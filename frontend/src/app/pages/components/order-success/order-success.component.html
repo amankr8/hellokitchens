@@ -11,7 +11,7 @@
     <p
       class="text-orange-600 text-[10px] font-black uppercase tracking-[0.2em] mt-1"
     >
-      Order #{{ orderData()?.id }}
+      Order #{{ this.id() }}
     </p>
   </div>
 
@@ -28,7 +28,7 @@
         @for (item of orderData()?.orderItems; track item.id) {
         <div class="flex justify-between items-center">
           <span class="text-sm font-bold text-gray-700"
-            >{{ item.quantity }}x {{ item.id }}</span
+            >{{ item.quantity }} x {{ item.id }}</span
           >
           <span class="text-sm font-black text-gray-900"
             >₹{{ item.price * item.quantity }}</span

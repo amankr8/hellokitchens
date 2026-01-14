@@ -17,9 +17,9 @@ export class OrderSuccessComponent {
   icons = Icons;
 
   constructor(private router: Router) {
-    const navigation = this.router.getCurrentNavigation();
-    this.whatsappUrl.set(navigation?.extras.state?.['whatsappUrl'] || '');
-    this.orderData.set(navigation?.extras.state?.['orderData'] || '');
+    const navigation = history.state;
+    this.whatsappUrl.set(navigation.whatsappUrl || '');
+    this.orderData.set(navigation.orderData || null);
   }
 
   ngOnInit() {
