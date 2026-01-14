@@ -102,6 +102,7 @@ export class OtpLoginComponent {
     } catch (error) {
       this.error.set('Invalid code. Please check and try again.');
       this.otpValue = '';
+    } finally {
       this.loading.set(false);
     }
   }

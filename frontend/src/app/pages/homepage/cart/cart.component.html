@@ -145,7 +145,6 @@
                   </button>
 
                   <button
-                    *ngIf="selectedAddressId() !== addr.id"
                     (click)="deleteAddress($event, addr.id)"
                     class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 active:bg-red-100 active:text-red-500 md:hover:bg-red-50 md:hover:text-red-500 transition-all animate-fade-in"
                   >

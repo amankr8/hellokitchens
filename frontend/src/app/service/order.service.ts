@@ -20,7 +20,7 @@ export class OrderService {
     return this.http.post<Order>(this.apiUrl, orderPayload).pipe(
       tap(() => {
         const user = this.user();
-        if (!user || user.addresses.length === 0) {
+        if (!user || user.addresses?.length === 0) {
           this.userService.loadUser();
         }
       })

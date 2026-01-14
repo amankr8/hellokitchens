@@ -140,10 +140,13 @@ export class CartComponent {
 
   deleteAddress(event: Event, profileId: number) {
     event.stopPropagation();
-    if (this.selectedAddressId() === profileId) return;
+    if (this.selectedAddressId() === profileId) {
+      this.uiService.showToast('Selected address cannot be deleted', 'error');
+      return;
+    }
 
     if (this.user()?.defaultAddressId === profileId) {
-      this.uiService.showToast('Cannot delete the default address', 'error');
+      this.uiService.showToast('Default address cannot be deleted', 'error');
       return;
     }
 
@@ -205,7 +208,7 @@ export class CartComponent {
       this.isPlacingOrder()
     ) {
       this.userForm.markAllAsTouched();
-      this.uiService.showToast('Please fill in the delivery details', 'error');
+      this.uiService.showToast('Please fill in the delivery details', 'info');
       return;
     }
 
@@ -230,7 +233,10 @@ export class CartComponent {
       error: (err) => {
         console.error('Order failed', err);
         this.isPlacingOrder.set(false);
-        this.uiService.showToast('Some error occurred. Please try again.');
+        this.uiService.showToast(
+          'Some error occurred. Please try again.',
+          'error'
+        );
       },
     });
   }
