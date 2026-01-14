@@ -21,7 +21,7 @@ export class OrderService {
       tap(() => {
         const user = this.user();
         if (!user || user.addresses?.length === 0) {
-          this.userService.loadUser();
+          this.userService.refreshUser();
         }
       })
     );

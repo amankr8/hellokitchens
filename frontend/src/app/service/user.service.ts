@@ -27,6 +27,15 @@ export class UserService {
   // --------------------
   loadUser(): void {
     if (this._user() !== null || this._loading()) return;
+    this.fetchUserDetails();
+  }
+
+  refreshUser(): void {
+    this.fetchUserDetails();
+  }
+
+  private fetchUserDetails(): void {
+    if (this._loading()) return;
 
     this._loading.set(true);
     this._error.set(null);

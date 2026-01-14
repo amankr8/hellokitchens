@@ -18,4 +18,8 @@ export class NotFoundComponent {
     const host = window.location.hostname;
     this.subdomain = host.split('.')[0];
   }
+
+  goBack(): void {
+    window.history.back();
+  }
 }
