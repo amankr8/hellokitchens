@@ -19,7 +19,6 @@ import { UiService } from '../../../service/ui.service';
 import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
 import { CartItem } from '../../../model/cart-item';
 import { Address, User } from '../../../model/user';
-import { WhatsappService } from '../../../service/whatsapp.service';
 
 @Component({
   selector: 'app-cart',
@@ -40,7 +39,6 @@ export class CartComponent {
   orderService = inject(OrderService);
   router = inject(Router);
   uiService = inject(UiService);
-  private whatsappService = inject(WhatsappService);
   private fb = inject(FormBuilder);
 
   kitchen = this.kitchenService.kitchen;
@@ -214,10 +212,11 @@ export class CartComponent {
 
     this.isPlacingOrder.set(true);
 
+    const cartItems = this.cartItems();
     const payload = {
       customerDetails: this.userForm.value,
       specialInstructions: this.specialInstructions(),
-      orderItems: this.cartItems().map((item) => ({
+      orderItems: cartItems.map((item) => ({
         menuItemId: item.menuItem.id,
         quantity: item.quantity,
       })),
@@ -225,10 +224,12 @@ export class CartComponent {
 
     this.orderService.placeOrder(payload).subscribe({
       next: (order) => {
-        const waLink = this.whatsappService.generateWhatsAppLink(order);
         this.cartService.clearCart();
         this.router.navigate(['/order-success', order.id], {
-          state: { whatsappUrl: waLink, orderData: order },
+          state: {
+            orderData: order,
+            cartItems: cartItems,
+          },
           replaceUrl: true,
         });
       },
