@@ -1,7 +1,7 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Order } from '../../../model/order';
 
 import * as confetti from 'canvas-confetti';
@@ -43,7 +43,7 @@ export class OrderSuccessComponent {
   }
 
   launchConfetti() {
-    const duration = 3 * 1000;
+    const duration = 2 * 1000;
     const end = Date.now() + duration;
 
     const frame = () => {
@@ -52,14 +52,14 @@ export class OrderSuccessComponent {
         angle: 60,
         spread: 55,
         origin: { x: 0 },
-        colors: ['#EA580C', '#FBBF24'], // Our brand colors (Orange & Gold)
+        colors: ['#EA580C', '#FBBF24'],
       });
       confetti.default({
         particleCount: 3,
         angle: 120,
         spread: 55,
         origin: { x: 1 },
-        colors: ['#25D366', '#FBBF24'], // WhatsApp Green & Gold
+        colors: ['#25D366', '#FBBF24'],
       });
 
       if (Date.now() < end) {
