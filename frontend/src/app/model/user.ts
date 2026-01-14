@@ -3,16 +3,10 @@ export interface User {
   name: string;
   phone: string;
   defaultAddressId: number;
-  addresses: Profile[];
+  addresses: Address[];
 }
 
-export interface Profile {
+export interface Address {
   id: number;
-  address: string;
-}
-
-export interface ProfilePayload {
-  name: string | null;
-  phone: string | null;
   address: string;
 }

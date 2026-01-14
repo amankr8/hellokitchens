@@ -18,7 +18,7 @@ import { OrderService } from '../../../service/order.service';
 import { UiService } from '../../../service/ui.service';
 import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
 import { CartItem } from '../../../model/cart-item';
-import { Profile } from '../../../model/user';
+import { Address } from '../../../model/user';
 
 @Component({
   selector: 'app-cart',
@@ -95,7 +95,7 @@ export class CartComponent {
     this.userForm.patchValue({ address: '' });
   }
 
-  startEditingAddress(event: Event, addr: Profile) {
+  startEditingAddress(event: Event, addr: Address) {
     event.stopPropagation();
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
@@ -119,7 +119,7 @@ export class CartComponent {
     this.cartService.removeFromCart(item.menuItem);
   }
 
-  selectAddress(addr: Profile) {
+  selectAddress(addr: Address) {
     this.selectedAddressId.set(addr.id);
     this.userForm.patchValue({ address: addr.address });
   }
@@ -138,14 +138,14 @@ export class CartComponent {
     () => this.subtotal() + this.deliveryFee() + this.platformFee()
   );
 
-  deleteAddress(event: Event, profileId: number) {
+  deleteAddress(event: Event, addrId: number) {
     event.stopPropagation();
-    if (this.selectedAddressId() === profileId) {
+    if (this.selectedAddressId() === addrId) {
       this.uiService.showToast('Selected address cannot be deleted', 'error');
       return;
     }
 
-    if (this.user()?.defaultAddressId === profileId) {
+    if (this.user()?.defaultAddressId === addrId) {
       this.uiService.showToast('Default address cannot be deleted', 'error');
       return;
     }
@@ -155,9 +155,9 @@ export class CartComponent {
       message: `Are you sure you want to delete this address?`,
       confirmText: 'Yes, Delete',
       action: () => {
-        this.userService.deleteProfile(profileId).subscribe({
+        this.userService.deleteAddress(addrId).subscribe({
           next: () => {
-            if (this.selectedAddressId() === profileId) {
+            if (this.selectedAddressId() === addrId) {
               this.selectedAddressId.set(null);
               this.userForm.get('address')?.setValue('');
             }
@@ -175,8 +175,6 @@ export class CartComponent {
     this.savingNewAddress.set(true);
 
     const payload = {
-      name: this.user()?.name ?? null,
-      phone: this.user()?.phone ?? null,
       address: addressValue,
     };
 

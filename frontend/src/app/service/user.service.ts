@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Profile, ProfilePayload, User } from '../model/user';
+import { Address, User } from '../model/user';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -46,10 +46,10 @@ export class UserService {
   // --------------------
   // Mutations
   // --------------------
-  addProfile(payload: ProfilePayload): Observable<Profile> {
+  addProfile(payload: { address: string }): Observable<Address> {
     this._error.set(null);
 
-    return this.http.post<Profile>(`${this.apiUrl}/profiles`, payload).pipe(
+    return this.http.post<Address>(`${this.apiUrl}/profiles`, payload).pipe(
       tap((profile) => {
         const user = this._user();
 
@@ -63,7 +63,7 @@ export class UserService {
     );
   }
 
-  private appendProfile(profile: Profile): void {
+  private appendProfile(profile: Address): void {
     this._user.update((user) =>
       user
         ? {
@@ -75,15 +75,15 @@ export class UserService {
   }
 
   updateProfile(
-    profileId: number,
-    payload: ProfilePayload
-  ): Observable<Profile> {
+    addressId: number,
+    payload: { address: string }
+  ): Observable<Address> {
     this._error.set(null);
 
     return this.http
-      .put<Profile>(`${this.apiUrl}/profiles/${profileId}`, payload)
+      .put<Address>(`${this.apiUrl}/profiles/${addressId}`, payload)
       .pipe(
-        tap((updatedProfile) => {
+        tap((updatedAddress) => {
           const user = this._user();
 
           if (!user) {
@@ -91,12 +91,12 @@ export class UserService {
             return;
           }
 
-          this.replaceProfile(updatedProfile);
+          this.replaceAddress(updatedAddress);
         })
       );
   }
 
-  private replaceProfile(updated: Profile): void {
+  private replaceAddress(updated: Address): void {
     this._user.update((user) =>
       user
         ? {
@@ -109,7 +109,7 @@ export class UserService {
     );
   }
 
-  deleteProfile(profileId: number): Observable<void> {
+  deleteAddress(addressId: number): Observable<void> {
     this._error.set(null);
 
     const previousUser = this._user();
@@ -118,12 +118,12 @@ export class UserService {
       user
         ? {
             ...user,
-            addresses: user.addresses.filter((p) => p.id !== profileId),
+            addresses: user.addresses.filter((p) => p.id !== addressId),
           }
         : user
     );
 
-    return this.http.delete<void>(`${this.apiUrl}/profiles/${profileId}`).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/profiles/${addressId}`).pipe(
       catchError((err) => {
         this._user.set(previousUser);
         return throwError(() => err);
