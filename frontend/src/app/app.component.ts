@@ -34,9 +34,7 @@ export class AppComponent {
   constructor() {
     effect(() => {
       const kitchen = this.kitchen();
-
       if (!kitchen) return;
-
       document.title = kitchen.name ?? APP_NAME;
     });
   }
