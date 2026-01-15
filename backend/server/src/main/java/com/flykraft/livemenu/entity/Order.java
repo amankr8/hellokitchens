@@ -43,15 +43,33 @@ public class Order extends Auditable {
     @Column(name = "o_customer_phone", nullable = false)
     private String customerPhone;
 
-    @Column(name = "o_customer_address", nullable = false)
-    private String customerAddress;
+    @Column(name = "o_delivery_street", nullable = false)
+    private String deliveryStreet;
+
+    @Column(name = "o_delivery_address", nullable = false)
+    private String deliveryAddress;
+
+    @Column(name = "o_delivery_pluscode", nullable = false)
+    private String deliveryPluscode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "o_status", nullable = false)
     private OrderStatus status;
 
-    @Column(name = "o_total_price", nullable = false)
-    private BigDecimal totalPrice;
+    @Column(name = "o_subtotal", nullable = false)
+    private BigDecimal subTotal;
+
+    @Column(name = "o_packing_charges", nullable = false)
+    private BigDecimal packingCharges;
+
+    @Column(name = "o_delivery_fees", nullable = false)
+    private BigDecimal deliveryFees;
+
+    @Column(name = "o_taxes", nullable = false)
+    private BigDecimal taxes;
+
+    @Column(name = "o_total_amount", nullable = false)
+    private BigDecimal totalAmount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
@@ -62,9 +80,9 @@ public class Order extends Auditable {
                 .kitchenId(this.kitchen.getId())
                 .customerName(this.customerName)
                 .customerPhone(this.customerPhone)
-                .customerAddress(this.customerAddress)
+                .deliveryAddress(this.deliveryAddress)
                 .status(this.status)
-                .totalAmount(this.totalPrice)
+                .totalAmount(this.totalAmount)
                 .orderItems(this.orderItems.stream()
                         .map(OrderItem::toResponseDto)
                         .toList())

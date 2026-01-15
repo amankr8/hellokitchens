@@ -67,9 +67,9 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .customerName(userReqDto.getName())
                 .customerPhone(userReqDto.getPhone())
-                .customerAddress(userReqDto.getAddress())
+                .deliveryAddress(userReqDto.getAddress())
                 .status(OrderStatus.PENDING)
-                .totalPrice(BigDecimal.ZERO)
+                .totalAmount(BigDecimal.ZERO)
                 .build();
         order = orderRepository.save(order);
 
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
         }
         orderItemRepository.saveAll(orderItems);
         order.setOrderItems(orderItems);
-        order.setTotalPrice(totalPrice);
+        order.setTotalAmount(totalPrice);
         return order;
     }
 

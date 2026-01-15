@@ -16,7 +16,7 @@ public class OrderResponseDto {
     private Long kitchenId;
     private String customerName;
     private String customerPhone;
-    private String customerAddress;
+    private String deliveryAddress;
     private OrderStatus status;
     private BigDecimal totalAmount;
     private List<OrderItemResponseDto> orderItems;
