@@ -67,8 +67,14 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .customerName(userReqDto.getName())
                 .customerPhone(userReqDto.getPhone())
+                .deliveryStreet("")
                 .deliveryAddress(userReqDto.getAddress())
+                .deliveryPluscode("")
                 .status(OrderStatus.PENDING)
+                .subTotal(BigDecimal.ZERO)
+                .packingCharges(BigDecimal.ZERO)
+                .deliveryFees(BigDecimal.ZERO)
+                .taxes(BigDecimal.ZERO)
                 .totalAmount(BigDecimal.ZERO)
                 .build();
         order = orderRepository.save(order);
