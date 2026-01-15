@@ -5,6 +5,7 @@ export interface Order {
   customerAddress: string;
   status: string;
   subtotal: number;
+  packingCharges: number;
   deliveryFee: number;
   totalAmount: number;
   specialInstructions: string;

@@ -44,8 +44,8 @@
         <span>₹45</span>
       </div>
       <div class="flex justify-between text-lg font-black text-gray-900 pt-2">
-        <span>Total Paid</span>
-        <span>₹{{ orderData()?.totalAmount }}</span>
+        <span>To Be Paid</span>
+        <span>₹{{ (orderData()?.totalAmount ?? 0) + 45 }}</span>
       </div>
     </div>
   </div>

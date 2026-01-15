@@ -43,7 +43,7 @@ export class OrderSuccessComponent {
   }
 
   launchConfetti() {
-    const duration = 2 * 1000;
+    const duration = 1 * 1000;
     const end = Date.now() + duration;
 
     const frame = () => {
