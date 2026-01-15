@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Icons } from '../../utils/icons';
+import { Icons } from '../../../utils/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({

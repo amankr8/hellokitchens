@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Icons } from '../../utils/icons';
+import { Icons } from '../../../utils/icons';
 
 @Component({
-  selector: 'app-not-found',
+  selector: 'app-kitchen-not-found',
   imports: [FontAwesomeModule],
-  templateUrl: './not-found.component.html',
+  templateUrl: './kitchen-not-found.component.html',
 })
-export class NotFoundComponent {
+export class KitchenNotFoundComponent {
   subdomain: string = '';
 
   icons = Icons;

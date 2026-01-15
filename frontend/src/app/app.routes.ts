@@ -7,7 +7,7 @@ import { KitchenComponent } from './pages/dashboard/kitchen/kitchen.component';
 import { MenuListComponent } from './pages/dashboard/menu-list/menu-list.component';
 import { AddMenuItemComponent } from './pages/dashboard/menu-list/add-menu-item/add-menu-item.component';
 import { EditMenuItemComponent } from './pages/dashboard/menu-list/edit-menu-item/edit-menu-item.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './pages/components/page-not-found/page-not-found.component';
 import { UserRole } from './enum/user-role.enum';
 import { CartComponent } from './pages/homepage/cart/cart.component';
 import { OrderSuccessComponent } from './pages/components/order-success/order-success.component';
