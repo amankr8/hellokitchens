@@ -6,7 +6,8 @@ export interface Order {
   status: string;
   subtotal: number;
   packingCharges: number;
-  deliveryFee: number;
+  deliveryFees: number;
+  taxes: number;
   totalAmount: number;
   specialInstructions: string;
   orderItems: OrderItem[];

@@ -135,10 +135,10 @@ export class CartComponent {
   );
 
   deliveryFee = signal(40);
-  platformFee = signal(5);
+  packingCharge = signal(15);
 
   totalAmount = computed(
-    () => this.subtotal() + this.deliveryFee() + this.platformFee()
+    () => this.subtotal() + this.deliveryFee() + this.packingCharge()
   );
 
   deleteAddress(event: Event, addrId: number) {

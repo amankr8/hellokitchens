@@ -20,6 +20,8 @@ export class WhatsappService {
       )
       .join('\n');
 
+    const taxesAndFees =
+      orderData.deliveryFees + orderData.packingCharges + orderData.taxes;
     const message = [
       `*NEW ORDER RECEIVED!* 🍕`,
       `*Order ID:* #${orderData.id}`,
@@ -31,9 +33,9 @@ export class WhatsappService {
       `\n*Items:*`,
       itemsList,
       `\n*Bill Summary:*`,
-      `Subtotal: ₹${orderData.totalAmount || ''}`,
-      `Taxes & Fees: ₹${orderData.deliveryFee || '45'}`,
-      `*Total Payable: ₹${orderData.totalAmount + 45}*`,
+      `Subtotal: ₹${orderData.subtotal}`,
+      `Taxes & Fees: ₹${taxesAndFees}`,
+      `*Total Payable: ₹${orderData.subtotal + taxesAndFees}*`,
       `--------------------------`,
       `*Notes:* ${orderData.specialInstructions || 'NIL'}`,
       `\n👉 Please share the *UPI QR Code* to confirm this order.`,

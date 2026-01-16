@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
 import { RouterLink } from '@angular/router';
@@ -41,6 +41,13 @@ export class OrderSuccessComponent {
     this.launchConfetti();
     document.title = 'Thank you for ordering with us!';
   }
+
+  taxesAndFees = computed(
+    () =>
+      (this.orderData()?.packingCharges ?? 0) +
+      (this.orderData()?.deliveryFees ?? 0) +
+      (this.orderData()?.taxes ?? 0)
+  );
 
   launchConfetti() {
     const duration = 1 * 1000;

@@ -57,19 +57,22 @@ public class Order extends Auditable {
     private OrderStatus status;
 
     @Column(name = "o_subtotal", nullable = false)
-    private BigDecimal subTotal;
+    private BigDecimal subtotal;
 
     @Column(name = "o_packing_charges", nullable = false)
-    private BigDecimal packingCharges;
+    private BigDecimal packingCharges = BigDecimal.ZERO;
 
     @Column(name = "o_delivery_fees", nullable = false)
-    private BigDecimal deliveryFees;
+    private BigDecimal deliveryFees = BigDecimal.ZERO;
 
     @Column(name = "o_taxes", nullable = false)
-    private BigDecimal taxes;
+    private BigDecimal taxes = BigDecimal.ZERO;
 
     @Column(name = "o_total_amount", nullable = false)
     private BigDecimal totalAmount;
+
+    @Column(name = "o_special_instructions")
+    private String specialInstructions;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
@@ -82,7 +85,12 @@ public class Order extends Auditable {
                 .customerPhone(this.customerPhone)
                 .deliveryAddress(this.deliveryAddress)
                 .status(this.status)
+                .subtotal(this.subtotal)
+                .packingCharges(this.packingCharges)
+                .deliveryFees(this.deliveryFees)
+                .taxes(this.taxes)
                 .totalAmount(this.totalAmount)
+                .specialInstructions(this.specialInstructions)
                 .orderItems(this.orderItems.stream()
                         .map(OrderItem::toResponseDto)
                         .toList())

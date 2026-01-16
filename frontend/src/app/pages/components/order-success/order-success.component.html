@@ -41,11 +41,11 @@
     <div class="p-6 space-y-2">
       <div class="flex justify-between text-xs font-bold text-gray-400">
         <span>Taxes & Fees</span>
-        <span>₹45</span>
+        <span>{{ taxesAndFees() }}</span>
       </div>
       <div class="flex justify-between text-lg font-black text-gray-900 pt-2">
         <span>To Be Paid</span>
-        <span>₹{{ (orderData()?.totalAmount ?? 0) + 45 }}</span>
+        <span>₹{{ (orderData()?.subtotal ?? 0) + taxesAndFees() }}</span>
       </div>
     </div>
   </div>

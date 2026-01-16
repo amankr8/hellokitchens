@@ -71,15 +71,16 @@ public class OrderServiceImpl implements OrderService {
                 .deliveryAddress(userReqDto.getAddress())
                 .deliveryPluscode("")
                 .status(OrderStatus.PENDING)
-                .subTotal(BigDecimal.ZERO)
-                .packingCharges(BigDecimal.ZERO)
-                .deliveryFees(BigDecimal.ZERO)
+                .subtotal(BigDecimal.ZERO)
+                .packingCharges(BigDecimal.valueOf(15))
+                .deliveryFees(BigDecimal.valueOf(40))
                 .taxes(BigDecimal.ZERO)
                 .totalAmount(BigDecimal.ZERO)
+                .specialInstructions(orderRequestDto.getSpecialInstructions())
                 .build();
         order = orderRepository.save(order);
 
-        BigDecimal totalPrice = BigDecimal.ZERO;
+        BigDecimal subTotal = BigDecimal.ZERO;
         List<OrderItem> orderItems = new ArrayList<>();
         for (var itemDto : orderRequestDto.getOrderItems()) {
             MenuItem menuItem = menuService.loadMenuItemById(itemDto.getMenuItemId());
@@ -90,11 +91,11 @@ public class OrderServiceImpl implements OrderService {
                     .price(menuItem.getPrice())
                     .build();
             orderItems.add(orderItem);
-            totalPrice = totalPrice.add(menuItem.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity())));
+            subTotal = subTotal.add(menuItem.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity())));
         }
         orderItemRepository.saveAll(orderItems);
         order.setOrderItems(orderItems);
-        order.setTotalAmount(totalPrice);
+        order.setSubtotal(subTotal);
         return order;
     }
 
