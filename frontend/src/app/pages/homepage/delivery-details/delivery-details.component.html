@@ -236,10 +236,15 @@
         <div class="absolute bottom-4 right-4 flex gap-2">
           <button
             type="button"
-            class="px-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] font-black uppercase text-orange-600 shadow-sm active:scale-95"
+            (click)="getCurrentLocation()"
+            [disabled]="isLocating()"
+            class="px-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] font-black uppercase text-orange-600 shadow-sm active:scale-95 disabled:opacity-50 transition-all flex items-center gap-2"
           >
-            <fa-icon [icon]="icons.location" class="mr-1"></fa-icon> Use Current
-            Location
+            <fa-icon
+              [icon]="isLocating() ? icons.spinner : icons.location"
+              [animation]="isLocating() ? 'spin' : undefined"
+            ></fa-icon>
+            <span>{{ isLocating() ? "Locating..." : "Locate Me" }}</span>
           </button>
         </div>
       </div>

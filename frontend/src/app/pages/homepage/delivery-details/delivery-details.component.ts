@@ -46,6 +46,7 @@ export class DeliveryDetailsComponent {
   isRegistering = signal(false);
   isAddingNewAddress = signal(false);
   savingNewAddress = signal(false);
+  isLocating = signal(false);
 
   isUserRegistered = computed(() => !!this.user()?.name);
 
@@ -195,6 +196,58 @@ export class DeliveryDetailsComponent {
         this.uiService.showToast('Failed to save address', 'error');
       },
     });
+  }
+
+  getCurrentLocation() {
+    if (!navigator.geolocation) {
+      this.uiService.showToast(
+        'Geolocation is not supported by your browser',
+        'error'
+      );
+      return;
+    }
+
+    this.isLocating.set(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        this.reverseGeocode(latitude, longitude);
+      },
+      (error) => {
+        this.isLocating.set(false);
+        this.handleLocationError(error);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  private reverseGeocode(lat: number, lng: number) {
+    setTimeout(() => {
+      const mockAddress = `Sector 4, HSR Layout, Bengaluru, Karnataka 560102 (Lat: ${lat.toFixed(
+        4
+      )}, Lng: ${lng.toFixed(4)})`;
+
+      this.userForm.patchValue({ address: mockAddress });
+      this.isLocating.set(false);
+      this.uiService.showToast('Location detected!');
+    }, 1500);
+  }
+
+  private handleLocationError(error: GeolocationPositionError) {
+    let message = 'An unknown error occurred';
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        message = 'Please allow location access in your browser settings';
+        break;
+      case error.POSITION_UNAVAILABLE:
+        message = 'Location information is unavailable';
+        break;
+      case error.TIMEOUT:
+        message = 'The request to get user location timed out';
+        break;
+    }
+    this.uiService.showToast(message, 'error');
   }
 
   placeOrder() {
