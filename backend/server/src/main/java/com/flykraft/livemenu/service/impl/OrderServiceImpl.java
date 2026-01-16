@@ -27,7 +27,6 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final UserRepository userRepository;
     private final KitchenService kitchenService;
     private final MenuService menuService;
     private final UserService userService;
@@ -58,9 +57,7 @@ public class OrderServiceImpl implements OrderService {
         if (userReqDto.getPhone() == null || userReqDto.getPhone().isEmpty()) {
             userReqDto.setPhone(authUser.getUsername());
         }
-
-        User user = userRepository.findByAuthUser(authUser)
-                .orElseGet(() -> userService.addUserDetails(userReqDto));
+        User user = userService.loadCurrentUser();
 
         Order order = Order.builder()
                 .kitchen(kitchen)

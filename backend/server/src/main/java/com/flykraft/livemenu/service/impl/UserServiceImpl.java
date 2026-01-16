@@ -29,18 +29,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
-    @Override
-    public User getUserDetails() {
-        try {
-            return loadCurrentUser();
-        } catch (ResourceNotFoundException e) {
-            return new User();
-        }
-    }
-
     @Transactional
     @Override
-    public User addUserDetails(UserReqDto userReqDto) {
+    public User addUser(UserReqDto userReqDto) {
         AuthUser authUser = AuthUtil.getLoggedInUser();
         User user = User.builder()
                 .authUser(authUser)
@@ -48,13 +39,6 @@ public class UserServiceImpl implements UserService {
                 .phone(authUser.getUsername())
                 .build();
         user = userRepository.save(user);
-        Address address = Address.builder()
-                .address(userReqDto.getAddress())
-                .user(user)
-                .build();
-        address = addressRepository.save(address);
-        user.setDefaultAddressId(address.getId());
-        user.setAddresses(List.of(address));
         return user;
     }
 
@@ -65,7 +49,11 @@ public class UserServiceImpl implements UserService {
         Address address = new Address();
         address.setUser(user);
         address.setAddress(addressReqDto.getAddress());
-        return addressRepository.save(address);
+        address = addressRepository.save(address);
+        if (user.getDefaultAddressId() == null) {
+            user.setDefaultAddressId(address.getId());
+        }
+        return address;
     }
 
     @Override

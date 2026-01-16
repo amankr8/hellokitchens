@@ -58,22 +58,21 @@ export class DeliveryDetailsComponent {
   constructor() {
     effect(() => {
       const user = this.user();
-      const selectedAddressId = this.selectedAddressId();
-      if (!user || selectedAddressId) return;
+      if (!user) return;
 
-      this.userForm.patchValue({
-        name: user.name,
-        phone: user.phone,
-      });
+      this.userForm.patchValue(
+        {
+          name: user.name || '',
+          phone: user.phone || '',
+        },
+        { emitEvent: false }
+      );
 
-      if (user.defaultAddressId) {
-        this.selectedAddressId.set(user.defaultAddressId);
-        const defaultAddr = user.addresses.find(
-          (a: Address) => a.id === user.defaultAddressId
-        );
-        if (defaultAddr) {
-          this.userForm.patchValue({ address: defaultAddr.address });
-        }
+      if (user.addresses?.length > 0 && !this.selectedAddressId()) {
+        const defaultAddr =
+          user.addresses.find((a) => a.id === user.defaultAddressId) ||
+          user.addresses[0];
+        this.selectAddress(defaultAddr);
       }
     });
   }

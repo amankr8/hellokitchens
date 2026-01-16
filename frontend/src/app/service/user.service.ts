@@ -58,7 +58,7 @@ export class UserService {
   addProfile(payload: { address: string }): Observable<Address> {
     this._error.set(null);
 
-    return this.http.post<Address>(`${this.apiUrl}/profiles`, payload).pipe(
+    return this.http.post<Address>(`${this.apiUrl}/addresses`, payload).pipe(
       tap((profile) => {
         const user = this._user();
 
@@ -90,7 +90,7 @@ export class UserService {
     this._error.set(null);
 
     return this.http
-      .put<Address>(`${this.apiUrl}/profiles/${addressId}`, payload)
+      .put<Address>(`${this.apiUrl}/addresses/${addressId}`, payload)
       .pipe(
         tap((updatedAddress) => {
           const user = this._user();
@@ -132,7 +132,7 @@ export class UserService {
         : user
     );
 
-    return this.http.delete<void>(`${this.apiUrl}/profiles/${addressId}`).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/addresses/${addressId}`).pipe(
       catchError((err) => {
         this._user.set(previousUser);
         return throwError(() => err);

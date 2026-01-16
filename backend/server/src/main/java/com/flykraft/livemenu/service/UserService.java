@@ -7,13 +7,12 @@ import com.flykraft.livemenu.entity.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
+
+    @PreAuthorize("hasAuthority('USER')")
     User loadCurrentUser();
 
     @PreAuthorize("hasAuthority('USER')")
-    User getUserDetails();
-
-    @PreAuthorize("hasAuthority('USER')")
-    User addUserDetails(UserReqDto userReqDto);
+    User addUser(UserReqDto userReqDto);
 
     @PreAuthorize("hasAuthority('USER')")
     Address addAddressForUser(AddressReqDto addressReqDto);

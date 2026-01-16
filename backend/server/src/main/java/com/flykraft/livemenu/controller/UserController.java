@@ -1,6 +1,7 @@
 package com.flykraft.livemenu.controller;
 
 import com.flykraft.livemenu.dto.user.AddressReqDto;
+import com.flykraft.livemenu.dto.user.UserReqDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,9 @@ public interface UserController {
 
     @GetMapping
     ResponseEntity<?> getUserDetails();
+
+    @PostMapping
+    ResponseEntity<?> addUser(@RequestBody UserReqDto userReqDto);
 
     @PostMapping("/addresses")
     ResponseEntity<?> addAddress(@RequestBody AddressReqDto addressReqDto);

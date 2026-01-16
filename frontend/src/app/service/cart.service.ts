@@ -9,7 +9,6 @@ export class CartService {
   STORAGE_KEY = 'cart';
 
   private loadItemsFromStorage(): CartItem[] {
-    localStorage.removeItem(this.STORAGE_KEY);
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
       return raw ? (JSON.parse(raw) as Cart).items : [];
