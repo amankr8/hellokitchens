@@ -9,9 +9,10 @@ export class CartService {
   STORAGE_KEY = 'cart';
 
   private loadItemsFromStorage(): CartItem[] {
+    localStorage.removeItem(this.STORAGE_KEY);
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as Cart).items!! : [];
+      return raw ? (JSON.parse(raw) as Cart).items : [];
     } catch {
       return [];
     }
@@ -20,7 +21,7 @@ export class CartService {
   private loadNotesFromStorage(): string | null {
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as Cart).notes!! : null;
+      return raw ? (JSON.parse(raw) as Cart).notes : null;
     } catch {
       return null;
     }
