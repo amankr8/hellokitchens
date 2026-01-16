@@ -192,10 +192,13 @@
         <button
           (click)="addDeliveryDetails()"
           [disabled]="cartItems().length === 0"
-          class="w-full max-w-2xl mx-auto py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-orange-200/50 transition-all flex items-center justify-center gap-4 active:scale-95 disabled:bg-gray-200 disabled:shadow-none"
+          class="group w-full max-w-2xl mx-auto py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-orange-200/50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-200 disabled:shadow-none"
         >
           <span>Continue</span>
-          <fa-icon [icon]="icons.arrowRight"></fa-icon>
+          <fa-icon
+            [icon]="icons.arrowRight"
+            class="transition-transform duration-300 group-hover:translate-x-1"
+          ></fa-icon>
         </button>
       </div>
     </div>
