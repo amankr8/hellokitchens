@@ -93,7 +93,9 @@ export class DeliveryDetailsComponent {
     this.userService.registerUser({ name }).subscribe({
       next: () => {
         this.isRegistering.set(false);
-        this.uiService.showToast('Profile created! Now add your address.');
+        this.uiService.showToast(
+          'Profile registered! You can add your address now.'
+        );
       },
       error: () => {
         this.isRegistering.set(false);
