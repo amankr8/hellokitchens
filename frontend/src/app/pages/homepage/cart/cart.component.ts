@@ -29,6 +29,7 @@ export class CartComponent {
   kitchen = this.kitchenService.kitchen;
   cartItems = this.cartService.cartItems;
 
+  isBillExpanded = signal(false);
   selectedAddressId = signal<number | null>(null);
   editingAddressId = signal<number | null>(null);
   specialInstructions = signal<string | null>(null);
@@ -46,6 +47,10 @@ export class CartComponent {
 
   decreaseQty(item: CartItem) {
     this.cartService.removeFromCart(item.menuItem);
+  }
+
+  toggleBill() {
+    this.isBillExpanded.update((val) => !val);
   }
 
   subtotal = computed(() =>
