@@ -4,19 +4,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../../service/cart.service';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { KitchenService } from '../../../service/kitchen.service';
 import { APP_NAME } from '../../../constants/app.constant';
-import { OrderService } from '../../../service/order.service';
-import { UiService } from '../../../service/ui.service';
 import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
 import { CartItem } from '../../../model/cart-item';
-import { Address, User } from '../../../model/user';
 
 @Component({
   selector: 'app-cart',
