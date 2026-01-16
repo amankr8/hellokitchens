@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { UserService } from '../../../service/user.service';
 import { Icons } from '../../../utils/icons';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../../service/cart.service';
@@ -9,7 +8,6 @@ import {
   FormBuilder,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { KitchenService } from '../../../service/kitchen.service';
@@ -27,91 +25,27 @@ import { Address, User } from '../../../model/user';
     FontAwesomeModule,
     RouterLink,
     FormsModule,
-    ReactiveFormsModule,
     EmptyCartComponent,
   ],
   templateUrl: './cart.component.html',
 })
 export class CartComponent {
   kitchenService = inject(KitchenService);
-  userService = inject(UserService);
   cartService = inject(CartService);
-  orderService = inject(OrderService);
   router = inject(Router);
-  uiService = inject(UiService);
-  private fb = inject(FormBuilder);
 
   kitchen = this.kitchenService.kitchen;
   cartItems = this.cartService.cartItems;
 
-  user = this.userService.user;
-  isUserLoading = this.userService.loading;
-  errorLoadingUser = this.userService.error;
-
   selectedAddressId = signal<number | null>(null);
   editingAddressId = signal<number | null>(null);
-  specialInstructions = signal('');
-  isPlacingOrder = signal(false);
-
-  isAddingNewAddress = signal(false);
-  savingNewAddress = signal(false);
+  specialInstructions = signal<string | null>(null);
 
   icons = Icons;
 
-  userForm: FormGroup = this.fb.group({
-    name: ['', Validators.required],
-    phone: [''],
-    address: ['', Validators.required],
-  });
-
-  constructor() {
-    effect(() => {
-      const user = this.user();
-      const selectedAddressId = this.selectedAddressId();
-      if (!user || selectedAddressId) return;
-
-      this.userForm.patchValue({
-        name: user.name,
-        phone: user.phone,
-      });
-
-      if (user.defaultAddressId) {
-        this.selectedAddressId.set(user.defaultAddressId);
-        const defaultAddr = user.addresses.find(
-          (a: Address) => a.id === user.defaultAddressId
-        );
-        if (defaultAddr) {
-          this.userForm.patchValue({ address: defaultAddr.address });
-        }
-      }
-    });
-  }
-
   ngOnInit() {
-    this.userService.loadUser();
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Cart';
-  }
-
-  startAddingAddress() {
-    this.isAddingNewAddress.set(true);
-    this.userForm.patchValue({ address: '' });
-  }
-
-  startEditingAddress(event: Event, addr: Address) {
-    event.stopPropagation();
-    this.editingAddressId.set(addr.id);
-    this.isAddingNewAddress.set(true);
-    this.userForm.patchValue({ address: addr.address });
-  }
-
-  cancelAddingAddress() {
-    this.isAddingNewAddress.set(false);
-    this.editingAddressId.set(null);
-    const addr = this.user()?.addresses.find(
-      (a) => a.id === this.selectedAddressId()
-    );
-    this.userForm.patchValue({ address: addr?.address ?? '' });
   }
 
   increaseQty(item: CartItem) {
@@ -120,11 +54,6 @@ export class CartComponent {
 
   decreaseQty(item: CartItem) {
     this.cartService.removeFromCart(item.menuItem);
-  }
-
-  selectAddress(addr: Address) {
-    this.selectedAddressId.set(addr.id);
-    this.userForm.patchValue({ address: addr.address });
   }
 
   subtotal = computed(() =>
@@ -141,109 +70,13 @@ export class CartComponent {
     () => this.subtotal() + this.deliveryFee() + this.packingCharge()
   );
 
-  deleteAddress(event: Event, addrId: number) {
-    event.stopPropagation();
-    if (this.selectedAddressId() === addrId) {
-      this.uiService.showToast('Selected address cannot be deleted', 'error');
-      return;
-    }
-
-    if (this.user()?.defaultAddressId === addrId) {
-      this.uiService.showToast('Default address cannot be deleted', 'error');
-      return;
-    }
-
-    this.uiService.ask({
-      title: 'Delete Address?',
-      message: `Are you sure you want to delete this address?`,
-      confirmText: 'Yes, Delete',
-      action: () => {
-        this.userService.deleteAddress(addrId).subscribe({
-          next: () => {
-            if (this.selectedAddressId() === addrId) {
-              this.selectedAddressId.set(null);
-              this.userForm.get('address')?.setValue('');
-            }
-            this.uiService.showToast('Address deleted!');
-          },
-        });
+  addDeliveryDetails() {
+    const specialInstructions = this.specialInstructions();
+    this.router.navigate(['/cart/delivery-details'], {
+      state: {
+        specialInstructions: specialInstructions,
       },
-    });
-  }
-
-  saveNewAddress() {
-    const addressValue = this.userForm.get('address')?.value;
-    if (!addressValue) return;
-
-    this.savingNewAddress.set(true);
-
-    const payload = {
-      address: addressValue,
-    };
-
-    const isEditing = this.editingAddressId();
-    const request$ = isEditing
-      ? this.userService.updateProfile(isEditing, payload)
-      : this.userService.addProfile(payload);
-
-    request$.subscribe({
-      next: (profile) => {
-        this.savingNewAddress.set(false);
-        this.cancelAddingAddress();
-        this.selectAddress(profile);
-        this.uiService.showToast(
-          isEditing ? 'Address updated!' : 'Address added successfully!'
-        );
-      },
-      error: () => {
-        this.savingNewAddress.set(false);
-        this.uiService.showToast('Failed to save address', 'error');
-      },
-    });
-  }
-
-  placeOrder() {
-    if (
-      this.userForm.invalid ||
-      this.cartItems().length === 0 ||
-      this.isPlacingOrder()
-    ) {
-      this.userForm.markAllAsTouched();
-      this.uiService.showToast('Please fill in the delivery details', 'info');
-      return;
-    }
-
-    this.isPlacingOrder.set(true);
-
-    const cartItems = this.cartItems();
-    const payload = {
-      customerDetails: this.userForm.value,
-      specialInstructions: this.specialInstructions(),
-      orderItems: cartItems.map((item) => ({
-        menuItemId: item.menuItem.id,
-        quantity: item.quantity,
-      })),
-    };
-
-    this.orderService.placeOrder(payload).subscribe({
-      next: (order) => {
-        this.cartService.clearCart();
-        this.router.navigate(['/order-success', order.id], {
-          state: {
-            cartItems: cartItems,
-            orderData: order,
-          },
-          replaceUrl: true,
-        });
-      },
-      error: (err) => {
-        console.error('Order failed', err);
-        this.isPlacingOrder.set(false);
-        this.uiService.showToast(
-          'Some error occurred. Please try again.',
-          'error'
-        );
-      },
+      replaceUrl: true,
     });
   }
 }
