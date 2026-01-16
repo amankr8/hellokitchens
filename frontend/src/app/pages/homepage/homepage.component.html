@@ -1,69 +1,66 @@
-<div class="min-h-screen bg-[#F9FAFB]">
-  <div class="bg-orange-600 h-32 w-full absolute top-0 left-0 z-0"></div>
-
-  <div class="relative z-10 max-w-4xl mx-auto pt-12 px-4 pb-20">
-    <header class="sticky top-6 z-50 mb-10">
-      <div
-        class="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl px-6 py-5 flex items-center justify-between"
-      >
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 shadow-inner"
-          >
-            <fa-icon [icon]="icons.logo" class="text-2xl"></fa-icon>
-          </div>
-          <div>
-            <h1
-              class="text-xl sm:text-2xl font-black text-gray-900 leading-tight"
-            >
-              {{ kitchen()?.name }}
-            </h1>
-            <p
-              class="text-xs sm:text-sm font-bold text-orange-600/70 uppercase tracking-widest"
-            >
-              {{ kitchen()?.tagline }}
-            </p>
-          </div>
-        </div>
-
-        <button
-          #cartButton
-          (click)="onViewCart()"
-          [disabled]="isCartEmpty()"
-          class="group relative flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-lg active:scale-95 bg-gray-900 text-white hover:bg-orange-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
-          aria-label="View Cart"
+<div class="bg-orange-600 h-32 w-full absolute top-0 left-0 z-0"></div>
+<div class="relative z-10 max-w-4xl mx-auto pt-12 px-4 pb-20">
+  <header class="sticky top-6 z-50 mb-10">
+    <div
+      class="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl px-6 py-5 flex items-center justify-between"
+    >
+      <div class="flex items-center gap-4">
+        <div
+          class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 shadow-inner"
         >
-          <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
-          <span class="hidden sm:inline">My Cart</span>
-
-          <span
-            [class.animate-badge-pulse]="isBadgePulsing()"
-            class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
+          <fa-icon [icon]="icons.logo" class="text-2xl"></fa-icon>
+        </div>
+        <div>
+          <h1
+            class="text-xl sm:text-2xl font-black text-gray-900 leading-tight"
           >
-            {{ displayedCount() }}
-          </span>
-        </button>
-      </div>
-    </header>
-
-    <section
-      class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 sm:p-8 min-h-[60vh]"
-    >
-      <div class="flex items-center justify-between mb-8">
-        <h3 class="text-xl font-black text-gray-900">Explore Menu</h3>
-        <div class="h-1 flex-1 mx-4 bg-gray-50 rounded-full"></div>
-        <fa-icon [icon]="icons.search" class="text-gray-400"></fa-icon>
+            {{ kitchen()?.name }}
+          </h1>
+          <p
+            class="text-xs sm:text-sm font-bold text-orange-600/70 uppercase tracking-widest"
+          >
+            {{ kitchen()?.tagline }}
+          </p>
+        </div>
       </div>
 
-      <app-menu></app-menu>
-    </section>
+      <button
+        #cartButton
+        (click)="onViewCart()"
+        [disabled]="isCartEmpty()"
+        class="group relative flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-lg active:scale-95 bg-gray-900 text-white hover:bg-orange-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
+        aria-label="View Cart"
+      >
+        <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
+        <span class="hidden sm:inline">My Cart</span>
 
-    <p
-      class="mt-8 text-center text-gray-400 text-xs font-bold tracking-widest uppercase"
-    >
-      Powered by LiveMenu
-    </p>
-  </div>
+        <span
+          [class.animate-badge-pulse]="isBadgePulsing()"
+          class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
+        >
+          {{ displayedCount() }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <section
+    class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 sm:p-8 min-h-[60vh]"
+  >
+    <div class="flex items-center justify-between mb-8">
+      <h3 class="text-xl font-black text-gray-900">Explore Menu</h3>
+      <div class="h-1 flex-1 mx-4 bg-gray-50 rounded-full"></div>
+      <fa-icon [icon]="icons.search" class="text-gray-400"></fa-icon>
+    </div>
+
+    <app-menu></app-menu>
+  </section>
+
+  <p
+    class="mt-8 text-center text-gray-400 text-xs font-bold tracking-widest uppercase"
+  >
+    Powered by LiveMenu
+  </p>
 </div>
 
 <app-otp-login

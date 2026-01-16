@@ -1,2 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @use "tailwindcss";
+
+/* global styles */
+html,
+body {
+  min-height: 100%;
+  background-color: #f9fafb;
+}
