@@ -208,7 +208,7 @@
     ></div>
 
     <div class="flex items-center justify-between mb-8">
-      <div>
+      <div class="ml-2">
         <h3 class="text-xl font-black text-gray-900">
           {{ editingAddressId() ? "Update" : "Add New" }} Address
         </h3>
@@ -236,6 +236,15 @@
           placeholder="Search for area, street name..."
           class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent focus:border-orange-500/20 rounded-2xl text-sm font-bold transition-all outline-none"
         />
+
+        <button
+          *ngIf="searchQuery().length > 0"
+          type="button"
+          (click)="clearSearch()"
+          class="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center bg-gray-200 text-gray-500 rounded-full hover:bg-gray-300 transition-colors animate-fade-in"
+        >
+          <fa-icon [icon]="icons.close" class="text-[10px]"></fa-icon>
+        </button>
 
         <div
           *ngIf="searchResults().length > 0"

@@ -1,4 +1,12 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { KitchenService } from '../../../service/kitchen.service';
 import { UserService } from '../../../service/user.service';
 import { CartService } from '../../../service/cart.service';
@@ -28,6 +36,8 @@ declare var google: any;
   templateUrl: './delivery-details.component.html',
 })
 export class DeliveryDetailsComponent {
+  @ViewChild('addressSearch') addressSearchInput!: ElementRef<HTMLInputElement>;
+
   kitchenService = inject(KitchenService);
   userService = inject(UserService);
   cartService = inject(CartService);
@@ -55,6 +65,7 @@ export class DeliveryDetailsComponent {
 
   isUserRegistered = computed(() => !!this.user()?.name);
 
+  searchQuery = signal('');
   searchResults = signal<any[]>([]);
   private autocompleteService: any;
 
@@ -233,10 +244,21 @@ export class DeliveryDetailsComponent {
     );
   }
 
+  clearSearch() {
+    this.searchQuery.set('');
+    this.searchResults.set([]);
+
+    if (this.addressSearchInput) {
+      this.addressSearchInput.nativeElement.value = '';
+      this.addressSearchInput.nativeElement.focus();
+    }
+  }
+
   selectSearchResult(result: any) {
     const fullAddress = result.description;
     this.userForm.patchValue({ address: fullAddress });
     this.searchResults.set([]);
+    this.clearSearch();
   }
 
   getCurrentLocation() {
