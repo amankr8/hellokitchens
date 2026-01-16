@@ -94,12 +94,14 @@ export class OtpLoginComponent {
         this.authService.firebaseLogin(firebaseToken).subscribe({
           next: () => this.success.emit(),
           error: (err) => {
+            this.loading.set(false);
             this.error.set('Some error occurred. Please try again');
             console.error('Backend Auth Failed', err);
           },
         });
       }
     } catch (error) {
+      this.loading.set(false);
       this.error.set('Invalid code. Please check and try again.');
       this.otpValue = '';
     }
