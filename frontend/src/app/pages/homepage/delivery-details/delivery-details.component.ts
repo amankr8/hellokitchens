@@ -17,6 +17,7 @@ import { Address } from '../../../model/user';
 import { CartItem } from '../../../model/cart-item';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
+import { LocationService } from '../../../service/location.service';
 
 @Component({
   selector: 'app-delivery-details',
@@ -28,6 +29,7 @@ export class DeliveryDetailsComponent {
   userService = inject(UserService);
   cartService = inject(CartService);
   orderService = inject(OrderService);
+  locationService = inject(LocationService);
   router = inject(Router);
   uiService = inject(UiService);
   fb = inject(FormBuilder);
@@ -223,15 +225,21 @@ export class DeliveryDetailsComponent {
   }
 
   private reverseGeocode(lat: number, lng: number) {
-    setTimeout(() => {
-      const mockAddress = `Sector 4, HSR Layout, Bengaluru, Karnataka 560102 (Lat: ${lat.toFixed(
-        4
-      )}, Lng: ${lng.toFixed(4)})`;
-
-      this.userForm.patchValue({ address: mockAddress });
-      this.isLocating.set(false);
-      this.uiService.showToast('Location detected!');
-    }, 1500);
+    this.locationService.reverseGeocode(lat, lng).subscribe({
+      next: (formattedAddress) => {
+        this.userForm.patchValue({ address: formattedAddress });
+        this.isLocating.set(false);
+        this.uiService.showToast('Location detected!');
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLocating.set(false);
+        this.uiService.showToast(
+          'Could not resolve address. Please type it manually.',
+          'error'
+        );
+      },
+    });
   }
 
   private handleLocationError(error: GeolocationPositionError) {

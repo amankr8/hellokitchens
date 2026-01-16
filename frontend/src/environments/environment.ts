@@ -1,6 +1,9 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:8080',
+  google: {
+    apiKey: import.meta.env.NG_APP_GOOGLE_API_KEY,
+  },
   firebaseConfig: {
     apiKey: import.meta.env.NG_APP_FIREBASE_API_KEY,
     authDomain: 'livemenu-app.firebaseapp.com',
