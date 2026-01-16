@@ -34,6 +34,7 @@ export class DeliveryDetailsComponent {
 
   kitchen = this.kitchenService.kitchen;
   cartItems = this.cartService.cartItems;
+  specialInstructions = this.cartService.specialInstructions;
 
   user = this.userService.user;
   isUserLoading = this.userService.loading;
@@ -41,7 +42,6 @@ export class DeliveryDetailsComponent {
 
   selectedAddressId = signal<number | null>(null);
   editingAddressId = signal<number | null>(null);
-  specialInstructions = signal('');
   isPlacingOrder = signal(false);
 
   isAddingNewAddress = signal(false);
@@ -56,9 +56,6 @@ export class DeliveryDetailsComponent {
   });
 
   constructor() {
-    const navigation = history.state;
-    this.specialInstructions.set(navigation.specialInstructions || null);
-
     effect(() => {
       const user = this.user();
       const selectedAddressId = this.selectedAddressId();

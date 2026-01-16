@@ -20,6 +20,9 @@ export class CartService {
   private readonly _cartItems = signal<CartItem[]>(this.loadFromStorage());
   readonly cartItems = this._cartItems.asReadonly();
 
+  private readonly _specialInstructions = signal<string | null>(null);
+  readonly specialInstructions = this._specialInstructions.asReadonly();
+
   private animationQueue = signal<{ x: number; y: number; imageUrl: string }[]>(
     []
   );
@@ -48,6 +51,10 @@ export class CartService {
     const [next, ...rest] = queue;
     this.animationQueue.set(rest);
     return next;
+  }
+
+  addSpecialInstructions(instructions: string | null) {
+    this._specialInstructions.set(instructions);
   }
 
   addToCart(item: MenuItem): void {
@@ -87,5 +94,6 @@ export class CartService {
 
   clearCart(): void {
     this._cartItems.set([]);
+    this._specialInstructions.set(null);
   }
 }

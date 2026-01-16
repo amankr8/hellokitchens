@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from '../../../utils/icons';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../../service/cart.service';
 import { FormsModule } from '@angular/forms';
 import { KitchenService } from '../../../service/kitchen.service';
@@ -24,7 +24,6 @@ import { CartItem } from '../../../model/cart-item';
 export class CartComponent {
   kitchenService = inject(KitchenService);
   cartService = inject(CartService);
-  router = inject(Router);
 
   kitchen = this.kitchenService.kitchen;
   cartItems = this.cartService.cartItems;
@@ -35,6 +34,15 @@ export class CartComponent {
   specialInstructions = signal('');
 
   icons = Icons;
+
+  constructor() {
+    effect(() => {
+      const specialInstructions = this.cartService.specialInstructions();
+      if (!specialInstructions) return;
+
+      this.specialInstructions.set(specialInstructions);
+    });
+  }
 
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
@@ -53,6 +61,13 @@ export class CartComponent {
     this.isBillExpanded.update((val) => !val);
   }
 
+  saveInstructions() {
+    const instructions = this.specialInstructions();
+    this.cartService.addSpecialInstructions(
+      instructions.length ? instructions : null
+    );
+  }
+
   subtotal = computed(() =>
     this.cartItems().reduce(
       (acc, item) => acc + item.menuItem.price * item.quantity,
@@ -66,16 +81,4 @@ export class CartComponent {
   totalAmount = computed(
     () => this.subtotal() + this.deliveryFee() + this.packingCharge()
   );
-
-  addDeliveryDetails() {
-    const specialInstructions = this.specialInstructions();
-    this.router.navigate(['/cart/delivery-details'], {
-      state: {
-        specialInstructions: specialInstructions.length
-          ? specialInstructions
-          : null,
-      },
-      replaceUrl: true,
-    });
-  }
 }

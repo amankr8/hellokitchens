@@ -9,7 +9,7 @@ export interface Order {
   deliveryFees: number;
   taxes: number;
   totalAmount: number;
-  specialInstructions: string;
+  specialInstructions: string | null;
   orderItems: OrderItem[];
 }
 
@@ -22,7 +22,7 @@ export interface OrderItem {
 
 export interface OrderPayload {
   customerDetails: CustomerDetails;
-  specialInstructions: string;
+  specialInstructions: string | null;
   orderItems: OrderItemPayload[];
 }
 
