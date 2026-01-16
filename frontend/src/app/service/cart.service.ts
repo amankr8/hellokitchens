@@ -1,5 +1,5 @@
 import { computed, effect, Injectable, signal } from '@angular/core';
-import { CartItem } from '../model/cart-item';
+import { Cart, CartItem } from '../model/cart-item';
 import { MenuItem } from '../model/menu-item';
 
 @Injectable({
@@ -8,19 +8,28 @@ import { MenuItem } from '../model/menu-item';
 export class CartService {
   STORAGE_KEY = 'cart';
 
-  private loadFromStorage(): CartItem[] {
+  private loadItemsFromStorage(): CartItem[] {
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as CartItem[]) : [];
+      return raw ? (JSON.parse(raw) as Cart).items : [];
     } catch {
       return [];
     }
   }
 
-  private readonly _cartItems = signal<CartItem[]>(this.loadFromStorage());
+  private loadNotesFromStorage(): string | null {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as Cart).notes : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private readonly _cartItems = signal<CartItem[]>(this.loadItemsFromStorage());
   readonly cartItems = this._cartItems.asReadonly();
 
-  private readonly _notes = signal<string | null>(null);
+  private readonly _notes = signal<string | null>(this.loadNotesFromStorage());
   readonly notes = this._notes.asReadonly();
 
   private animationQueue = signal<{ x: number; y: number; imageUrl: string }[]>(
@@ -35,8 +44,12 @@ export class CartService {
 
   constructor() {
     effect(() => {
+      const notes = this._notes();
       const items = this._cartItems();
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+      localStorage.setItem(
+        this.STORAGE_KEY,
+        JSON.stringify({ notes: notes, items: items })
+      );
     });
   }
 

@@ -58,7 +58,6 @@ public class MenuItem extends Auditable {
                 .id(this.id)
                 .name(this.name)
                 .desc(this.desc)
-                .kitchenId(this.kitchen.getId())
                 .category(this.category)
                 .inStock(this.inStock)
                 .isVeg(this.isVeg)

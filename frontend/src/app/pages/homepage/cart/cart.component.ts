@@ -20,6 +20,13 @@ import { CartItem } from '../../../model/cart-item';
     EmptyCartComponent,
   ],
   templateUrl: './cart.component.html',
+  styles: [
+    `
+      :host {
+        overscroll-behavior-y: contain;
+      }
+    `,
+  ],
 })
 export class CartComponent {
   kitchenService = inject(KitchenService);
