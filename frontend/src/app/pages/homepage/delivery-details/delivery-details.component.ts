@@ -198,7 +198,7 @@ export class DeliveryDetailsComponent {
   }
 
   placeOrder() {
-    if (this.userForm.invalid || this.isAddingNewAddress()) {
+    if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       this.uiService.showToast('Please confirm your delivery details', 'info');
       return;
