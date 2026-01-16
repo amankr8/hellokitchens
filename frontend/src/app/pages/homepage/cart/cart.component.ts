@@ -32,7 +32,7 @@ export class CartComponent {
   isBillExpanded = signal(false);
   selectedAddressId = signal<number | null>(null);
   editingAddressId = signal<number | null>(null);
-  specialInstructions = signal<string | null>(null);
+  specialInstructions = signal('');
 
   icons = Icons;
 
@@ -71,7 +71,9 @@ export class CartComponent {
     const specialInstructions = this.specialInstructions();
     this.router.navigate(['/cart/delivery-details'], {
       state: {
-        specialInstructions: specialInstructions,
+        specialInstructions: specialInstructions.length
+          ? specialInstructions
+          : null,
       },
       replaceUrl: true,
     });
