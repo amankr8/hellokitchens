@@ -37,6 +37,8 @@ declare var google: any;
 })
 export class DeliveryDetailsComponent {
   @ViewChild('addressSearch') addressSearchInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('addressDetails')
+  addressDetailsArea!: ElementRef<HTMLTextAreaElement>;
 
   kitchenService = inject(KitchenService);
   userService = inject(UserService);
@@ -65,6 +67,7 @@ export class DeliveryDetailsComponent {
 
   isUserRegistered = computed(() => !!this.user()?.name);
 
+  private searchTimer: any;
   searchQuery = signal('');
   searchResults = signal<any[]>([]);
   private autocompleteService: any;
@@ -227,21 +230,24 @@ export class DeliveryDetailsComponent {
   }
 
   onSearchChange(query: string) {
+    this.searchQuery.set(query);
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+
     if (!query || query.length < 3) {
       this.searchResults.set([]);
       return;
     }
 
-    this.autocompleteService?.getPlacePredictions(
-      {
-        input: query,
-        componentRestrictions: { country: 'in' },
-        types: ['address'],
-      },
-      (predictions: any) => {
-        this.searchResults.set(predictions || []);
-      }
-    );
+    this.searchTimer = setTimeout(() => {
+      this.autocompleteService?.getPlacePredictions(
+        {
+          input: query,
+          componentRestrictions: { country: 'in' },
+          types: ['address'],
+        },
+        (predictions: any) => this.searchResults.set(predictions || [])
+      );
+    }, 300);
   }
 
   clearSearch() {
@@ -255,10 +261,12 @@ export class DeliveryDetailsComponent {
   }
 
   selectSearchResult(result: any) {
-    const fullAddress = result.description;
-    this.userForm.patchValue({ address: fullAddress });
+    this.userForm.patchValue({ address: result.description });
     this.searchResults.set([]);
     this.clearSearch();
+    setTimeout(() => {
+      this.addressDetailsArea?.nativeElement.focus();
+    }, 100);
   }
 
   getCurrentLocation() {
