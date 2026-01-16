@@ -55,6 +55,16 @@ export class UserService {
   // --------------------
   // Mutations
   // --------------------
+  registerUser(payload: { name: string }): Observable<User> {
+    this._error.set(null);
+
+    return this.http.post<User>(this.apiUrl, payload).pipe(
+      tap((user) => {
+        this._user.set(user);
+      })
+    );
+  }
+
   addProfile(payload: { address: string }): Observable<Address> {
     this._error.set(null);
 

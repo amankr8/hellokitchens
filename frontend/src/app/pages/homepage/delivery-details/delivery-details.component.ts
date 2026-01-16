@@ -44,6 +44,8 @@ export class DeliveryDetailsComponent {
   editingAddressId = signal<number | null>(null);
   isPlacingOrder = signal(false);
 
+  isRegistering = signal(false);
+  isUserRegistered = computed(() => !!this.user()?.name);
   isAddingNewAddress = signal(false);
   savingNewAddress = signal(false);
 
@@ -81,6 +83,23 @@ export class DeliveryDetailsComponent {
     this.userService.loadUser();
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Cart';
+  }
+
+  registerName() {
+    const name = this.userForm.get('name')?.value;
+    if (!name || this.isRegistering()) return;
+
+    this.isRegistering.set(true);
+    this.userService.registerUser({ name }).subscribe({
+      next: () => {
+        this.isRegistering.set(false);
+        this.uiService.showToast('Profile created! Now add your address.');
+      },
+      error: () => {
+        this.isRegistering.set(false);
+        this.uiService.showToast('Failed to save name', 'error');
+      },
+    });
   }
 
   startAddingAddress() {
