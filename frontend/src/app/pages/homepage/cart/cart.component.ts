@@ -29,18 +29,17 @@ export class CartComponent {
   cartItems = this.cartService.cartItems;
 
   isBillExpanded = signal(false);
-  selectedAddressId = signal<number | null>(null);
-  editingAddressId = signal<number | null>(null);
-  specialInstructions = signal('');
+  notes = signal('');
+  isEditingNotes = signal(false);
 
   icons = Icons;
 
   constructor() {
     effect(() => {
-      const specialInstructions = this.cartService.specialInstructions();
+      const specialInstructions = this.cartService.notes();
       if (!specialInstructions) return;
 
-      this.specialInstructions.set(specialInstructions);
+      this.notes.set(specialInstructions);
     });
   }
 
@@ -60,12 +59,22 @@ export class CartComponent {
   toggleBill() {
     this.isBillExpanded.update((val) => !val);
   }
+  startEditingNotes() {
+    this.isEditingNotes.set(true);
+  }
 
-  saveInstructions() {
-    const instructions = this.specialInstructions();
-    this.cartService.addSpecialInstructions(
-      instructions.length ? instructions : null
-    );
+  saveNotes() {
+    const instructions = this.notes();
+    if (instructions.trim().length > 0) {
+      this.cartService.setNotes(instructions);
+      this.isEditingNotes.set(false);
+    }
+  }
+
+  deleteNotes() {
+    this.notes.set('');
+    this.cartService.setNotes(null);
+    this.isEditingNotes.set(false);
   }
 
   subtotal = computed(() =>

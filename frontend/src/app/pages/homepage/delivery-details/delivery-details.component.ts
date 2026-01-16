@@ -34,7 +34,7 @@ export class DeliveryDetailsComponent {
 
   kitchen = this.kitchenService.kitchen;
   cartItems = this.cartService.cartItems;
-  specialInstructions = this.cartService.specialInstructions;
+  specialInstructions = this.cartService.notes;
 
   user = this.userService.user;
   isUserLoading = this.userService.loading;
