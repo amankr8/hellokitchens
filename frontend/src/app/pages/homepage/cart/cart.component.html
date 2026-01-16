@@ -134,7 +134,7 @@
       </div>
 
       <div
-        class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100/50"
+        class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100/50 transition-all duration-500"
       >
         <div class="flex items-center justify-between mb-8">
           <div class="flex items-center gap-4">
@@ -146,49 +146,55 @@
             <div>
               <h3 class="text-xl font-black text-gray-900">Bill Summary</h3>
               <p class="text-xs text-gray-400 font-medium">
-                Review your total and taxes
+                Review your items and taxes
               </p>
             </div>
           </div>
 
           <button
             (click)="toggleBill()"
-            class="text-[10px] font-black uppercase text-orange-600 tracking-widest bg-orange-50 px-3 py-2 rounded-xl active:scale-90 transition-all"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-orange-50 text-gray-400 hover:text-orange-600 transition-all active:scale-95"
           >
-            {{ isBillExpanded() ? "Hide" : "View Breakup" }}
+            <span class="text-[10px] font-black uppercase tracking-widest">
+              {{ isBillExpanded() ? "Hide" : "View Breakup" }}
+            </span>
+            <fa-icon
+              [icon]="icons.chevronDown"
+              class="text-[10px] transition-transform duration-300"
+              [class.rotate-180]="isBillExpanded()"
+            ></fa-icon>
           </button>
         </div>
 
         <div
-          class="overflow-hidden transition-all duration-300 ease-in-out"
-          [style.max-height]="isBillExpanded() ? '500px' : '0px'"
-          [style.opacity]="isBillExpanded() ? '1' : '0'"
-          [class.mb-8]="isBillExpanded()"
+          class="grid transition-all duration-300 ease-in-out"
+          [style.grid-template-rows]="isBillExpanded() ? '1fr' : '0fr'"
         >
-          <div class="space-y-4 border-b border-dashed border-gray-200 pb-8">
-            <div class="flex justify-between text-sm font-bold text-gray-500">
-              <span class="font-medium">Item Total</span>
-              <span class="text-gray-900 font-black">₹{{ subtotal() }}</span>
-            </div>
-            <div class="flex justify-between text-sm font-bold text-gray-500">
-              <span class="font-medium">Packing Charges</span>
-              <span class="text-gray-900 font-black"
-                >₹{{ packingCharge() }}</span
-              >
-            </div>
-            <div class="flex justify-between text-sm font-bold text-gray-500">
-              <span class="font-medium">Delivery Fees</span>
-              <span class="text-green-600 font-black"
-                >₹{{ deliveryFee() }}</span
-              >
+          <div class="overflow-hidden">
+            <div
+              class="space-y-4 border-b border-dashed border-gray-200 pb-8 mb-8"
+            >
+              <div class="flex justify-between text-sm font-bold text-gray-500">
+                <span class="font-medium">Item Total</span>
+                <span class="text-gray-900 font-black">₹{{ subtotal() }}</span>
+              </div>
+              <div class="flex justify-between text-sm font-bold text-gray-500">
+                <span class="font-medium">Packing Charges</span>
+                <span class="text-gray-900 font-black"
+                  >₹{{ packingCharge() }}</span
+                >
+              </div>
+              <div class="flex justify-between text-sm font-bold text-gray-500">
+                <span class="font-medium">Delivery Fees</span>
+                <span class="text-green-600 font-black"
+                  >₹{{ deliveryFee() }}</span
+                >
+              </div>
             </div>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-end"
-          [class.pt-4]="!isBillExpanded()"
-        >
+        <div class="flex justify-between items-end">
           <div class="space-y-1">
             <p
               class="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400"

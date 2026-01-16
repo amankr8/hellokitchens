@@ -30,11 +30,13 @@ import {
   faNoteSticky,
   faCheck,
   faBagShopping,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  chevronDown: faChevronDown,
   bagShopping: faBagShopping,
   check: faCheck,
   whatsapp: faWhatsapp,
