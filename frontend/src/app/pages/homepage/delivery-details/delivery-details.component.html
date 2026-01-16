@@ -177,7 +177,7 @@
               >
             </button>
 
-            <div *ngIf="isAddingNewAddress()" class="space-y-4 animate-fade-in">
+            <div *ngIf="isAddingNewAddress()" class="space-y-2 animate-fade-in">
               <div class="relative">
                 <textarea
                   formControlName="address"
@@ -199,7 +199,7 @@
                 [disabled]="
                   savingNewAddress() || !userForm.get('address')?.value
                 "
-                class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2"
+                class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
               >
                 <fa-icon
                   *ngIf="savingNewAddress()"

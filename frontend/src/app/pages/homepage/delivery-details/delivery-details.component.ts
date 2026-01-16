@@ -93,9 +93,7 @@ export class DeliveryDetailsComponent {
     this.userService.registerUser({ name }).subscribe({
       next: () => {
         this.isRegistering.set(false);
-        this.uiService.showToast(
-          'Profile registered! Please add your address.'
-        );
+        this.uiService.showToast('Profile registered!');
       },
       error: () => {
         this.isRegistering.set(false);
@@ -180,8 +178,8 @@ export class DeliveryDetailsComponent {
 
     const isEditing = this.editingAddressId();
     const request$ = isEditing
-      ? this.userService.updateProfile(isEditing, payload)
-      : this.userService.addProfile(payload);
+      ? this.userService.updateAddress(isEditing, payload)
+      : this.userService.addAddress(payload);
 
     request$.subscribe({
       next: (profile) => {

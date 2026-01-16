@@ -65,11 +65,11 @@ export class UserService {
     );
   }
 
-  addProfile(payload: { address: string }): Observable<Address> {
+  addAddress(payload: { address: string }): Observable<Address> {
     this._error.set(null);
 
     return this.http.post<Address>(`${this.apiUrl}/addresses`, payload).pipe(
-      tap((profile) => {
+      tap((address) => {
         const user = this._user();
 
         if (!user) {
@@ -77,23 +77,24 @@ export class UserService {
           return;
         }
 
-        this.appendProfile(profile);
+        this.appendAddress(address);
       })
     );
   }
 
-  private appendProfile(profile: Address): void {
+  private appendAddress(address: Address): void {
     this._user.update((user) =>
       user
         ? {
             ...user,
-            addresses: [...user.addresses, profile],
+            defaultAddressId: user.defaultAddressId ?? address.id,
+            addresses: [...user.addresses, address],
           }
         : user
     );
   }
 
-  updateProfile(
+  updateAddress(
     addressId: number,
     payload: { address: string }
   ): Observable<Address> {
