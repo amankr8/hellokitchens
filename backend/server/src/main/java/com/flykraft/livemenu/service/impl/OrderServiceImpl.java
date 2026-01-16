@@ -2,6 +2,7 @@ package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.config.TenantContext;
 import com.flykraft.livemenu.dto.order.OrderRequestDto;
+import com.flykraft.livemenu.dto.user.AddressReqDto;
 import com.flykraft.livemenu.dto.user.UserReqDto;
 import com.flykraft.livemenu.entity.*;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
@@ -57,15 +58,16 @@ public class OrderServiceImpl implements OrderService {
         if (userReqDto.getPhone() == null || userReqDto.getPhone().isEmpty()) {
             userReqDto.setPhone(authUser.getUsername());
         }
-        User user = userService.loadCurrentUser();
 
+        User user = userService.loadCurrentUser();
+        AddressReqDto addressReqDto = userReqDto.getAddressDetails();
         Order order = Order.builder()
                 .kitchen(kitchen)
                 .user(user)
                 .customerName(userReqDto.getName())
                 .customerPhone(userReqDto.getPhone())
                 .deliveryStreet("")
-                .deliveryAddress(userReqDto.getAddress())
+                .deliveryAddress(addressReqDto.getAddress())
                 .deliveryPluscode("")
                 .status(OrderStatus.PENDING)
                 .subtotal(BigDecimal.ZERO)
