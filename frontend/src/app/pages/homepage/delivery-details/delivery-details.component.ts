@@ -43,11 +43,11 @@ export class DeliveryDetailsComponent {
   selectedAddressId = signal<number | null>(null);
   editingAddressId = signal<number | null>(null);
   isPlacingOrder = signal(false);
-
   isRegistering = signal(false);
-  isUserRegistered = computed(() => !!this.user()?.name);
   isAddingNewAddress = signal(false);
   savingNewAddress = signal(false);
+
+  isUserRegistered = computed(() => !!this.user()?.name);
 
   icons = Icons;
 
@@ -94,7 +94,7 @@ export class DeliveryDetailsComponent {
       next: () => {
         this.isRegistering.set(false);
         this.uiService.showToast(
-          'Profile registered! You can add your address now.'
+          'Profile registered! Please add your address.'
         );
       },
       error: () => {
@@ -200,13 +200,9 @@ export class DeliveryDetailsComponent {
   }
 
   placeOrder() {
-    if (
-      this.userForm.invalid ||
-      this.cartItems().length === 0 ||
-      this.isPlacingOrder()
-    ) {
+    if (this.userForm.invalid || this.isAddingNewAddress()) {
       this.userForm.markAllAsTouched();
-      this.uiService.showToast('Please fill in the delivery details', 'info');
+      this.uiService.showToast('Please confirm your delivery details', 'info');
       return;
     }
 
