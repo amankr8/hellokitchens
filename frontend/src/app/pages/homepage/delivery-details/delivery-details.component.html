@@ -244,31 +244,21 @@
         </div>
       </div>
 
-      <div class="flex flex-col gap-3">
-        <button
-          type="button"
-          (click)="saveNewAddress()"
-          [disabled]="savingNewAddress() || !userForm.get('address')?.value"
-          class="w-full py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all"
-        >
-          <fa-icon
-            *ngIf="savingNewAddress()"
-            [icon]="icons.spinner"
-            [animation]="'spin'"
-          ></fa-icon>
-          <span>{{
-            editingAddressId() ? "Update Address" : "Confirm & Save"
-          }}</span>
-        </button>
-
-        <button
-          (click)="cancelAddingAddress()"
-          type="button"
-          class="w-full pt-4 text-[10px] font-black uppercase text-gray-400 tracking-widest"
-        >
-          Cancel
-        </button>
-      </div>
+      <button
+        type="button"
+        (click)="saveNewAddress()"
+        [disabled]="savingNewAddress() || !userForm.get('address')?.value"
+        class="w-full py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all"
+      >
+        <fa-icon
+          *ngIf="savingNewAddress()"
+          [icon]="icons.spinner"
+          [animation]="'spin'"
+        ></fa-icon>
+        <span>{{
+          editingAddressId() ? "Update Address" : "Confirm & Save"
+        }}</span>
+      </button>
     </form>
   </div>
 </div>
