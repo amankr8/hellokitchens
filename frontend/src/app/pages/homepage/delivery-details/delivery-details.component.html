@@ -224,46 +224,88 @@
       </button>
     </div>
 
-    <form [formGroup]="userForm" class="space-y-6">
+    <div class="space-y-6">
       <div class="relative group">
-        <textarea
-          formControlName="address"
-          placeholder="House No, Street, Landmark..."
-          rows="4"
-          class="w-full px-6 py-5 bg-gray-50 border-none rounded-[2rem] text-sm font-bold focus:ring-4 focus:ring-orange-500/10 transition-all resize-none"
-        ></textarea>
+        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+          <fa-icon [icon]="icons.search"></fa-icon>
+        </div>
+        <input
+          #addressSearch
+          type="text"
+          (input)="onSearchChange(addressSearch.value)"
+          placeholder="Search for area, street name..."
+          class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent focus:border-orange-500/20 rounded-2xl text-sm font-bold transition-all outline-none"
+        />
 
-        <div class="absolute bottom-4 right-4 flex gap-2">
+        <div
+          *ngIf="searchResults().length > 0"
+          class="absolute z-50 left-0 right-0 top-full mt-2 bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden animate-fade-in"
+        >
           <button
-            type="button"
-            (click)="getCurrentLocation()"
-            [disabled]="isLocating()"
-            class="px-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] font-black uppercase text-orange-600 shadow-sm active:scale-95 disabled:opacity-50 transition-all flex items-center gap-2"
+            *ngFor="let result of searchResults()"
+            (click)="selectSearchResult(result)"
+            class="w-full px-5 py-4 text-left hover:bg-orange-50 transition-colors flex items-start gap-3 border-b border-gray-50 last:border-none"
           >
             <fa-icon
-              [icon]="isLocating() ? icons.spinner : icons.location"
-              [animation]="isLocating() ? 'spin' : undefined"
+              [icon]="icons.location"
+              class="text-gray-300 mt-1"
             ></fa-icon>
-            <span>{{ isLocating() ? "Locating..." : "Locate Me" }}</span>
+            <div class="min-w-0">
+              <p class="text-sm font-black text-gray-900 truncate">
+                {{ result.structured_formatting.main_text }}
+              </p>
+              <p class="text-[10px] font-bold text-gray-400 truncate">
+                {{ result.structured_formatting.secondary_text }}
+              </p>
+            </div>
           </button>
         </div>
       </div>
 
-      <button
-        type="button"
-        (click)="saveNewAddress()"
-        [disabled]="savingNewAddress() || !userForm.get('address')?.value"
-        class="w-full py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all"
-      >
-        <fa-icon
-          *ngIf="savingNewAddress()"
-          [icon]="icons.spinner"
-          [animation]="'spin'"
-        ></fa-icon>
-        <span>{{
-          editingAddressId() ? "Update Address" : "Confirm & Save"
-        }}</span>
-      </button>
-    </form>
+      <form [formGroup]="userForm" class="space-y-6">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-6"
+          >Complete Address Details</label
+        >
+        <div class="relative group">
+          <textarea
+            formControlName="address"
+            placeholder="House No, Street, Landmark..."
+            rows="4"
+            class="w-full px-6 py-5 bg-gray-50 border-none rounded-[2rem] text-sm font-bold focus:ring-4 focus:ring-orange-500/10 transition-all resize-none"
+          ></textarea>
+
+          <div class="absolute bottom-4 right-4 flex gap-2">
+            <button
+              type="button"
+              (click)="getCurrentLocation()"
+              [disabled]="isLocating()"
+              class="px-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] font-black uppercase text-orange-600 shadow-sm active:scale-95 disabled:opacity-50 transition-all flex items-center gap-2"
+            >
+              <fa-icon
+                [icon]="isLocating() ? icons.spinner : icons.location"
+                [animation]="isLocating() ? 'spin' : undefined"
+              ></fa-icon>
+              <span>{{ isLocating() ? "Locating..." : "Locate Me" }}</span>
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="saveNewAddress()"
+          [disabled]="savingNewAddress() || !userForm.get('address')?.value"
+          class="w-full py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all"
+        >
+          <fa-icon
+            *ngIf="savingNewAddress()"
+            [icon]="icons.spinner"
+            [animation]="'spin'"
+          ></fa-icon>
+          <span>{{
+            editingAddressId() ? "Update Address" : "Confirm & Save"
+          }}</span>
+        </button>
+      </form>
+    </div>
   </div>
 </div>

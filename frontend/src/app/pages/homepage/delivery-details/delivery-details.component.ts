@@ -13,11 +13,14 @@ import {
 } from '@angular/forms';
 import { Icons } from '../../../utils/icons';
 import { APP_NAME } from '../../../constants/app.constant';
-import { Address } from '../../../model/user';
-import { CartItem } from '../../../model/cart-item';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { LocationService } from '../../../service/location.service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { CartItem } from '../../../model/cart-item';
+import { Address } from '../../../model/user';
+
+declare var google: any;
 
 @Component({
   selector: 'app-delivery-details',
@@ -52,6 +55,9 @@ export class DeliveryDetailsComponent {
 
   isUserRegistered = computed(() => !!this.user()?.name);
 
+  searchResults = signal<any[]>([]);
+  private autocompleteService: any;
+
   icons = Icons;
 
   userForm: FormGroup = this.fb.group({
@@ -60,7 +66,13 @@ export class DeliveryDetailsComponent {
     address: ['', Validators.required],
   });
 
+  private searchSubject = new Subject<string>();
+
   constructor() {
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((query) => this.onSearchChange(query));
+
     effect(() => {
       const user = this.user();
       if (!user) return;
@@ -86,6 +98,9 @@ export class DeliveryDetailsComponent {
     this.userService.loadUser();
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Cart';
+    if (typeof google !== 'undefined') {
+      this.autocompleteService = new google.maps.places.AutocompleteService();
+    }
   }
 
   registerName() {
@@ -198,6 +213,30 @@ export class DeliveryDetailsComponent {
         this.uiService.showToast('Failed to save address', 'error');
       },
     });
+  }
+
+  onSearchChange(query: string) {
+    if (!query || query.length < 3) {
+      this.searchResults.set([]);
+      return;
+    }
+
+    this.autocompleteService?.getPlacePredictions(
+      {
+        input: query,
+        componentRestrictions: { country: 'in' },
+        types: ['address'],
+      },
+      (predictions: any) => {
+        this.searchResults.set(predictions || []);
+      }
+    );
+  }
+
+  selectSearchResult(result: any) {
+    const fullAddress = result.description;
+    this.userForm.patchValue({ address: fullAddress });
+    this.searchResults.set([]);
   }
 
   getCurrentLocation() {
