@@ -34,51 +34,68 @@
     <div
       class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100/50"
     >
-      <form [formGroup]="userForm" class="space-y-6">
-        <div class="space-y-4">
+      <div class="space-y-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center text-lg"
+          >
+            <fa-icon [icon]="icons.location"></fa-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-gray-900">Delivery Details</h3>
+            <p class="text-xs text-gray-400 font-medium">
+              Let's confirm the delivery details
+            </p>
+          </div>
+        </div>
+        <div *ngIf="isUserLoading(); else loadedContent" class="space-y-6">
           <div class="flex items-center gap-4 mb-4">
-            <div
-              class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center text-lg"
-            >
-              <fa-icon [icon]="icons.location"></fa-icon>
-            </div>
-            <div>
-              <h3 class="text-xl font-black text-gray-900">Delivery Details</h3>
-              <p class="text-xs text-gray-400 font-medium">
-                Let's confirm the delivery details
-              </p>
+            <div class="w-12 h-12 bg-gray-100 animate-pulse rounded-2xl"></div>
+            <div class="space-y-2">
+              <div class="h-5 w-32 bg-gray-100 animate-pulse rounded-md"></div>
+              <div class="h-3 w-48 bg-gray-50 animate-pulse rounded-md"></div>
             </div>
           </div>
-
           <div class="space-y-2">
-            <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
-              >Your Full Name</label
-            >
-
             <div
-              *ngIf="!isUserRegistered(); else readonlyName"
-              class="space-y-3 animate-fade-in"
-            >
-              <input
-                formControlName="name"
-                type="text"
-                placeholder="e.g. John Doe"
-                class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
-              />
-              <button
-                type="button"
-                (click)="registerName()"
-                [disabled]="isRegistering() || !userForm.get('name')?.value"
-                class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
+              class="h-3 w-20 bg-gray-50 animate-pulse rounded-md ml-1"
+            ></div>
+            <div class="h-14 w-full bg-gray-50 animate-pulse rounded-2xl"></div>
+          </div>
+        </div>
+
+        <ng-template #loadedContent>
+          <div class="space-y-2">
+            <form [formGroup]="userForm" class="space-y-6">
+              <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
+                >Your Full Name</label
               >
-                <fa-icon
-                  *ngIf="isRegistering()"
-                  [icon]="icons.spinner"
-                  [animation]="'spin'"
-                ></fa-icon>
-                <span>Save & Continue</span>
-              </button>
-            </div>
+
+              <div
+                *ngIf="!isUserRegistered(); else readonlyName"
+                class="space-y-3 animate-fade-in"
+              >
+                <input
+                  formControlName="name"
+                  type="text"
+                  placeholder="e.g. John Doe"
+                  class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
+                />
+                <button
+                  type="button"
+                  (click)="registerName()"
+                  [disabled]="isRegistering() || !userForm.get('name')?.value"
+                  class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
+                >
+                  <fa-icon
+                    *ngIf="isRegistering()"
+                    [icon]="icons.spinner"
+                    [animation]="'spin'"
+                  ></fa-icon>
+                  <span>Save & Continue</span>
+                </button>
+              </div>
+            </form>
 
             <ng-template #readonlyName>
               <div
@@ -98,81 +115,79 @@
               </div>
             </ng-template>
           </div>
-        </div>
-      </form>
+        </ng-template>
+      </div>
 
-      <form [formGroup]="addressForm" class="space-y-6">
-        <div *ngIf="isUserRegistered()" class="space-y-6 animate-slide-up">
-          <hr class="border-gray-50" />
+      <div *ngIf="isUserRegistered()" class="space-y-6 animate-slide-up">
+        <hr class="border-gray-50" />
 
-          <div class="space-y-4">
-            <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
-              >Delivery Address</label
-            >
+        <div class="space-y-4">
+          <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
+            >Delivery Address</label
+          >
 
+          <div
+            class="grid gap-3"
+            *ngIf="!isUserLoading() && user()?.addresses?.length"
+          >
             <div
-              class="grid gap-3"
-              *ngIf="!isUserLoading() && user()?.addresses?.length"
+              *ngFor="let addr of user()?.addresses"
+              (click)="selectAddress(addr)"
+              [class.border-orange-500]="selectedAddressId() === addr.id"
+              [class.bg-orange-50]="selectedAddressId() === addr.id"
+              class="p-5 border-2 border-gray-100 rounded-[2rem] cursor-pointer transition-all flex items-center gap-4 group animate-fade-in"
             >
-              <div
-                *ngFor="let addr of user()?.addresses"
-                (click)="selectAddress(addr)"
-                [class.border-orange-500]="selectedAddressId() === addr.id"
-                [class.bg-orange-50]="selectedAddressId() === addr.id"
-                class="p-5 border-2 border-gray-100 rounded-[2rem] cursor-pointer transition-all flex items-center gap-4 group animate-fade-in"
-              >
-                <fa-icon
-                  [icon]="
-                    selectedAddressId() === addr.id
-                      ? icons.checkCircle
-                      : icons.circle
-                  "
-                  [class.text-orange-600]="selectedAddressId() === addr.id"
-                  class="text-gray-200"
-                ></fa-icon>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm font-black text-gray-900 line-clamp-1">
-                    {{ addr.streetAddress }}
-                  </p>
-                  <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
-                    {{ addr.fullAddress }}
-                  </p>
-                </div>
+              <fa-icon
+                [icon]="
+                  selectedAddressId() === addr.id
+                    ? icons.checkCircle
+                    : icons.circle
+                "
+                [class.text-orange-600]="selectedAddressId() === addr.id"
+                class="text-gray-200"
+              ></fa-icon>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-black text-gray-900 line-clamp-1">
+                  {{ addr.streetAddress }}
+                </p>
+                <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
+                  {{ addr.fullAddress }}
+                </p>
+              </div>
 
-                <div class="flex gap-1">
-                  <button
-                    (click)="startEditingAddress($event, addr)"
-                    class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
-                  >
-                    <fa-icon [icon]="icons.edit"></fa-icon>
-                  </button>
-                  <button
-                    (click)="deleteAddress($event, addr.id)"
-                    class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500"
-                  >
-                    <fa-icon [icon]="icons.trashCan"></fa-icon>
-                  </button>
-                </div>
+              <div class="flex gap-1">
+                <button
+                  (click)="startEditingAddress($event, addr)"
+                  class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
+                >
+                  <fa-icon [icon]="icons.edit"></fa-icon>
+                </button>
+                <button
+                  (click)="deleteAddress($event, addr.id)"
+                  class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500"
+                >
+                  <fa-icon [icon]="icons.trashCan"></fa-icon>
+                </button>
               </div>
             </div>
-
-            <button
-              type="button"
-              (click)="startAddingAddress()"
-              class="w-full p-5 border-2 border-dashed border-gray-100 rounded-[2rem] text-gray-400 hover:border-orange-200 hover:text-orange-600 transition-all flex items-center justify-center gap-3 group"
-            >
-              <div
-                class="w-8 h-8 bg-gray-50 group-hover:bg-orange-50 rounded-xl flex items-center justify-center transition-colors"
-              >
-                <fa-icon [icon]="icons.plus" class="text-xs"></fa-icon>
-              </div>
-              <span class="text-[11px] font-black uppercase tracking-widest"
-                >Add New Delivery Address</span
-              >
-            </button>
           </div>
+
+          <button
+            type="button"
+            (click)="startAddingAddress()"
+            class="w-full p-5 border-2 border-dashed border-gray-100 rounded-[2rem] text-gray-400 hover:border-orange-200 hover:text-orange-600 transition-all flex items-center justify-center gap-3 group"
+          >
+            <div
+              class="w-8 h-8 bg-gray-50 group-hover:bg-orange-50 rounded-xl flex items-center justify-center transition-colors"
+            >
+              <fa-icon [icon]="icons.plus" class="text-xs"></fa-icon>
+            </div>
+            <span class="text-[11px] font-black uppercase tracking-widest"
+              >Add New Delivery Address</span
+            >
+          </button>
         </div>
-      </form>
+      </div>
     </div>
 
     <div
