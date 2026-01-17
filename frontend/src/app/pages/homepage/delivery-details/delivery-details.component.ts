@@ -140,7 +140,7 @@ export class DeliveryDetailsComponent {
     if (!name || this.isRegistering()) return;
 
     this.isRegistering.set(true);
-    this.userService.registerUser({ name }).subscribe({
+    this.userService.registerUser({ name, phone: null }).subscribe({
       next: () => {
         this.isRegistering.set(false);
         this.uiService.showToast('Profile registered!');

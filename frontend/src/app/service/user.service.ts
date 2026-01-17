@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Address, User } from '../model/user';
+import { Address, AddressPayload, User, UserPayload } from '../model/user';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -55,7 +55,7 @@ export class UserService {
   // --------------------
   // Mutations
   // --------------------
-  registerUser(payload: { name: string }): Observable<User> {
+  registerUser(payload: UserPayload): Observable<User> {
     this._error.set(null);
 
     return this.http.post<User>(this.apiUrl, payload).pipe(
@@ -65,7 +65,7 @@ export class UserService {
     );
   }
 
-  addAddress(payload: Address): Observable<Address> {
+  addAddress(payload: AddressPayload): Observable<Address> {
     this._error.set(null);
 
     return this.http.post<Address>(`${this.apiUrl}/addresses`, payload).pipe(
@@ -94,7 +94,10 @@ export class UserService {
     );
   }
 
-  updateAddress(addressId: number, payload: Address): Observable<Address> {
+  updateAddress(
+    addressId: number,
+    payload: AddressPayload,
+  ): Observable<Address> {
     this._error.set(null);
 
     return this.http

@@ -12,3 +12,14 @@ export interface Address {
   fullAddress: string;
   location: string;
 }
+
+export interface UserPayload {
+  name: string;
+  phone: string | null;
+}
+
+export interface AddressPayload {
+  streetAddress: string;
+  fullAddress: string;
+  location: string;
+}
