@@ -80,7 +80,7 @@ export class DeliveryDetailsComponent {
   });
 
   addressForm: FormGroup = this.fb.group({
-    streetAddress: ['', Validators.required],
+    streetAddress: [''],
     fullAddress: ['', Validators.required],
     location: ['', Validators.required],
   });
@@ -183,7 +183,10 @@ export class DeliveryDetailsComponent {
 
   selectAddress(addr: Address) {
     this.selectedAddressId.set(addr.id);
-    this.addressForm.patchValue({ fullAddress: addr.fullAddress });
+    this.addressForm.patchValue({
+      fullAddress: addr.fullAddress,
+      location: addr.location,
+    });
   }
 
   deleteAddress(event: Event, addrId: number) {
@@ -217,15 +220,11 @@ export class DeliveryDetailsComponent {
   }
 
   saveNewAddress() {
-    const addressValue = this.addressForm.get('fullAddress')?.value;
-    if (!addressValue) return;
+    if (this.addressForm.invalid) return;
 
     this.savingNewAddress.set(true);
 
-    const payload = {
-      fullAddress: addressValue,
-    };
-
+    const payload = this.addressForm.value;
     const isEditing = this.editingAddressId();
     const request$ = isEditing
       ? this.userService.updateAddress(isEditing, payload)
@@ -310,7 +309,8 @@ export class DeliveryDetailsComponent {
       const address = place.formattedAddress || '';
 
       this.addressForm.patchValue({
-        fullAddress: `${address}: [${location}]`,
+        fullAddress: address,
+        location: location,
       });
 
       this.clearSearch();
@@ -348,7 +348,8 @@ export class DeliveryDetailsComponent {
             const location = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
             const address = result.formatted_address;
             this.addressForm.patchValue({
-              fullAddress: `${address}: [${location}]`,
+              fullAddress: address,
+              location: location,
             });
 
             this.uiService.showToast('Location detected!');

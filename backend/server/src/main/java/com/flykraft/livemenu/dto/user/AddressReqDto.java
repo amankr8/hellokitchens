@@ -8,5 +8,5 @@ import lombok.Setter;
 public class AddressReqDto {
     private String streetAddress = "";
     private String fullAddress;
-    private String location = "";
+    private String location;
 }
