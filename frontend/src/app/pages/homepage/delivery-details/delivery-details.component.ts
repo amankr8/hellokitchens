@@ -292,14 +292,19 @@ export class DeliveryDetailsComponent {
 
       const place = new Place({ id: prediction.placeId });
       await place.fetchFields({
-        fields: ['formattedAddress', 'plusCode', 'location'],
+        fields: ['formattedAddress', 'location'],
       });
 
-      const pCode = place.plusCode?.globalCode || '';
+      let location = '';
+      if (place.location) {
+        const lat = place.location.lat();
+        const lng = place.location.lng();
+        location = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      }
       const address = place.formattedAddress || '';
 
       this.userForm.patchValue({
-        address: `${address} [Plus Code: ${pCode}]`,
+        address: `${address}: [${location}]`,
       });
 
       this.clearSearch();
@@ -334,11 +339,10 @@ export class DeliveryDetailsComponent {
           if (response.results && response.results[0]) {
             const result = response.results[0];
 
+            const location = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
             const address = result.formatted_address;
-            const plusCode = result.plus_code?.global_code || '';
-
             this.userForm.patchValue({
-              address: `${address} ${plusCode ? '[' + plusCode + ']' : ''}`,
+              address: `${address}: [${location}]`,
             });
 
             this.uiService.showToast('Location detected!');
