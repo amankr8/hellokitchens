@@ -13,13 +13,16 @@ import { CartComponent } from './pages/homepage/cart/cart.component';
 import { OrderSuccessComponent } from './pages/components/order-success/order-success.component';
 import { DeliveryDetailsComponent } from './pages/homepage/cart/delivery-details/delivery-details.component';
 import { LiveOrdersComponent } from './pages/dashboard/live-orders/live-orders.component';
+import { CartItemsComponent } from './pages/homepage/cart/cart-items/cart-items.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
   {
     path: 'cart',
+    component: CartComponent,
+    canActivate: [authGuard(UserRole.USER)],
     children: [
-      { path: '', pathMatch: 'full', component: CartComponent },
+      { path: '', pathMatch: 'full', component: CartItemsComponent },
       { path: 'delivery-details', component: DeliveryDetailsComponent },
     ],
   },
@@ -33,7 +36,7 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard(UserRole.KITCHEN_OWNER)],
     children: [
-      { path: '', redirectTo: 'live-orders', pathMatch: 'full' },
+      { path: '', pathMatch: 'full', redirectTo: 'live-orders' },
       { path: 'live-orders', component: LiveOrdersComponent },
       {
         path: 'menu',

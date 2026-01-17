@@ -7,11 +7,10 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { KitchenService } from '../../../../service/kitchen.service';
 import { UserService } from '../../../../service/user.service';
 import { CartService } from '../../../../service/cart.service';
 import { OrderService } from '../../../../service/order.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { UiService } from '../../../../service/ui.service';
 import {
   FormBuilder,
@@ -20,7 +19,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Icons } from '../../../../utils/icons';
-import { APP_NAME } from '../../../../constants/app.constant';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { LocationService } from '../../../../service/location.service';
@@ -29,11 +27,9 @@ import { CartItem } from '../../../../model/cart-item';
 import { Address } from '../../../../model/user';
 import { OrderPayload } from '../../../../model/order';
 
-declare var google: any;
-
 @Component({
   selector: 'app-delivery-details',
-  imports: [FontAwesomeModule, CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [FontAwesomeModule, CommonModule, ReactiveFormsModule],
   templateUrl: './delivery-details.component.html',
 })
 export class DeliveryDetailsComponent {
@@ -41,7 +37,6 @@ export class DeliveryDetailsComponent {
   @ViewChild('addressDetails')
   addressDetailsArea!: ElementRef<HTMLTextAreaElement>;
 
-  kitchenService = inject(KitchenService);
   userService = inject(UserService);
   cartService = inject(CartService);
   orderService = inject(OrderService);
@@ -50,7 +45,6 @@ export class DeliveryDetailsComponent {
   uiService = inject(UiService);
   fb = inject(FormBuilder);
 
-  kitchen = this.kitchenService.kitchen;
   cartItems = this.cartService.cartItems;
   specialInstructions = this.cartService.notes;
 
@@ -85,22 +79,6 @@ export class DeliveryDetailsComponent {
     location: [''],
   });
 
-  private autocompleteService?: google.maps.places.AutocompleteService;
-
-  async initAutocomplete() {
-    if (this.autocompleteService) return true;
-
-    try {
-      const { AutocompleteService } =
-        await this.locationService.getPlacesLibrary();
-      this.autocompleteService = new AutocompleteService();
-      return true;
-    } catch (e) {
-      console.error('Failed to load Google Places library', e);
-      return false;
-    }
-  }
-
   searchSubject = new Subject<string>();
 
   constructor() {
@@ -131,8 +109,6 @@ export class DeliveryDetailsComponent {
 
   ngOnInit() {
     this.userService.loadUser();
-    const kitchenName = this.kitchen()?.name ?? APP_NAME;
-    document.title = kitchenName + ' - Cart';
   }
 
   registerName() {

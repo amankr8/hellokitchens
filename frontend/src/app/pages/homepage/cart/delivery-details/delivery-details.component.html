@@ -1,265 +1,231 @@
-<div class="relative pb-24 md:pb-2">
+<div class="max-w-2xl mx-auto p-4 space-y-4 pt-4">
   <div
-    class="sticky top-0 z-50 bg-[#F9FAFB]/80 backdrop-blur-md border-b border-gray-100"
+    class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100/50"
   >
-    <div
-      class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center relative"
-    >
-      <button
-        routerLink=".."
-        class="absolute left-4 w-10 h-10 flex items-center justify-center bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-orange-600 hover:border-orange-100 transition-all shadow-sm active:scale-90 group"
-      >
-        <fa-icon
-          [icon]="icons.back"
-          class="transition-transform group-hover:-translate-x-1"
-        ></fa-icon>
-      </button>
+    <div class="space-y-4">
+      <div class="flex items-center gap-4 mb-4">
+        <div
+          class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center text-lg"
+        >
+          <fa-icon [icon]="icons.location"></fa-icon>
+        </div>
+        <div>
+          <h3 class="text-xl font-black text-gray-900">Delivery Details</h3>
+          <p class="text-xs text-gray-400 font-medium">
+            Let's confirm the delivery details
+          </p>
+        </div>
+      </div>
 
-      <div class="text-center">
-        <h1
-          class="text-lg font-black text-gray-900 tracking-tight leading-none"
+      <div
+        *ngIf="errorLoadingUser()"
+        class="py-6 text-center space-y-4 animate-fade-in"
+      >
+        <div
+          class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-xl"
         >
-          Checkout
-        </h1>
-        <p
-          class="text-[9px] text-orange-600 font-black uppercase tracking-[0.2em] mt-1"
-        >
-          Review Order Details
+          <fa-icon [icon]="icons.error"></fa-icon>
+        </div>
+        <p class="text-sm font-bold text-gray-600">
+          Failed to load delivery profile
         </p>
+        <button
+          (click)="userService.loadUser()"
+          class="px-6 py-2 bg-gray-900 text-white rounded-xl text-xs font-black uppercase tracking-widest active:scale-95 transition-all"
+        >
+          Retry
+        </button>
+      </div>
+
+      <ng-container *ngIf="!errorLoadingUser()">
+        <div *ngIf="isUserLoading(); else loadedContent" class="space-y-6">
+          <div class="space-y-2 animate-fade-in">
+            <div
+              class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"
+            ></div>
+            <div
+              class="h-14 w-full bg-gray-50/50 animate-pulse border border-gray-100 rounded-2xl"
+            ></div>
+          </div>
+
+          <div class="space-y-2 animate-fade-in">
+            <div
+              class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"
+            ></div>
+            <div class="grid gap-3">
+              <div
+                *ngFor="let i of [1, 2]"
+                class="p-5 border-2 border-gray-50 rounded-[2rem] flex items-center gap-4"
+              >
+                <div
+                  class="w-5 h-5 bg-gray-100 animate-pulse rounded-full"
+                ></div>
+                <div class="flex-1 space-y-2">
+                  <div
+                    class="h-4 w-3/4 bg-gray-100 animate-pulse rounded-md"
+                  ></div>
+                  <div
+                    class="h-3 w-1/2 bg-gray-50 animate-pulse rounded-md"
+                  ></div>
+                </div>
+                <div class="flex gap-1">
+                  <div
+                    class="w-8 h-8 bg-gray-50 animate-pulse rounded-lg"
+                  ></div>
+                  <div
+                    class="w-8 h-8 bg-gray-50 animate-pulse rounded-lg"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #loadedContent>
+          <div class="space-y-2">
+            <form [formGroup]="userForm" class="space-y-6">
+              <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
+                >Your Full Name</label
+              >
+
+              <div
+                *ngIf="!isUserRegistered(); else readonlyName"
+                class="space-y-3 animate-fade-in"
+              >
+                <input
+                  formControlName="name"
+                  type="text"
+                  placeholder="e.g. John Doe"
+                  class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
+                />
+                <button
+                  type="button"
+                  (click)="registerName()"
+                  [disabled]="isRegistering() || !userForm.get('name')?.value"
+                  class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
+                >
+                  <fa-icon
+                    *ngIf="isRegistering()"
+                    [icon]="icons.spinner"
+                    [animation]="'spin'"
+                  ></fa-icon>
+                  <span>Save & Continue</span>
+                </button>
+              </div>
+            </form>
+
+            <ng-template #readonlyName>
+              <div
+                class="flex items-center gap-3 px-6 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl animate-fade-in"
+              >
+                <fa-icon
+                  [icon]="icons.checkCircle"
+                  class="text-green-500 text-xs"
+                ></fa-icon>
+                <span class="text-sm font-black text-gray-700">{{
+                  user()?.name
+                }}</span>
+                <span
+                  class="text-[9px] font-black text-gray-400 uppercase ml-auto"
+                  >Verified</span
+                >
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+
+    <div *ngIf="isUserRegistered()" class="space-y-6 animate-slide-up">
+      <hr class="border-gray-50" />
+
+      <div class="space-y-4">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
+          >Delivery Address</label
+        >
+
+        <div
+          class="grid gap-3"
+          *ngIf="!isUserLoading() && user()?.addresses?.length"
+        >
+          <div
+            *ngFor="let addr of user()?.addresses"
+            (click)="selectAddress(addr)"
+            [class.border-orange-500]="selectedAddressId() === addr.id"
+            [class.bg-orange-50]="selectedAddressId() === addr.id"
+            class="p-5 border-2 border-gray-100 rounded-[2rem] cursor-pointer transition-all flex items-center gap-4 group animate-fade-in"
+          >
+            <fa-icon
+              [icon]="
+                selectedAddressId() === addr.id
+                  ? icons.checkCircle
+                  : icons.circle
+              "
+              [class.text-orange-600]="selectedAddressId() === addr.id"
+              class="text-gray-200"
+            ></fa-icon>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-black text-gray-900 line-clamp-1">
+                {{ addr.streetAddress }}
+              </p>
+              <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
+                {{ addr.fullAddress }}
+              </p>
+            </div>
+
+            <div class="flex gap-1">
+              <button
+                (click)="startEditingAddress($event, addr)"
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
+              >
+                <fa-icon [icon]="icons.edit"></fa-icon>
+              </button>
+              <button
+                (click)="deleteAddress($event, addr.id)"
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500"
+              >
+                <fa-icon [icon]="icons.trashCan"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="startAddingAddress()"
+          class="w-full p-5 border-2 border-dashed border-gray-100 rounded-[2rem] text-gray-400 hover:border-orange-200 hover:text-orange-600 transition-all flex items-center justify-center gap-3 group"
+        >
+          <div
+            class="w-8 h-8 bg-gray-50 group-hover:bg-orange-50 rounded-xl flex items-center justify-center transition-colors"
+          >
+            <fa-icon [icon]="icons.plus" class="text-xs"></fa-icon>
+          </div>
+          <span class="text-[11px] font-black uppercase tracking-widest"
+            >Add New Delivery Address</span
+          >
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="max-w-2xl mx-auto p-4 space-y-4 pt-4">
-    <div
-      class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100/50"
+  <div
+    class="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-100 md:relative md:bg-transparent md:border-none md:p-0 md:mt-6"
+  >
+    <button
+      (click)="placeOrder()"
+      [disabled]="isPlacingOrder() || cartItems().length === 0"
+      class="w-full max-w-2xl mx-auto py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-orange-200/50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-200 disabled:shadow-none"
     >
-      <div class="space-y-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div
-            class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center text-lg"
-          >
-            <fa-icon [icon]="icons.location"></fa-icon>
-          </div>
-          <div>
-            <h3 class="text-xl font-black text-gray-900">Delivery Details</h3>
-            <p class="text-xs text-gray-400 font-medium">
-              Let's confirm the delivery details
-            </p>
-          </div>
-        </div>
+      <ng-container *ngIf="!isPlacingOrder(); else loadingState">
+        <fa-icon [icon]="icons.checkCircle"></fa-icon>
+        <span>Place Order</span>
+      </ng-container>
 
-        <div
-          *ngIf="errorLoadingUser()"
-          class="py-6 text-center space-y-4 animate-fade-in"
-        >
-          <div
-            class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-xl"
-          >
-            <fa-icon [icon]="icons.error"></fa-icon>
-          </div>
-          <p class="text-sm font-bold text-gray-600">
-            Failed to load delivery profile
-          </p>
-          <button
-            (click)="userService.loadUser()"
-            class="px-6 py-2 bg-gray-900 text-white rounded-xl text-xs font-black uppercase tracking-widest active:scale-95 transition-all"
-          >
-            Retry
-          </button>
-        </div>
-
-        <ng-container *ngIf="!errorLoadingUser()">
-          <div *ngIf="isUserLoading(); else loadedContent" class="space-y-6">
-            <div class="space-y-2 animate-fade-in">
-              <div
-                class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"
-              ></div>
-              <div
-                class="h-14 w-full bg-gray-50/50 animate-pulse border border-gray-100 rounded-2xl"
-              ></div>
-            </div>
-
-            <div class="space-y-2 animate-fade-in">
-              <div
-                class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"
-              ></div>
-              <div class="grid gap-3">
-                <div
-                  *ngFor="let i of [1, 2]"
-                  class="p-5 border-2 border-gray-50 rounded-[2rem] flex items-center gap-4"
-                >
-                  <div
-                    class="w-5 h-5 bg-gray-100 animate-pulse rounded-full"
-                  ></div>
-                  <div class="flex-1 space-y-2">
-                    <div
-                      class="h-4 w-3/4 bg-gray-100 animate-pulse rounded-md"
-                    ></div>
-                    <div
-                      class="h-3 w-1/2 bg-gray-50 animate-pulse rounded-md"
-                    ></div>
-                  </div>
-                  <div class="flex gap-1">
-                    <div
-                      class="w-8 h-8 bg-gray-50 animate-pulse rounded-lg"
-                    ></div>
-                    <div
-                      class="w-8 h-8 bg-gray-50 animate-pulse rounded-lg"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <ng-template #loadedContent>
-            <div class="space-y-2">
-              <form [formGroup]="userForm" class="space-y-6">
-                <label
-                  class="text-[10px] font-black uppercase text-gray-400 ml-1"
-                  >Your Full Name</label
-                >
-
-                <div
-                  *ngIf="!isUserRegistered(); else readonlyName"
-                  class="space-y-3 animate-fade-in"
-                >
-                  <input
-                    formControlName="name"
-                    type="text"
-                    placeholder="e.g. John Doe"
-                    class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
-                  />
-                  <button
-                    type="button"
-                    (click)="registerName()"
-                    [disabled]="isRegistering() || !userForm.get('name')?.value"
-                    class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
-                  >
-                    <fa-icon
-                      *ngIf="isRegistering()"
-                      [icon]="icons.spinner"
-                      [animation]="'spin'"
-                    ></fa-icon>
-                    <span>Save & Continue</span>
-                  </button>
-                </div>
-              </form>
-
-              <ng-template #readonlyName>
-                <div
-                  class="flex items-center gap-3 px-6 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl animate-fade-in"
-                >
-                  <fa-icon
-                    [icon]="icons.checkCircle"
-                    class="text-green-500 text-xs"
-                  ></fa-icon>
-                  <span class="text-sm font-black text-gray-700">{{
-                    user()?.name
-                  }}</span>
-                  <span
-                    class="text-[9px] font-black text-gray-400 uppercase ml-auto"
-                    >Verified</span
-                  >
-                </div>
-              </ng-template>
-            </div>
-          </ng-template>
-        </ng-container>
-      </div>
-
-      <div *ngIf="isUserRegistered()" class="space-y-6 animate-slide-up">
-        <hr class="border-gray-50" />
-
-        <div class="space-y-4">
-          <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
-            >Delivery Address</label
-          >
-
-          <div
-            class="grid gap-3"
-            *ngIf="!isUserLoading() && user()?.addresses?.length"
-          >
-            <div
-              *ngFor="let addr of user()?.addresses"
-              (click)="selectAddress(addr)"
-              [class.border-orange-500]="selectedAddressId() === addr.id"
-              [class.bg-orange-50]="selectedAddressId() === addr.id"
-              class="p-5 border-2 border-gray-100 rounded-[2rem] cursor-pointer transition-all flex items-center gap-4 group animate-fade-in"
-            >
-              <fa-icon
-                [icon]="
-                  selectedAddressId() === addr.id
-                    ? icons.checkCircle
-                    : icons.circle
-                "
-                [class.text-orange-600]="selectedAddressId() === addr.id"
-                class="text-gray-200"
-              ></fa-icon>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-black text-gray-900 line-clamp-1">
-                  {{ addr.streetAddress }}
-                </p>
-                <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
-                  {{ addr.fullAddress }}
-                </p>
-              </div>
-
-              <div class="flex gap-1">
-                <button
-                  (click)="startEditingAddress($event, addr)"
-                  class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
-                >
-                  <fa-icon [icon]="icons.edit"></fa-icon>
-                </button>
-                <button
-                  (click)="deleteAddress($event, addr.id)"
-                  class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500"
-                >
-                  <fa-icon [icon]="icons.trashCan"></fa-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            (click)="startAddingAddress()"
-            class="w-full p-5 border-2 border-dashed border-gray-100 rounded-[2rem] text-gray-400 hover:border-orange-200 hover:text-orange-600 transition-all flex items-center justify-center gap-3 group"
-          >
-            <div
-              class="w-8 h-8 bg-gray-50 group-hover:bg-orange-50 rounded-xl flex items-center justify-center transition-colors"
-            >
-              <fa-icon [icon]="icons.plus" class="text-xs"></fa-icon>
-            </div>
-            <span class="text-[11px] font-black uppercase tracking-widest"
-              >Add New Delivery Address</span
-            >
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-100 md:relative md:bg-transparent md:border-none md:p-0 md:mt-6"
-    >
-      <button
-        (click)="placeOrder()"
-        [disabled]="isPlacingOrder() || cartItems().length === 0"
-        class="w-full max-w-2xl mx-auto py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-orange-200/50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-200 disabled:shadow-none"
-      >
-        <ng-container *ngIf="!isPlacingOrder(); else loadingState">
-          <fa-icon [icon]="icons.checkCircle"></fa-icon>
-          <span>Place Order</span>
-        </ng-container>
-
-        <ng-template #loadingState>
-          <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>
-          <span>Processing...</span>
-        </ng-template>
-      </button>
-    </div>
+      <ng-template #loadingState>
+        <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>
+        <span>Processing...</span>
+      </ng-template>
+    </button>
   </div>
 </div>
 
