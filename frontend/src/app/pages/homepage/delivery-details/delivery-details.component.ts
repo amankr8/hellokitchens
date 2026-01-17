@@ -80,7 +80,7 @@ export class DeliveryDetailsComponent {
   });
 
   addressForm: FormGroup = this.fb.group({
-    streetAddress: [''],
+    streetAddress: ['', Validators.required],
     fullAddress: ['', Validators.required],
     location: ['', Validators.required],
   });
@@ -154,7 +154,11 @@ export class DeliveryDetailsComponent {
 
   startAddingAddress() {
     this.isAddingNewAddress.set(true);
-    this.addressForm.patchValue({ fullAddress: '' });
+    this.addressForm.patchValue({
+      streetAddress: '',
+      fullAddress: '',
+      location: '',
+    });
   }
 
   startEditingAddress(event: Event, addr: Address) {
