@@ -1,1 +1,96 @@
-<p>live-orders works!</p>
+<div class="flex flex-col h-full">
+  <div class="flex gap-6 overflow-x-auto pb-6 min-h-[calc(100vh-250px)]">
+    <div
+      class="flex-1 min-w-[320px] bg-gray-100/50 rounded-[2rem] p-4 flex flex-col"
+    >
+      <div class="flex items-center justify-between mb-4 px-2">
+        <h3
+          class="font-black text-gray-900 uppercase text-xs tracking-widest flex items-center gap-2"
+        >
+          <span class="w-2 h-2 bg-orange-500 rounded-full animate-ping"></span>
+          New Orders ({{ pendingOrders().length }})
+        </h3>
+      </div>
+
+      <div class="space-y-4 overflow-y-auto">
+        <div
+          *ngFor="let order of pendingOrders()"
+          class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 hover:border-orange-200 transition-all group"
+        >
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <span class="text-[10px] font-black text-gray-400 uppercase"
+                >Order #{{ order.id }}</span
+              >
+              <h4 class="font-bold text-gray-900 truncate">
+                {{ order.customerName }}
+              </h4>
+            </div>
+            <span
+              class="bg-orange-50 text-orange-600 text-[10px] font-black px-2 py-1 rounded-lg uppercase"
+              >Pending</span
+            >
+          </div>
+
+          <div class="space-y-2 mb-4">
+            <div
+              *ngFor="let item of order.orderItems"
+              class="flex justify-between text-xs font-bold text-gray-600"
+            >
+              <span>{{ item.quantity }}x Item #{{ item.menuItemId }}</span>
+            </div>
+          </div>
+
+          <div
+            *ngIf="order.specialInstructions"
+            class="bg-blue-50 p-2 rounded-xl mb-4"
+          >
+            <p class="text-[10px] text-blue-700 font-bold italic line-clamp-2">
+              "{{ order.specialInstructions }}"
+            </p>
+          </div>
+
+          <button
+            (click)="updateStatus(order.id, 'PREPARING')"
+            class="w-full py-3 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-colors"
+          >
+            Accept & Start Cooking
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex-1 min-w-[320px] bg-gray-100/50 rounded-[2rem] p-4 flex flex-col"
+    >
+      <h3
+        class="font-black text-gray-900 uppercase text-xs tracking-widest mb-4 px-2"
+      >
+        Preparing ({{ preparingOrders().length }})
+      </h3>
+      <div class="space-y-4 overflow-y-auto">
+        <div
+          *ngFor="let order of preparingOrders()"
+          class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100"
+        >
+          <button
+            (click)="updateStatus(order.id, 'DISPATCHED')"
+            class="w-full py-3 bg-orange-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest"
+          >
+            Ready for Pickup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex-1 min-w-[320px] bg-gray-100/50 rounded-[2rem] p-4 flex flex-col"
+    >
+      <h3
+        class="font-black text-gray-900 uppercase text-xs tracking-widest mb-4 px-2"
+      >
+        Out for Delivery ({{ dispatchedOrders().length }})
+      </h3>
+    </div>
+  </div>
+</div>

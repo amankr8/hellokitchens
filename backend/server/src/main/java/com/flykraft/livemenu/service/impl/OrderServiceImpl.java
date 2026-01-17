@@ -32,19 +32,14 @@ public class OrderServiceImpl implements OrderService {
     private final UserService userService;
 
     @Override
-    public List<Order> loadOrdersByKitchen(Long kitchenId) {
-        Long currentKitchenId = TenantContext.getKitchenId();
-        if (!currentKitchenId.equals(kitchenId)) {
-            throw new SecurityException("Access denied to orders of kitchen id: " + kitchenId);
-        }
-        Kitchen kitchen = kitchenService.loadKitchenById(currentKitchenId);
-        return orderRepository.findAllByKitchen(kitchen);
-    }
-
-    @Override
     public Order loadOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+    }
+
+    @Override
+    public List<Order> loadAllOrders() {
+        return orderRepository.findAll();
     }
 
     @Transactional

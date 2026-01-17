@@ -66,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
             AuthUser authUser = authUserRepository.findByUsername(normalizedPhone)
                 .orElseGet(() -> {
                     AuthUser newUser = AuthUser.builder()
-                        .username(phoneNumber)
+                        .username(normalizedPhone)
                         .authority(Authority.USER)
                         .build();
                     return authUserRepository.save(newUser);

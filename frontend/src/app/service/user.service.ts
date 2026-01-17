@@ -45,8 +45,12 @@ export class UserService {
         this._user.set(user);
         this._loading.set(false);
       },
-      error: () => {
-        this._error.set('Failed to load user details');
+      error: (err) => {
+        if (err.status === 404) {
+          this._user.set(null);
+        } else {
+          this._error.set('Failed to load user details');
+        }
         this._loading.set(false);
       },
     });

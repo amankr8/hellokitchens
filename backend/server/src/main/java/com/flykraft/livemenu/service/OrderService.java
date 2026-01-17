@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface OrderService {
 
-    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
-    List<Order> loadOrdersByKitchen(Long kitchenId);
-
     Order loadOrderById(Long orderId);
+
+    @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
+    List<Order> loadAllOrders();
 
     @PreAuthorize("hasAuthority('USER')")
     Order createOrder(OrderRequestDto orderRequestDto);

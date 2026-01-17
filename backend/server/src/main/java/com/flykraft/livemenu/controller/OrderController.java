@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/orders")
 public interface OrderController {
 
-    @GetMapping("/kitchen/{kitchenId}")
-    ResponseEntity<?> getOrdersByKitchen(@PathVariable Long kitchenId);
+    @GetMapping
+    ResponseEntity<?> getOrdersForKitchen();
 
     @PostMapping
     ResponseEntity<?> createOrder(@RequestBody OrderRequestDto orderRequestDto);

@@ -14,8 +14,8 @@ public class OrderControllerImpl implements OrderController {
     private final OrderService orderService;
 
     @Override
-    public ResponseEntity<?> getOrdersByKitchen(Long kitchenId) {
-        return ResponseEntity.ok(orderService.loadOrdersByKitchen(kitchenId).stream().map(Order::toResponseDto).toList());
+    public ResponseEntity<?> getOrdersForKitchen() {
+        return ResponseEntity.ok(orderService.loadAllOrders().stream().map(Order::toResponseDto).toList());
     }
 
     @Override

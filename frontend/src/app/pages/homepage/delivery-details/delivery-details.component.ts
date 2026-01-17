@@ -82,7 +82,7 @@ export class DeliveryDetailsComponent {
   addressForm: FormGroup = this.fb.group({
     streetAddress: ['', Validators.required],
     fullAddress: ['', Validators.required],
-    location: ['', Validators.required],
+    location: [''],
   });
 
   private autocompleteService?: google.maps.places.AutocompleteService;
