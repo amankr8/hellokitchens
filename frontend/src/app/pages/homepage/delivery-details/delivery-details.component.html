@@ -48,68 +48,125 @@
             </p>
           </div>
         </div>
+
         <div
-          *ngIf="isUserLoading(); else loadedContent"
-          class="space-y-3 animate-fade-in"
+          *ngIf="errorLoadingUser()"
+          class="py-6 text-center space-y-4 animate-fade-in"
         >
-          <div class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"></div>
           <div
-            class="h-14 w-full bg-gray-50/50 animate-pulse border border-gray-100 rounded-2xl"
-          ></div>
+            class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-xl"
+          >
+            <fa-icon [icon]="icons.error"></fa-icon>
+          </div>
+          <p class="text-sm font-bold text-gray-600">
+            Failed to load delivery profile
+          </p>
+          <button
+            (click)="userService.loadUser()"
+            class="px-6 py-2 bg-gray-900 text-white rounded-xl text-xs font-black uppercase tracking-widest active:scale-95 transition-all"
+          >
+            Retry
+          </button>
         </div>
 
-        <ng-template #loadedContent>
-          <div class="space-y-2">
-            <form [formGroup]="userForm" class="space-y-6">
-              <label class="text-[10px] font-black uppercase text-gray-400 ml-1"
-                >Your Full Name</label
-              >
-
+        <ng-container *ngIf="!errorLoadingUser()">
+          <div *ngIf="isUserLoading(); else loadedContent" class="space-y-6">
+            <div class="space-y-2 animate-fade-in">
               <div
-                *ngIf="!isUserRegistered(); else readonlyName"
-                class="space-y-3 animate-fade-in"
-              >
-                <input
-                  formControlName="name"
-                  type="text"
-                  placeholder="e.g. John Doe"
-                  class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
-                />
-                <button
-                  type="button"
-                  (click)="registerName()"
-                  [disabled]="isRegistering() || !userForm.get('name')?.value"
-                  class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
+                class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"
+              ></div>
+              <div
+                class="h-14 w-full bg-gray-50/50 animate-pulse border border-gray-100 rounded-2xl"
+              ></div>
+            </div>
+
+            <div class="space-y-2 animate-fade-in">
+              <div
+                class="h-3 w-24 bg-gray-100 animate-pulse rounded-md ml-1"
+              ></div>
+              <div class="grid gap-3">
+                <div
+                  *ngFor="let i of [1, 2]"
+                  class="p-5 border-2 border-gray-50 rounded-[2rem] flex items-center gap-4"
+                >
+                  <div
+                    class="w-5 h-5 bg-gray-100 animate-pulse rounded-full"
+                  ></div>
+                  <div class="flex-1 space-y-2">
+                    <div
+                      class="h-4 w-3/4 bg-gray-100 animate-pulse rounded-md"
+                    ></div>
+                    <div
+                      class="h-3 w-1/2 bg-gray-50 animate-pulse rounded-md"
+                    ></div>
+                  </div>
+                  <div class="flex gap-1">
+                    <div
+                      class="w-8 h-8 bg-gray-50 animate-pulse rounded-lg"
+                    ></div>
+                    <div
+                      class="w-8 h-8 bg-gray-50 animate-pulse rounded-lg"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #loadedContent>
+            <div class="space-y-2">
+              <form [formGroup]="userForm" class="space-y-6">
+                <label
+                  class="text-[10px] font-black uppercase text-gray-400 ml-1"
+                  >Your Full Name</label
+                >
+
+                <div
+                  *ngIf="!isUserRegistered(); else readonlyName"
+                  class="space-y-3 animate-fade-in"
+                >
+                  <input
+                    formControlName="name"
+                    type="text"
+                    placeholder="e.g. John Doe"
+                    class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
+                  />
+                  <button
+                    type="button"
+                    (click)="registerName()"
+                    [disabled]="isRegistering() || !userForm.get('name')?.value"
+                    class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
+                  >
+                    <fa-icon
+                      *ngIf="isRegistering()"
+                      [icon]="icons.spinner"
+                      [animation]="'spin'"
+                    ></fa-icon>
+                    <span>Save & Continue</span>
+                  </button>
+                </div>
+              </form>
+
+              <ng-template #readonlyName>
+                <div
+                  class="flex items-center gap-3 px-6 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl animate-fade-in"
                 >
                   <fa-icon
-                    *ngIf="isRegistering()"
-                    [icon]="icons.spinner"
-                    [animation]="'spin'"
+                    [icon]="icons.checkCircle"
+                    class="text-green-500 text-xs"
                   ></fa-icon>
-                  <span>Save & Continue</span>
-                </button>
-              </div>
-            </form>
-
-            <ng-template #readonlyName>
-              <div
-                class="flex items-center gap-3 px-6 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl animate-fade-in"
-              >
-                <fa-icon
-                  [icon]="icons.checkCircle"
-                  class="text-green-500 text-xs"
-                ></fa-icon>
-                <span class="text-sm font-black text-gray-700">{{
-                  user()?.name
-                }}</span>
-                <span
-                  class="text-[9px] font-black text-gray-400 uppercase ml-auto"
-                  >Verified</span
-                >
-              </div>
-            </ng-template>
-          </div>
-        </ng-template>
+                  <span class="text-sm font-black text-gray-700">{{
+                    user()?.name
+                  }}</span>
+                  <span
+                    class="text-[9px] font-black text-gray-400 uppercase ml-auto"
+                    >Verified</span
+                  >
+                </div>
+              </ng-template>
+            </div>
+          </ng-template>
+        </ng-container>
       </div>
 
       <div *ngIf="isUserRegistered()" class="space-y-6 animate-slide-up">
