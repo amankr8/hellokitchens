@@ -4,7 +4,9 @@ export interface Order {
   id: number;
   customerName: string;
   customerPhone: string;
+  streetAddress: string;
   deliveryAddress: string;
+  location: string;
   status: string;
   subtotal: number;
   packingCharges: number;

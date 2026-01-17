@@ -16,7 +16,7 @@ export class WhatsappService {
         (item: CartItem) =>
           `• ${item.menuItem.name} x ${item.quantity} (₹${
             item.menuItem.price * item.quantity
-          })`
+          })`,
       )
       .join('\n');
 
@@ -28,7 +28,7 @@ export class WhatsappService {
       `--------------------------`,
       `*Customer Details:*`,
       `👤 ${orderData.customerName}`,
-      `📍 ${orderData.deliveryAddress}`,
+      `📍 ${orderData.streetAddress}`,
       `📞 ${orderData.customerPhone || 'N/A'}`,
       `\n*Items:*`,
       itemsList,
