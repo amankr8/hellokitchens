@@ -17,6 +17,7 @@ export class LiveOrdersComponent {
   uiService = inject(UiService);
   icons = Icons;
 
+  menuItems = this.menuService.menuItems;
   pendingOrders = this.orderService.pendingOrders;
   preparingOrders = this.orderService.preparingOrders;
   dispatchedOrders = this.orderService.dispatchedOrders;

@@ -1,9 +1,9 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full space-y-4">
   <div class="flex items-center justify-between px-2">
     <div class="flex items-center gap-3">
       <div class="flex -space-x-2">
         <div
-          class="w-8 h-8 rounded-full border-2 border-white bg-green-500 flex items-center justify-center text-[10px] text-white font-black"
+          class="w-8 h-8 rounded-full border-2 border-white bg-green-500 flex items-center justify-center text-[10px] text-white font-black shadow-sm"
         >
           {{ orderService.orders()?.length || 0 }}
         </div>
@@ -19,7 +19,7 @@
       class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-orange-200 transition-all active:scale-95 disabled:opacity-50 group"
     >
       <fa-icon
-        [icon]="icons.refresh"
+        [icon]="orderService.loading() ? icons.spinner : icons.refresh"
         [animation]="orderService.loading() ? 'spin' : undefined"
         [class.text-orange-600]="orderService.loading()"
         class="text-gray-400 group-hover:text-orange-600 transition-colors"
@@ -31,7 +31,10 @@
       </span>
     </button>
   </div>
-  <div class="flex gap-6 overflow-x-auto pb-6 min-h-[calc(100vh-250px)]">
+
+  <div
+    class="flex gap-6 overflow-x-auto pb-6 min-h-[calc(100vh-250px)] scrollbar-hide"
+  >
     <div
       class="flex-1 min-w-[320px] bg-gray-100/50 rounded-[2rem] p-4 flex flex-col"
     >
@@ -45,49 +48,19 @@
       </div>
 
       <div class="space-y-4 overflow-y-auto">
+        <div *ngFor="let order of pendingOrders()" class="..."></div>
+
         <div
-          *ngFor="let order of pendingOrders()"
-          class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 hover:border-orange-200 transition-all group"
+          *ngIf="pendingOrders().length === 0"
+          class="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-[2rem] p-8 text-center"
         >
-          <div class="flex justify-between items-start mb-3">
-            <div>
-              <span class="text-[10px] font-black text-gray-400 uppercase"
-                >Order #{{ order.id }}</span
-              >
-              <h4 class="font-bold text-gray-900 truncate">
-                {{ order.customerName }}
-              </h4>
-            </div>
-            <span
-              class="bg-orange-50 text-orange-600 text-[10px] font-black px-2 py-1 rounded-lg uppercase"
-              >Pending</span
-            >
-          </div>
-
-          <div class="space-y-2 mb-4">
-            <div
-              *ngFor="let item of order.orderItems"
-              class="flex justify-between text-xs font-bold text-gray-600"
-            >
-              <span>{{ item.quantity }}x Item #{{ item.menuItemId }}</span>
-            </div>
-          </div>
-
-          <div
-            *ngIf="order.specialInstructions"
-            class="bg-blue-50 p-2 rounded-xl mb-4"
-          >
-            <p class="text-[10px] text-blue-700 font-bold italic line-clamp-2">
-              "{{ order.specialInstructions }}"
-            </p>
-          </div>
-
-          <button
-            (click)="updateStatus(order.id, 'PREPARING')"
-            class="w-full py-3 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-colors"
-          >
-            Accept & Start Cooking
-          </button>
+          <fa-icon
+            [icon]="icons.location"
+            class="text-2xl text-gray-200 mb-2"
+          ></fa-icon>
+          <p class="text-[10px] font-black uppercase text-gray-400">
+            Waiting for orders...
+          </p>
         </div>
       </div>
     </div>
@@ -101,16 +74,19 @@
         Preparing ({{ preparingOrders().length }})
       </h3>
       <div class="space-y-4 overflow-y-auto">
+        <div *ngFor="let order of preparingOrders()" class="..."></div>
+
         <div
-          *ngFor="let order of preparingOrders()"
-          class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100"
+          *ngIf="preparingOrders().length === 0"
+          class="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-[2rem] p-8 text-center"
         >
-          <button
-            (click)="updateStatus(order.id, 'DISPATCHED')"
-            class="w-full py-3 bg-orange-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest"
-          >
-            Ready for Pickup
-          </button>
+          <fa-icon
+            [icon]="icons.kitchen"
+            class="text-2xl text-gray-200 mb-2"
+          ></fa-icon>
+          <p class="text-[10px] font-black uppercase text-gray-400">
+            Kitchen is idle
+          </p>
         </div>
       </div>
     </div>
@@ -123,6 +99,22 @@
       >
         Out for Delivery ({{ dispatchedOrders().length }})
       </h3>
+      <div class="space-y-4 overflow-y-auto">
+        <div *ngFor="let order of dispatchedOrders()" class="..."></div>
+
+        <div
+          *ngIf="dispatchedOrders().length === 0"
+          class="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-[2rem] p-8 text-center"
+        >
+          <fa-icon
+            [icon]="icons.truck"
+            class="text-2xl text-gray-200 mb-2"
+          ></fa-icon>
+          <p class="text-[10px] font-black uppercase text-gray-400">
+            Nothing in transit
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
