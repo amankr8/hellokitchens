@@ -161,7 +161,11 @@ export class DeliveryDetailsComponent {
     event.stopPropagation();
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
-    this.addressForm.patchValue({ fullAddress: addr.fullAddress });
+    this.addressForm.patchValue({
+      streetAddress: addr.streetAddress,
+      fullAddress: addr.fullAddress,
+      location: addr.location,
+    });
   }
 
   cancelAddingAddress() {
@@ -170,7 +174,11 @@ export class DeliveryDetailsComponent {
     const addr = this.user()?.addresses.find(
       (a) => a.id === this.selectedAddressId(),
     );
-    this.addressForm.patchValue({ fullAddress: addr?.fullAddress ?? '' });
+    this.addressForm.patchValue({
+      streetAddress: addr?.streetAddress ?? '',
+      fullAddress: addr?.fullAddress ?? '',
+      location: addr?.location ?? '',
+    });
   }
 
   increaseQty(item: CartItem) {
@@ -184,6 +192,7 @@ export class DeliveryDetailsComponent {
   selectAddress(addr: Address) {
     this.selectedAddressId.set(addr.id);
     this.addressForm.patchValue({
+      streetAddress: addr.streetAddress,
       fullAddress: addr.fullAddress,
       location: addr.location,
     });

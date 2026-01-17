@@ -65,7 +65,7 @@ export class UserService {
     );
   }
 
-  addAddress(payload: { fullAddress: string }): Observable<Address> {
+  addAddress(payload: Address): Observable<Address> {
     this._error.set(null);
 
     return this.http.post<Address>(`${this.apiUrl}/addresses`, payload).pipe(
@@ -94,10 +94,7 @@ export class UserService {
     );
   }
 
-  updateAddress(
-    addressId: number,
-    payload: { fullAddress: string },
-  ): Observable<Address> {
+  updateAddress(addressId: number, payload: Address): Observable<Address> {
     this._error.set(null);
 
     return this.http

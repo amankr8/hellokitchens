@@ -130,10 +130,14 @@
                   [class.text-orange-600]="selectedAddressId() === addr.id"
                   class="text-gray-200"
                 ></fa-icon>
-                <span
-                  class="text-sm font-bold text-gray-700 flex-1 break-words line-clamp-2"
-                  >"{{ addr.fullAddress }}"</span
-                >
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-black text-gray-900 line-clamp-1">
+                    {{ addr.streetAddress }}
+                  </p>
+                  <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
+                    {{ addr.fullAddress }}
+                  </p>
+                </div>
 
                 <div class="flex gap-1">
                   <button
@@ -235,7 +239,7 @@
           #addressSearch
           type="text"
           (input)="searchSubject.next(addressSearch.value)"
-          placeholder="Search for area, street name..."
+          placeholder="Search for area, street or locality..."
           class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent focus:border-orange-500/20 rounded-2xl text-sm font-bold transition-all outline-none"
         />
 
@@ -262,10 +266,10 @@
               class="text-gray-300 mt-1"
             ></fa-icon>
             <div class="min-w-0">
-              <p class="text-sm font-black text-gray-900 truncate">
+              <p class="text-sm font-black text-gray-900 line-clamp-1">
                 {{ result.mainText }}
               </p>
-              <p class="text-[10px] font-bold text-gray-400 truncate">
+              <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
                 {{ result.secondaryText }}
               </p>
             </div>
@@ -274,30 +278,46 @@
       </div>
 
       <form [formGroup]="addressForm" class="space-y-6">
-        <label class="text-[10px] font-black uppercase text-gray-400 ml-2"
-          >Complete Address Details</label
-        >
-        <div class="relative group">
-          <textarea
-            formControlName="fullAddress"
-            placeholder="House No, Street, Landmark..."
-            rows="4"
-            class="w-full px-6 py-5 bg-gray-50 border-none rounded-[2rem] text-sm font-bold focus:ring-4 focus:ring-orange-500/10 transition-all resize-none"
-          ></textarea>
+        <div class="space-y-4">
+          <label class="text-[10px] font-black uppercase text-gray-400 ml-2"
+            >Selected Locality</label
+          >
+          <div class="relative group">
+            <textarea
+              formControlName="fullAddress"
+              readonly
+              placeholder="Search or use current location..."
+              rows="2"
+              class="w-full px-6 py-5 bg-gray-50 border-none rounded-[2rem] text-sm font-bold text-gray-500 focus:ring-0 transition-all resize-none cursor-not-allowed"
+            ></textarea>
 
-          <div class="absolute bottom-4 right-4 flex gap-2">
-            <button
-              type="button"
-              (click)="getCurrentLocation()"
-              [disabled]="isLocating()"
-              class="px-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] font-black uppercase text-orange-600 shadow-sm active:scale-95 disabled:opacity-50 transition-all flex items-center gap-2"
+            <div class="absolute bottom-4 right-4 flex gap-2">
+              <button
+                type="button"
+                (click)="getCurrentLocation()"
+                [disabled]="isLocating()"
+                class="px-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] font-black uppercase text-orange-600 shadow-sm active:scale-95 disabled:opacity-50 transition-all flex items-center gap-2"
+              >
+                <fa-icon
+                  [icon]="isLocating() ? icons.spinner : icons.location"
+                  [animation]="isLocating() ? 'spin' : undefined"
+                ></fa-icon>
+                <span>{{ isLocating() ? "Locating" : "Locate me" }}</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-[10px] font-black uppercase text-gray-400 ml-2"
+              >House / Flat / Floor Details</label
             >
-              <fa-icon
-                [icon]="isLocating() ? icons.spinner : icons.location"
-                [animation]="isLocating() ? 'spin' : undefined"
-              ></fa-icon>
-              <span>{{ isLocating() ? "Locating..." : "Locate Me" }}</span>
-            </button>
+            <input
+              #addressDetails
+              formControlName="streetAddress"
+              type="text"
+              placeholder="e.g. Flat 402, Sunshine Apartments"
+              class="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+            />
           </div>
         </div>
 
