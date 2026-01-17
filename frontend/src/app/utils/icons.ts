@@ -31,11 +31,13 @@ import {
   faCheck,
   faBagShopping,
   faChevronDown,
+  faArrowsRotate,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  refresh: faArrowsRotate,
   chevronDown: faChevronDown,
   bagShopping: faBagShopping,
   check: faCheck,

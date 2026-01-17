@@ -4,6 +4,7 @@ import { Icons } from '../../../utils/icons';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiService } from '../../../service/ui.service';
+import { MenuService } from '../../../service/menu.service';
 
 @Component({
   selector: 'app-live-orders',
@@ -12,6 +13,7 @@ import { UiService } from '../../../service/ui.service';
 })
 export class LiveOrdersComponent {
   orderService = inject(OrderService);
+  menuService = inject(MenuService);
   uiService = inject(UiService);
   icons = Icons;
 
@@ -20,7 +22,8 @@ export class LiveOrdersComponent {
   dispatchedOrders = this.orderService.dispatchedOrders;
 
   ngOnInit() {
-    this.orderService.refreshOrders();
+    this.menuService.loadMenuItems();
+    this.orderService.loadOrders();
   }
 
   updateStatus(orderId: number, nextStatus: string) {
