@@ -60,7 +60,10 @@ public class AuthServiceImpl implements AuthService {
                 throw new IllegalArgumentException("Phone number not found in Firebase user record");
             }
 
-            AuthUser authUser = authUserRepository.findByUsername(phoneNumber)
+            String normalizedPhone = phoneNumber.startsWith("+91")
+                    ? phoneNumber.substring(3)
+                    : phoneNumber;
+            AuthUser authUser = authUserRepository.findByUsername(normalizedPhone)
                 .orElseGet(() -> {
                     AuthUser newUser = AuthUser.builder()
                         .username(phoneNumber)
