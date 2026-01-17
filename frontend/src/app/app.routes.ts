@@ -11,7 +11,7 @@ import { PageNotFoundComponent } from './pages/components/page-not-found/page-no
 import { UserRole } from './enum/user-role.enum';
 import { CartComponent } from './pages/homepage/cart/cart.component';
 import { OrderSuccessComponent } from './pages/components/order-success/order-success.component';
-import { DeliveryDetailsComponent } from './pages/homepage/delivery-details/delivery-details.component';
+import { DeliveryDetailsComponent } from './pages/homepage/cart/delivery-details/delivery-details.component';
 import { LiveOrdersComponent } from './pages/dashboard/live-orders/live-orders.component';
 
 export const routes: Routes = [
