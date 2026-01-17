@@ -9,5 +9,7 @@ import lombok.Setter;
 @Builder
 public class AddressResDto {
     private Long id;
-    private String address;
+    private String streetAddress;
+    private String fullAddress;
+    private String location;
 }

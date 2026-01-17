@@ -7,7 +7,6 @@ import com.flykraft.livemenu.dto.user.UserReqDto;
 import com.flykraft.livemenu.entity.*;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.model.OrderStatus;
-import com.flykraft.livemenu.repository.UserRepository;
 import com.flykraft.livemenu.repository.OrderItemRepository;
 import com.flykraft.livemenu.repository.OrderRepository;
 import com.flykraft.livemenu.service.KitchenService;
@@ -67,8 +66,8 @@ public class OrderServiceImpl implements OrderService {
                 .customerName(userReqDto.getName())
                 .customerPhone(userReqDto.getPhone())
                 .deliveryStreet("")
-                .deliveryAddress(addressReqDto.getAddress())
-                .deliveryPluscode("")
+                .deliveryAddress(addressReqDto.getFullAddress())
+                .deliveryLocation("")
                 .status(OrderStatus.PENDING)
                 .subtotal(BigDecimal.ZERO)
                 .packingCharges(BigDecimal.valueOf(15))
@@ -94,7 +93,12 @@ public class OrderServiceImpl implements OrderService {
         }
         orderItemRepository.saveAll(orderItems);
         order.setOrderItems(orderItems);
+
         order.setSubtotal(subTotal);
+        BigDecimal totalAmount = order.getSubtotal()
+                .add(order.getPackingCharges())
+                .add(order.getDeliveryFees());
+        order.setTotalAmount(totalAmount);
         return order;
     }
 

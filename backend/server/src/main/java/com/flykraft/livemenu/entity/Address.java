@@ -22,13 +22,21 @@ public class Address {
     @JoinColumn(name = "u_id", nullable = false)
     private User user;
 
-    @Column(name = "a_address", nullable = false)
-    private String address;
+    @Column(name = "a_street_address", nullable = false)
+    private String streetAddress;
+
+    @Column(name = "a_full_address", nullable = false)
+    private String fullAddress;
+
+    @Column(name = "a_location", nullable = false)
+    private String location;
 
     public AddressResDto toResponseDto() {
         return AddressResDto.builder()
                 .id(this.id)
-                .address(this.address)
+                .streetAddress(this.streetAddress)
+                .fullAddress(this.fullAddress)
+                .location(this.location)
                 .build();
     }
 }

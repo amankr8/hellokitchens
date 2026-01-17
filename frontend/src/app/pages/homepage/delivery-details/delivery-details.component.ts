@@ -80,7 +80,9 @@ export class DeliveryDetailsComponent {
   });
 
   addressForm: FormGroup = this.fb.group({
-    address: ['', Validators.required],
+    streetAddress: ['', Validators.required],
+    fullAddress: ['', Validators.required],
+    location: ['', Validators.required],
   });
 
   private autocompleteService?: google.maps.places.AutocompleteService;
@@ -152,14 +154,14 @@ export class DeliveryDetailsComponent {
 
   startAddingAddress() {
     this.isAddingNewAddress.set(true);
-    this.addressForm.patchValue({ address: '' });
+    this.addressForm.patchValue({ fullAddress: '' });
   }
 
   startEditingAddress(event: Event, addr: Address) {
     event.stopPropagation();
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
-    this.addressForm.patchValue({ address: addr.address });
+    this.addressForm.patchValue({ fullAddress: addr.fullAddress });
   }
 
   cancelAddingAddress() {
@@ -168,7 +170,7 @@ export class DeliveryDetailsComponent {
     const addr = this.user()?.addresses.find(
       (a) => a.id === this.selectedAddressId(),
     );
-    this.addressForm.patchValue({ address: addr?.address ?? '' });
+    this.addressForm.patchValue({ fullAddress: addr?.fullAddress ?? '' });
   }
 
   increaseQty(item: CartItem) {
@@ -181,7 +183,7 @@ export class DeliveryDetailsComponent {
 
   selectAddress(addr: Address) {
     this.selectedAddressId.set(addr.id);
-    this.addressForm.patchValue({ address: addr.address });
+    this.addressForm.patchValue({ fullAddress: addr.fullAddress });
   }
 
   deleteAddress(event: Event, addrId: number) {
@@ -205,7 +207,7 @@ export class DeliveryDetailsComponent {
           next: () => {
             if (this.selectedAddressId() === addrId) {
               this.selectedAddressId.set(null);
-              this.addressForm.get('address')?.setValue('');
+              this.addressForm.get('fullAddress')?.setValue('');
             }
             this.uiService.showToast('Address deleted!');
           },
@@ -215,13 +217,13 @@ export class DeliveryDetailsComponent {
   }
 
   saveNewAddress() {
-    const addressValue = this.addressForm.get('address')?.value;
+    const addressValue = this.addressForm.get('fullAddress')?.value;
     if (!addressValue) return;
 
     this.savingNewAddress.set(true);
 
     const payload = {
-      address: addressValue,
+      fullAddress: addressValue,
     };
 
     const isEditing = this.editingAddressId();
@@ -308,7 +310,7 @@ export class DeliveryDetailsComponent {
       const address = place.formattedAddress || '';
 
       this.addressForm.patchValue({
-        address: `${address}: [${location}]`,
+        fullAddress: `${address}: [${location}]`,
       });
 
       this.clearSearch();
@@ -346,7 +348,7 @@ export class DeliveryDetailsComponent {
             const location = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
             const address = result.formatted_address;
             this.addressForm.patchValue({
-              address: `${address}: [${location}]`,
+              fullAddress: `${address}: [${location}]`,
             });
 
             this.uiService.showToast('Location detected!');

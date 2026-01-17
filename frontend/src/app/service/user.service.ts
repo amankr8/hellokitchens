@@ -61,11 +61,11 @@ export class UserService {
     return this.http.post<User>(this.apiUrl, payload).pipe(
       tap((user) => {
         this._user.set(user);
-      })
+      }),
     );
   }
 
-  addAddress(payload: { address: string }): Observable<Address> {
+  addAddress(payload: { fullAddress: string }): Observable<Address> {
     this._error.set(null);
 
     return this.http.post<Address>(`${this.apiUrl}/addresses`, payload).pipe(
@@ -78,7 +78,7 @@ export class UserService {
         }
 
         this.appendAddress(address);
-      })
+      }),
     );
   }
 
@@ -90,13 +90,13 @@ export class UserService {
             defaultAddressId: user.defaultAddressId ?? address.id,
             addresses: [...user.addresses, address],
           }
-        : user
+        : user,
     );
   }
 
   updateAddress(
     addressId: number,
-    payload: { address: string }
+    payload: { fullAddress: string },
   ): Observable<Address> {
     this._error.set(null);
 
@@ -112,7 +112,7 @@ export class UserService {
           }
 
           this.replaceAddress(updatedAddress);
-        })
+        }),
       );
   }
 
@@ -122,10 +122,10 @@ export class UserService {
         ? {
             ...user,
             addresses: user.addresses.map((p) =>
-              p.id === updated.id ? updated : p
+              p.id === updated.id ? updated : p,
             ),
           }
-        : user
+        : user,
     );
   }
 
@@ -140,14 +140,14 @@ export class UserService {
             ...user,
             addresses: user.addresses.filter((p) => p.id !== addressId),
           }
-        : user
+        : user,
     );
 
     return this.http.delete<void>(`${this.apiUrl}/addresses/${addressId}`).pipe(
       catchError((err) => {
         this._user.set(previousUser);
         return throwError(() => err);
-      })
+      }),
     );
   }
 

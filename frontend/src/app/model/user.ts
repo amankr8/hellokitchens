@@ -8,5 +8,7 @@ export interface User {
 
 export interface Address {
   id: number;
-  address: string;
+  streetAddress: string;
+  fullAddress: string;
+  location: string;
 }

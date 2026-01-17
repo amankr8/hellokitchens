@@ -46,7 +46,9 @@ public class UserServiceImpl implements UserService {
         User user = loadCurrentUser();
         Address address = new Address();
         address.setUser(user);
-        address.setAddress(addressReqDto.getAddress());
+        address.setStreetAddress(addressReqDto.getStreetAddress());
+        address.setFullAddress(addressReqDto.getFullAddress());
+        address.setLocation(addressReqDto.getLocation());
         address = addressRepository.save(address);
         if (user.getDefaultAddressId() == null) {
             user.setDefaultAddressId(address.getId());
@@ -56,10 +58,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Address updateAddressForUser(Long profileId, AddressReqDto addressReqDto) {
-        Address selectedProfile = addressRepository.findById(profileId)
+        Address selectedAddress = addressRepository.findById(profileId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer Profile with id " + profileId + " not found"));
-        selectedProfile.setAddress(addressReqDto.getAddress());
-        return addressRepository.save(selectedProfile);
+        selectedAddress.setStreetAddress(addressReqDto.getStreetAddress());
+        selectedAddress.setFullAddress(addressReqDto.getFullAddress());
+        selectedAddress.setLocation(addressReqDto.getLocation());
+        return addressRepository.save(selectedAddress);
     }
 
     @Override
