@@ -232,7 +232,7 @@
         <input
           #addressSearch
           type="text"
-          (input)="onSearchChange(addressSearch.value)"
+          (input)="searchSubject.next(addressSearch.value)"
           placeholder="Search for area, street name..."
           class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent focus:border-orange-500/20 rounded-2xl text-sm font-bold transition-all outline-none"
         />

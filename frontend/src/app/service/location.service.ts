@@ -25,17 +25,4 @@ export class LocationService {
   async getGeocodingLibrary() {
     return (await importLibrary('geocoding')) as google.maps.GeocodingLibrary;
   }
-
-  reverseGeocode(lat: number, lng: number): Observable<string> {
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${this.API_KEY}`;
-
-    return this.http.get<any>(url).pipe(
-      map((response) => {
-        if (response.status === 'OK' && response.results.length > 0) {
-          return response.results[0].formatted_address;
-        }
-        throw new Error('Address not found');
-      }),
-    );
-  }
 }

@@ -95,7 +95,7 @@ export class DeliveryDetailsComponent {
     }
   }
 
-  private searchSubject = new Subject<string>();
+  searchSubject = new Subject<string>();
 
   constructor() {
     this.searchSubject
@@ -291,6 +291,9 @@ export class DeliveryDetailsComponent {
           });
 
           this.clearSearch();
+          setTimeout(() => {
+            this.addressDetailsArea?.nativeElement.focus();
+          }, 100);
         }
       },
     );
