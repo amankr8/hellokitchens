@@ -324,9 +324,7 @@
         <button
           type="button"
           (click)="saveNewAddress()"
-          [disabled]="
-            savingNewAddress() || !addressForm.get('fullAddress')?.value
-          "
+          [disabled]="savingNewAddress() || this.addressForm.invalid"
           class="w-full py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all"
         >
           <fa-icon
