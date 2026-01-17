@@ -19,7 +19,7 @@
       class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-orange-200 transition-all active:scale-95 disabled:opacity-50 group"
     >
       <fa-icon
-        [icon]="orderService.loading() ? icons.spinner : icons.refresh"
+        [icon]="icons.refresh"
         [animation]="orderService.loading() ? 'spin' : undefined"
         [class.text-orange-600]="orderService.loading()"
         class="text-gray-400 group-hover:text-orange-600 transition-colors"
