@@ -27,6 +27,7 @@ import { LocationService } from '../../../service/location.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CartItem } from '../../../model/cart-item';
 import { Address } from '../../../model/user';
+import { OrderPayload } from '../../../model/order';
 
 declare var google: any;
 
@@ -76,6 +77,9 @@ export class DeliveryDetailsComponent {
   userForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
     phone: [''],
+  });
+
+  addressForm: FormGroup = this.fb.group({
     address: ['', Validators.required],
   });
 
@@ -148,14 +152,14 @@ export class DeliveryDetailsComponent {
 
   startAddingAddress() {
     this.isAddingNewAddress.set(true);
-    this.userForm.patchValue({ address: '' });
+    this.addressForm.patchValue({ address: '' });
   }
 
   startEditingAddress(event: Event, addr: Address) {
     event.stopPropagation();
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
-    this.userForm.patchValue({ address: addr.address });
+    this.addressForm.patchValue({ address: addr.address });
   }
 
   cancelAddingAddress() {
@@ -164,7 +168,7 @@ export class DeliveryDetailsComponent {
     const addr = this.user()?.addresses.find(
       (a) => a.id === this.selectedAddressId(),
     );
-    this.userForm.patchValue({ address: addr?.address ?? '' });
+    this.addressForm.patchValue({ address: addr?.address ?? '' });
   }
 
   increaseQty(item: CartItem) {
@@ -177,7 +181,7 @@ export class DeliveryDetailsComponent {
 
   selectAddress(addr: Address) {
     this.selectedAddressId.set(addr.id);
-    this.userForm.patchValue({ address: addr.address });
+    this.addressForm.patchValue({ address: addr.address });
   }
 
   deleteAddress(event: Event, addrId: number) {
@@ -201,7 +205,7 @@ export class DeliveryDetailsComponent {
           next: () => {
             if (this.selectedAddressId() === addrId) {
               this.selectedAddressId.set(null);
-              this.userForm.get('address')?.setValue('');
+              this.addressForm.get('address')?.setValue('');
             }
             this.uiService.showToast('Address deleted!');
           },
@@ -211,7 +215,7 @@ export class DeliveryDetailsComponent {
   }
 
   saveNewAddress() {
-    const addressValue = this.userForm.get('address')?.value;
+    const addressValue = this.addressForm.get('address')?.value;
     if (!addressValue) return;
 
     this.savingNewAddress.set(true);
@@ -303,7 +307,7 @@ export class DeliveryDetailsComponent {
       }
       const address = place.formattedAddress || '';
 
-      this.userForm.patchValue({
+      this.addressForm.patchValue({
         address: `${address}: [${location}]`,
       });
 
@@ -341,7 +345,7 @@ export class DeliveryDetailsComponent {
 
             const location = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
             const address = result.formatted_address;
-            this.userForm.patchValue({
+            this.addressForm.patchValue({
               address: `${address}: [${location}]`,
             });
 
@@ -387,8 +391,9 @@ export class DeliveryDetailsComponent {
     this.isPlacingOrder.set(true);
 
     const cartItems = this.cartItems();
-    const payload = {
+    const payload: OrderPayload = {
       customerDetails: this.userForm.value,
+      addressDetails: this.addressForm.value,
       specialInstructions: this.specialInstructions(),
       orderItems: cartItems.map((item) => ({
         menuItemId: item.menuItem.id,

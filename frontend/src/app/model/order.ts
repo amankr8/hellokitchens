@@ -22,6 +22,7 @@ export interface OrderItem {
 
 export interface OrderPayload {
   customerDetails: CustomerDetails;
+  addressDetails: CustomerDetails;
   specialInstructions: string | null;
   orderItems: OrderItemPayload[];
 }
@@ -29,6 +30,9 @@ export interface OrderPayload {
 export interface CustomerDetails {
   name: string;
   phone: string;
+}
+
+export interface AddressDetails {
   address: string;
 }
 

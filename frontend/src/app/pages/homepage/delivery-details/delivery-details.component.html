@@ -99,7 +99,9 @@
             </ng-template>
           </div>
         </div>
+      </form>
 
+      <form [formGroup]="addressForm" class="space-y-6">
         <div *ngIf="isUserRegistered()" class="space-y-6 animate-slide-up">
           <hr class="border-gray-50" />
 
@@ -271,7 +273,7 @@
         </div>
       </div>
 
-      <form [formGroup]="userForm" class="space-y-6">
+      <form [formGroup]="addressForm" class="space-y-6">
         <label class="text-[10px] font-black uppercase text-gray-400 ml-2"
           >Complete Address Details</label
         >
@@ -302,7 +304,7 @@
         <button
           type="button"
           (click)="saveNewAddress()"
-          [disabled]="savingNewAddress() || !userForm.get('address')?.value"
+          [disabled]="savingNewAddress() || !addressForm.get('address')?.value"
           class="w-full py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all"
         >
           <fa-icon

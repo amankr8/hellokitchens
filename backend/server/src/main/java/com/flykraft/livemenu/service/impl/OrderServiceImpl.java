@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         User user = userService.loadCurrentUser();
-        AddressReqDto addressReqDto = userReqDto.getAddressDetails();
+        AddressReqDto addressReqDto = orderRequestDto.getAddressDetails();
         Order order = Order.builder()
                 .kitchen(kitchen)
                 .user(user)

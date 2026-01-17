@@ -8,5 +8,4 @@ import lombok.Setter;
 public class UserReqDto {
     private String name;
     private String phone;
-    private AddressReqDto addressDetails;
 }

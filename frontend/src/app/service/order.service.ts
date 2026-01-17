@@ -17,13 +17,6 @@ export class OrderService {
   private apiUrl = environment.apiBaseUrl + '/api/v1/orders';
 
   placeOrder(orderPayload: OrderPayload): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, orderPayload).pipe(
-      tap(() => {
-        const user = this.user();
-        if (!user || user.addresses?.length === 0) {
-          this.userService.refreshUser();
-        }
-      })
-    );
+    return this.http.post<Order>(this.apiUrl, orderPayload);
   }
 }
