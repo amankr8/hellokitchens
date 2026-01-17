@@ -24,6 +24,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-brands-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@googlemaps/js-api-loader": "^2.0.2",
     "@tailwindcss/postcss": "^4.1.18",
     "canvas-confetti": "^1.9.4",
     "firebase": "^11.10.0",

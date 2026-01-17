@@ -70,7 +70,6 @@ export class DeliveryDetailsComponent {
   private searchTimer: any;
   searchQuery = signal('');
   searchResults = signal<any[]>([]);
-  private autocompleteService: any;
 
   icons = Icons;
 
@@ -79,6 +78,22 @@ export class DeliveryDetailsComponent {
     phone: [''],
     address: ['', Validators.required],
   });
+
+  private autocompleteService?: google.maps.places.AutocompleteService;
+
+  async initAutocomplete() {
+    if (this.autocompleteService) return true;
+
+    try {
+      const { AutocompleteService } =
+        await this.locationService.getPlacesLibrary();
+      this.autocompleteService = new AutocompleteService();
+      return true;
+    } catch (e) {
+      console.error('Failed to load Google Places library', e);
+      return false;
+    }
+  }
 
   private searchSubject = new Subject<string>();
 
@@ -96,7 +111,7 @@ export class DeliveryDetailsComponent {
           name: user.name || '',
           phone: user.phone || '',
         },
-        { emitEvent: false }
+        { emitEvent: false },
       );
 
       if (user.addresses?.length > 0 && !this.selectedAddressId()) {
@@ -112,9 +127,6 @@ export class DeliveryDetailsComponent {
     this.userService.loadUser();
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Cart';
-    if (typeof google !== 'undefined') {
-      this.autocompleteService = new google.maps.places.AutocompleteService();
-    }
   }
 
   registerName() {
@@ -150,7 +162,7 @@ export class DeliveryDetailsComponent {
     this.isAddingNewAddress.set(false);
     this.editingAddressId.set(null);
     const addr = this.user()?.addresses.find(
-      (a) => a.id === this.selectedAddressId()
+      (a) => a.id === this.selectedAddressId(),
     );
     this.userForm.patchValue({ address: addr?.address ?? '' });
   }
@@ -219,7 +231,7 @@ export class DeliveryDetailsComponent {
         this.cancelAddingAddress();
         this.selectAddress(profile);
         this.uiService.showToast(
-          isEditing ? 'Address updated!' : 'Address added successfully!'
+          isEditing ? 'Address updated!' : 'Address added successfully!',
         );
       },
       error: () => {
@@ -229,25 +241,26 @@ export class DeliveryDetailsComponent {
     });
   }
 
-  onSearchChange(query: string) {
+  async onSearchChange(query: string) {
     this.searchQuery.set(query);
-    if (this.searchTimer) clearTimeout(this.searchTimer);
 
     if (!query || query.length < 3) {
       this.searchResults.set([]);
       return;
     }
 
-    this.searchTimer = setTimeout(() => {
-      this.autocompleteService?.getPlacePredictions(
+    const isReady = await this.initAutocomplete();
+
+    if (isReady && this.autocompleteService) {
+      this.autocompleteService.getPlacePredictions(
         {
           input: query,
           componentRestrictions: { country: 'in' },
           types: ['address'],
         },
-        (predictions: any) => this.searchResults.set(predictions || [])
+        (predictions) => this.searchResults.set(predictions || []),
       );
-    }, 300);
+    }
   }
 
   clearSearch() {
@@ -260,55 +273,73 @@ export class DeliveryDetailsComponent {
     }
   }
 
-  selectSearchResult(result: any) {
-    this.userForm.patchValue({ address: result.description });
-    this.searchResults.set([]);
-    this.clearSearch();
-    setTimeout(() => {
-      this.addressDetailsArea?.nativeElement.focus();
-    }, 100);
+  async selectSearchResult(result: any) {
+    const { PlacesService } = await this.locationService.getPlacesLibrary();
+    const service = new PlacesService(document.createElement('div'));
+    service.getDetails(
+      {
+        placeId: result.place_id,
+        fields: ['formatted_address', 'plus_code', 'geometry'],
+      },
+      (place, status) => {
+        if (status === 'OK' && place) {
+          const pCode = place.plus_code?.global_code || '';
+          const address = place.formatted_address || '';
+
+          this.userForm.patchValue({
+            address: `${address} [Plus Code: ${pCode}]`,
+          });
+
+          this.clearSearch();
+        }
+      },
+    );
   }
 
-  getCurrentLocation() {
+  async getCurrentLocation() {
     if (!navigator.geolocation) {
-      this.uiService.showToast(
-        'Geolocation is not supported by your browser',
-        'error'
-      );
+      this.uiService.showToast('Geolocation not supported', 'error');
       return;
     }
 
     this.isLocating.set(true);
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        this.reverseGeocode(latitude, longitude);
+
+        try {
+          const { Geocoder } = await this.locationService.getGeocodingLibrary();
+          const geocoder = new Geocoder();
+
+          const response = await geocoder.geocode({
+            location: { lat: latitude, lng: longitude },
+          });
+
+          if (response.results && response.results[0]) {
+            const result = response.results[0];
+
+            const address = result.formatted_address;
+            const plusCode = result.plus_code?.global_code || '';
+
+            this.userForm.patchValue({
+              address: `${address} ${plusCode ? '[' + plusCode + ']' : ''}`,
+            });
+
+            this.uiService.showToast('Location detected!');
+          }
+        } catch (error) {
+          console.error(error);
+          this.uiService.showToast('Failed to resolve address', 'error');
+        } finally {
+          this.isLocating.set(false);
+        }
       },
       (error) => {
         this.isLocating.set(false);
         this.handleLocationError(error);
       },
-      { enableHighAccuracy: true, timeout: 10000 }
     );
-  }
-
-  private reverseGeocode(lat: number, lng: number) {
-    this.locationService.reverseGeocode(lat, lng).subscribe({
-      next: (formattedAddress) => {
-        this.userForm.patchValue({ address: formattedAddress });
-        this.isLocating.set(false);
-        this.uiService.showToast('Location detected!');
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLocating.set(false);
-        this.uiService.showToast(
-          'Could not resolve address. Please type it manually.',
-          'error'
-        );
-      },
-    });
   }
 
   private handleLocationError(error: GeolocationPositionError) {
@@ -362,7 +393,7 @@ export class DeliveryDetailsComponent {
         this.isPlacingOrder.set(false);
         this.uiService.showToast(
           'Some error occurred. Please try again.',
-          'error'
+          'error',
         );
       },
     });
