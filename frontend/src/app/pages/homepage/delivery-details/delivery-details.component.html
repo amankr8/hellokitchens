@@ -252,7 +252,7 @@
         >
           <button
             *ngFor="let result of searchResults()"
-            (click)="selectSearchResult(result)"
+            (click)="selectSearchResult(result.prediction)"
             class="w-full px-5 py-4 text-left hover:bg-orange-50 transition-colors flex items-start gap-3 border-b border-gray-50 last:border-none"
           >
             <fa-icon
@@ -261,10 +261,10 @@
             ></fa-icon>
             <div class="min-w-0">
               <p class="text-sm font-black text-gray-900 truncate">
-                {{ result.structured_formatting.main_text }}
+                {{ result.mainText }}
               </p>
               <p class="text-[10px] font-bold text-gray-400 truncate">
-                {{ result.structured_formatting.secondary_text }}
+                {{ result.secondaryText }}
               </p>
             </div>
           </button>

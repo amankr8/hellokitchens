@@ -249,17 +249,30 @@ export class DeliveryDetailsComponent {
       return;
     }
 
-    const isReady = await this.initAutocomplete();
+    try {
+      const { AutocompleteSuggestion } =
+        await this.locationService.getPlacesLibrary();
 
-    if (isReady && this.autocompleteService) {
-      this.autocompleteService.getPlacePredictions(
-        {
+      const { suggestions } =
+        await AutocompleteSuggestion.fetchAutocompleteSuggestions({
           input: query,
-          componentRestrictions: { country: 'in' },
-          types: ['address'],
-        },
-        (predictions) => this.searchResults.set(predictions || []),
-      );
+          region: 'in',
+          includedPrimaryTypes: ['geocode'],
+        });
+
+      const results = suggestions.map((s) => {
+        const prediction = s.placePrediction;
+        return {
+          placeId: prediction?.placeId,
+          mainText: prediction?.mainText?.text || '',
+          secondaryText: prediction?.secondaryText?.text || '',
+          prediction: prediction,
+        };
+      });
+
+      this.searchResults.set(results);
+    } catch (e) {
+      console.error('Autocomplete Error:', e);
     }
   }
 
@@ -273,30 +286,29 @@ export class DeliveryDetailsComponent {
     }
   }
 
-  async selectSearchResult(result: any) {
-    const { PlacesService } = await this.locationService.getPlacesLibrary();
-    const service = new PlacesService(document.createElement('div'));
-    service.getDetails(
-      {
-        placeId: result.place_id,
-        fields: ['formatted_address', 'plus_code', 'geometry'],
-      },
-      (place, status) => {
-        if (status === 'OK' && place) {
-          const pCode = place.plus_code?.global_code || '';
-          const address = place.formatted_address || '';
+  async selectSearchResult(prediction: any) {
+    try {
+      const { Place } = await this.locationService.getPlacesLibrary();
 
-          this.userForm.patchValue({
-            address: `${address} [Plus Code: ${pCode}]`,
-          });
+      const place = new Place({ id: prediction.placeId });
+      await place.fetchFields({
+        fields: ['formattedAddress', 'plusCode', 'location'],
+      });
 
-          this.clearSearch();
-          setTimeout(() => {
-            this.addressDetailsArea?.nativeElement.focus();
-          }, 100);
-        }
-      },
-    );
+      const pCode = place.plusCode?.globalCode || '';
+      const address = place.formattedAddress || '';
+
+      this.userForm.patchValue({
+        address: `${address} [Plus Code: ${pCode}]`,
+      });
+
+      this.clearSearch();
+
+      setTimeout(() => this.addressDetailsArea?.nativeElement.focus(), 100);
+    } catch (error) {
+      console.error('Error fetching place details:', error);
+      this.uiService.showToast('Could not load address details', 'error');
+    }
   }
 
   async getCurrentLocation() {
