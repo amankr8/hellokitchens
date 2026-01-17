@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddressReqDto {
-    private String streetAddress = "";
+    private String streetAddress;
     private String fullAddress;
     private String location;
 }
