@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Order, OrderPayload } from '../model/order';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +52,36 @@ export class OrderService {
     });
   }
 
+  // --------------------
+  // Mutations
+  // --------------------
   placeOrder(orderPayload: OrderPayload): Observable<Order> {
     return this.http.post<Order>(this.apiUrl, orderPayload);
+  }
+
+  updateOrderStatus(orderId: number, status: string): Observable<Order> {
+    this._loading.set(true);
+    this._error.set(null);
+
+    return this.http
+      .patch<Order>(`${this.apiUrl}/${orderId}/update`, null, {
+        params: { status },
+      })
+      .pipe(
+        tap((updatedOrder) => {
+          if (this._orders() === null) {
+            this.refreshOrders();
+          } else {
+            this.replaceOrder(updatedOrder);
+          }
+          this._loading.set(false);
+        }),
+      );
+  }
+
+  private replaceOrder(updated: Order): void {
+    this._orders.update((orders) =>
+      orders!.map((o) => (o.id === updated.id ? updated : o)),
+    );
   }
 }

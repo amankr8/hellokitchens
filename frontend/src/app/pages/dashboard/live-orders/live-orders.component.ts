@@ -34,7 +34,10 @@ export class LiveOrdersComponent {
   }
 
   updateStatus(orderId: number, nextStatus: string) {
-    // We'll implement the patch request to update status next
     console.log(`Updating ${orderId} to ${nextStatus}`);
+    this.orderService.updateOrderStatus(orderId, nextStatus).subscribe({
+      next: () => console.log('Order updated'),
+      error: () => console.error('Failed'),
+    });
   }
 }
