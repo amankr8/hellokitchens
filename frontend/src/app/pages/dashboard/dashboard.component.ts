@@ -56,6 +56,7 @@ export class DashboardComponent {
 
   getPageRouteName(): string {
     const url = this.router.url;
+    if (url.includes('/live-orders')) return 'Live Orders';
     if (url.includes('/menu/add')) return 'Add New Item';
     if (url.includes('/menu/edit')) return 'Edit Menu Item';
     if (url.includes('/menu')) return 'Menu Items';
@@ -67,7 +68,9 @@ export class DashboardComponent {
     const url = this.router.url;
     const crumbs: string[] = [];
 
-    if (url.includes('/menu')) {
+    if (url.includes('/live-orders')) {
+      crumbs.push('Live Orders');
+    } else if (url.includes('/menu')) {
       crumbs.push('Menu Items');
       if (url.includes('/add')) {
         crumbs.push('Add New Item');
