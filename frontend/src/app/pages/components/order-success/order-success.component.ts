@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { Order } from '../../../model/order';
 
 import * as confetti from 'canvas-confetti';
-import { CartItem } from '../../../model/cart-item';
 import { WhatsappService } from '../../../service/whatsapp.service';
 
 @Component({
@@ -19,20 +18,17 @@ export class OrderSuccessComponent {
   id = input.required<string>();
   whatsappUrl = signal<string>('');
   orderData = signal<Order | null>(null);
-  cartItems = signal<CartItem[]>([]);
 
   icons = Icons;
 
   constructor() {
     const navigation = history.state;
-    this.cartItems.set(navigation.cartItems || null);
     this.orderData.set(navigation.orderData || null);
 
-    const cartItems = this.cartItems();
     const orderData = this.orderData();
-    if (cartItems && orderData) {
+    if (orderData) {
       this.whatsappUrl.set(
-        this.whatsappService.generateWhatsAppLink(cartItems, orderData)
+        this.whatsappService.generateWhatsAppLink(orderData),
       );
     }
   }
@@ -46,7 +42,7 @@ export class OrderSuccessComponent {
     () =>
       (this.orderData()?.packingCharges ?? 0) +
       (this.orderData()?.deliveryFees ?? 0) +
-      (this.orderData()?.taxes ?? 0)
+      (this.orderData()?.taxes ?? 0),
   );
 
   launchConfetti() {

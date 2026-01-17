@@ -28,6 +28,9 @@ public class OrderItem {
     @JoinColumn(name = "mi_id", nullable = false)
     private MenuItem menuItem;
 
+    @Column(name = "oi_item_name", nullable = false)
+    private String itemName;
+
     @Column(name = "oi_quantity", nullable = false)
     private Integer quantity;
 
@@ -38,6 +41,7 @@ public class OrderItem {
         return OrderItemResponseDto.builder()
                 .id(this.id)
                 .menuItemId(this.menuItem.getId())
+                .itemName(this.itemName)
                 .quantity(this.quantity)
                 .price(this.price)
                 .build();

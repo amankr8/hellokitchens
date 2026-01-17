@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Order } from '../model/order';
+import { Order, OrderItem } from '../model/order';
 import { KitchenService } from './kitchen.service';
 import { CartItem } from '../model/cart-item';
 
@@ -10,12 +10,12 @@ export class WhatsappService {
   kitchenService = inject(KitchenService);
   kitchen = this.kitchenService.kitchen;
 
-  generateWhatsAppLink(cartItems: CartItem[], orderData: Order): string {
-    const itemsList = cartItems
+  generateWhatsAppLink(orderData: Order): string {
+    const itemsList = orderData.orderItems
       .map(
-        (item: CartItem) =>
-          `• ${item.menuItem.name} x ${item.quantity} (₹${
-            item.menuItem.price * item.quantity
+        (item: OrderItem) =>
+          `• ${item.itemName} x ${item.quantity} (₹${
+            item.price * item.quantity
           })`,
       )
       .join('\n');

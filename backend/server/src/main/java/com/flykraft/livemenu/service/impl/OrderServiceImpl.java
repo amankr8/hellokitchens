@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = OrderItem.builder()
                     .order(order)
                     .menuItem(menuItem)
+                    .itemName(menuItem.getName())
                     .quantity(itemDto.getQuantity())
                     .price(menuItem.getPrice())
                     .build();

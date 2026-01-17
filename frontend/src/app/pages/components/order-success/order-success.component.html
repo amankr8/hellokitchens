@@ -25,15 +25,15 @@
         Summary
       </h3>
       <div class="space-y-3">
-        @for (item of cartItems(); track item.menuItem.id) {
-        <div class="flex justify-between items-center">
-          <span class="text-sm font-bold text-gray-700"
-            >{{ item.quantity }} x {{ item.menuItem.name }}</span
-          >
-          <span class="text-sm font-black text-gray-900"
-            >₹{{ item.menuItem.price * item.quantity }}</span
-          >
-        </div>
+        @for (item of orderData()?.orderItems; track item.id) {
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-bold text-gray-700"
+              >{{ item.quantity }} x {{ item.itemName }}</span
+            >
+            <span class="text-sm font-black text-gray-900"
+              >₹{{ item.price }}</span
+            >
+          </div>
         }
       </div>
     </div>

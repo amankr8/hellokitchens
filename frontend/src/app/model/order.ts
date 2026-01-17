@@ -20,6 +20,7 @@ export interface Order {
 export interface OrderItem {
   id: number;
   menuItemId: number;
+  itemName: number;
   quantity: number;
   price: number;
 }

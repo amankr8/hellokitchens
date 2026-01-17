@@ -18,19 +18,17 @@
   </div>
 
   <div
-    class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8 md:p-12"
+    class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-5 md:p-12"
   >
     <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="space-y-8">
       <div class="space-y-4 border-b border-gray-50">
         <label
-          class="text-xs font-black uppercase tracking-widest text-gray-400 block ml-1"
+          class="text-xs font-black uppercase tracking-widest text-gray-400 block ml-2"
         >
           Dish Image
         </label>
 
-        <div
-          class="flex flex-col md:flex-row items-center md:items-stretch gap-6"
-        >
+        <div class="flex flex-row items-stretch gap-6">
           <div
             class="relative group flex-shrink-0 transition-opacity"
             [class.opacity-50]="saving()"
@@ -201,7 +199,7 @@
                 >
                 <span
                   class="text-[10px] text-gray-400 font-bold uppercase tracking-tight"
-                  >Mark as veg for the menu label</span
+                  >Mark as Veg</span
                 >
               </div>
             </div>
@@ -227,7 +225,7 @@
         <button
           type="submit"
           [disabled]="itemForm.invalid || saving()"
-          class="min-w-[180px] px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl shadow-lg shadow-orange-200 transition-all transform active:scale-95 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none flex items-center justify-center gap-2"
+          class="min-w-[180px] px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-2xl shadow-lg shadow-orange-200 transition-all transform active:scale-95 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none flex items-center justify-center gap-2"
         >
           <ng-container *ngIf="saving(); else defaultCreate">
             <fa-icon [icon]="icons.spinner" [animation]="'spin'"></fa-icon>

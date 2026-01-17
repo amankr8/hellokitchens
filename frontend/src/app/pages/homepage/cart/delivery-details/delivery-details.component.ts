@@ -374,7 +374,7 @@ export class DeliveryDetailsComponent {
   }
 
   placeOrder() {
-    if (this.userForm.invalid) {
+    if (this.userForm.invalid || !this.selectedAddressId()) {
       this.userForm.markAllAsTouched();
       this.uiService.showToast('Please confirm your delivery details', 'info');
       return;
@@ -398,7 +398,6 @@ export class DeliveryDetailsComponent {
         this.cartService.clearCart();
         this.router.navigate(['/order-success', order.id], {
           state: {
-            cartItems: cartItems,
             orderData: order,
           },
           replaceUrl: true,
