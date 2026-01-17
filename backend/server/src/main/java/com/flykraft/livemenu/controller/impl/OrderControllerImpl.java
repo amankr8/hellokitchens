@@ -25,7 +25,7 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public ResponseEntity<?> updateOrderStatus(Long orderId, String status) {
-        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, status));
+        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, status).toResponseDto());
     }
 
     @Override

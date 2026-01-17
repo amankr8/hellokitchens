@@ -3,6 +3,7 @@ import { OrderService } from '../../../service/order.service';
 import { Icons } from '../../../utils/icons';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UiService } from '../../../service/ui.service';
 
 @Component({
   selector: 'app-live-orders',
@@ -11,23 +12,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 })
 export class LiveOrdersComponent {
   orderService = inject(OrderService);
+  uiService = inject(UiService);
   icons = Icons;
 
-  pendingOrders = computed(
-    () =>
-      this.orderService.orders()?.filter((o) => o.status === 'PENDING') ?? [],
-  );
-
-  preparingOrders = computed(
-    () =>
-      this.orderService.orders()?.filter((o) => o.status === 'PREPARING') ?? [],
-  );
-
-  dispatchedOrders = computed(
-    () =>
-      this.orderService.orders()?.filter((o) => o.status === 'DISPATCHED') ??
-      [],
-  );
+  pendingOrders = this.orderService.pendingOrders;
+  preparingOrders = this.orderService.preparingOrders;
+  dispatchedOrders = this.orderService.dispatchedOrders;
 
   ngOnInit() {
     this.orderService.refreshOrders();
@@ -36,8 +26,10 @@ export class LiveOrdersComponent {
   updateStatus(orderId: number, nextStatus: string) {
     console.log(`Updating ${orderId} to ${nextStatus}`);
     this.orderService.updateOrderStatus(orderId, nextStatus).subscribe({
-      next: () => console.log('Order updated'),
-      error: () => console.error('Failed'),
+      next: () =>
+        this.uiService.showToast(`Order #${orderId} moved to ${nextStatus}`),
+      error: () =>
+        this.uiService.showToast('Failed to update order status', 'error'),
     });
   }
 }

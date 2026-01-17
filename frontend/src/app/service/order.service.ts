@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Order, OrderPayload } from '../model/order';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -19,6 +19,18 @@ export class OrderService {
 
   private readonly _error = signal<string | null>(null);
   readonly error = this._error.asReadonly();
+
+  readonly pendingOrders = computed(
+    () => this._orders()?.filter((o) => o.status === 'PENDING') ?? [],
+  );
+
+  readonly preparingOrders = computed(
+    () => this._orders()?.filter((o) => o.status === 'PREPARING') ?? [],
+  );
+
+  readonly dispatchedOrders = computed(
+    () => this._orders()?.filter((o) => o.status === 'DISPATCHED') ?? [],
+  );
 
   constructor(private http: HttpClient) {}
 
@@ -60,9 +72,6 @@ export class OrderService {
   }
 
   updateOrderStatus(orderId: number, status: string): Observable<Order> {
-    this._loading.set(true);
-    this._error.set(null);
-
     return this.http
       .patch<Order>(`${this.apiUrl}/${orderId}/update`, null, {
         params: { status },
@@ -74,7 +83,6 @@ export class OrderService {
           } else {
             this.replaceOrder(updatedOrder);
           }
-          this._loading.set(false);
         }),
       );
   }
