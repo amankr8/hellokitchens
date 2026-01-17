@@ -41,6 +41,18 @@
     >
       <nav class="space-y-2 flex-1">
         <a
+          routerLink="/dashboard/menu"
+          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group"
+        >
+          <fa-icon
+            [icon]="icons.menu"
+            class="w-5 transition-transform group-hover:scale-110"
+          ></fa-icon>
+          <span>Menu Items</span>
+        </a>
+
+        <a
           routerLink="/dashboard/kitchen"
           routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -51,18 +63,6 @@
             class="w-5 transition-transform group-hover:scale-110"
           ></fa-icon>
           <span>Kitchen Profile</span>
-        </a>
-
-        <a
-          routerLink="/dashboard/menu"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group"
-        >
-          <fa-icon
-            [icon]="icons.menu"
-            class="w-5 transition-transform group-hover:scale-110"
-          ></fa-icon>
-          <span>Menu Items</span>
         </a>
       </nav>
 

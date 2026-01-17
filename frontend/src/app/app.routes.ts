@@ -33,7 +33,7 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard(UserRole.KITCHEN_OWNER)],
     children: [
-      { path: '', redirectTo: 'kitchen', pathMatch: 'full' },
+      { path: '', redirectTo: 'live-orders', pathMatch: 'full' },
       { path: 'live-orders', component: LiveOrdersComponent },
       {
         path: 'menu',
