@@ -2,17 +2,28 @@
   <header
     class="sticky top-0 h-16 bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm z-30"
   >
-    <div
-      routerLink="/"
-      class="flex items-center gap-2 cursor-pointer group hover:opacity-80 transition-all active:scale-95"
-    >
-      <fa-icon
-        [icon]="icons.logo"
-        class="text-orange-600 text-xl transition-transform group-hover:rotate-12"
-      ></fa-icon>
-      <span class="text-orange-600 font-bold text-xl ml-1 tracking-tight"
-        >LiveMenu</span
+    <div class="flex items-center gap-4">
+      <button
+        (click)="toggleSidebar()"
+        class="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-500 active:scale-95"
       >
+        <fa-icon
+          [icon]="isSidebarCollapsed() ? icons.menu : icons.bars"
+        ></fa-icon>
+      </button>
+
+      <div
+        routerLink="/"
+        class="flex items-center gap-2 cursor-pointer group hover:opacity-80 transition-all active:scale-95"
+      >
+        <fa-icon
+          [icon]="icons.logo"
+          class="text-orange-600 text-xl transition-transform group-hover:rotate-12"
+        ></fa-icon>
+        <span class="text-orange-600 font-bold text-xl ml-1 tracking-tight"
+          >LiveMenu</span
+        >
+      </div>
     </div>
 
     <div class="flex items-center gap-6">
@@ -37,51 +48,78 @@
 
   <div class="flex flex-1 overflow-hidden">
     <aside
-      class="w-64 bg-white border-r border-gray-100 p-4 hidden md:flex flex-col overflow-y-auto"
+      [class.w-64]="!isSidebarCollapsed()"
+      [class.w-20]="isSidebarCollapsed()"
+      class="bg-white border-r border-gray-100 p-4 hidden md:flex flex-col overflow-y-auto transition-all duration-300 ease-in-out"
     >
       <nav class="space-y-2 flex-1">
         <a
           routerLink="/dashboard/live-orders"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group"
+          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm"
+          [class.justify-center]="isSidebarCollapsed()"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden h-[48px]"
         >
           <fa-icon
             [icon]="icons.location"
-            class="w-5 transition-transform group-hover:scale-110"
+            class="text-lg min-w-[20px] transition-transform group-hover:scale-110"
           ></fa-icon>
-          <span class="flex-1">Live Orders</span>
-          <span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+
+          <span
+            *ngIf="!isSidebarCollapsed()"
+            class="flex-1 whitespace-nowrap animate-in fade-in duration-300"
+          >
+            Live Orders
+          </span>
+
+          <span
+            *ngIf="!isSidebarCollapsed()"
+            class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"
+          ></span>
         </a>
 
         <a
           routerLink="/dashboard/menu"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group"
+          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm"
+          [class.justify-center]="isSidebarCollapsed()"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden h-[48px]"
         >
           <fa-icon
             [icon]="icons.menu"
-            class="w-5 transition-transform group-hover:scale-110"
+            class="text-lg min-w-[20px] transition-transform group-hover:scale-110"
           ></fa-icon>
-          <span>Menu Items</span>
+          <span
+            *ngIf="!isSidebarCollapsed()"
+            class="whitespace-nowrap animate-in fade-in duration-300"
+          >
+            Menu Items
+          </span>
         </a>
 
         <a
           routerLink="/dashboard/kitchen"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group"
+          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm"
+          [class.justify-center]="isSidebarCollapsed()"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden h-[48px]"
         >
           <fa-icon
             [icon]="icons.kitchen"
-            class="w-5 transition-transform group-hover:scale-110"
+            class="text-lg min-w-[20px] transition-transform group-hover:scale-110"
           ></fa-icon>
-          <span>Kitchen Profile</span>
+          <span
+            *ngIf="!isSidebarCollapsed()"
+            class="whitespace-nowrap animate-in fade-in duration-300"
+          >
+            Kitchen Profile
+          </span>
         </a>
       </nav>
 
-      <div class="pt-4 border-t border-gray-50">
+      <div
+        class="pt-4 border-t border-gray-50 transition-opacity"
+        [class.opacity-0]="isSidebarCollapsed()"
+      >
         <p
-          class="text-[10px] font-bold text-gray-300 uppercase text-center tracking-widest"
+          class="text-[10px] font-bold text-gray-300 uppercase text-center tracking-widest whitespace-nowrap"
         >
           v1.0 Powered by LiveMenu
         </p>
