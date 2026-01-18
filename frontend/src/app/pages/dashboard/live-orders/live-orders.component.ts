@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiService } from '../../../service/ui.service';
 import { MenuService } from '../../../service/menu.service';
+import { Order } from '../../../model/order';
 
 @Component({
   selector: 'app-live-orders',
@@ -25,6 +26,21 @@ export class LiveOrdersComponent {
   ngOnInit() {
     this.menuService.loadMenuItems();
     this.orderService.loadOrders();
+  }
+  selectedOrderForModal: Order | null = null;
+
+  openDeliveryModal(order: Order) {
+    this.selectedOrderForModal = order;
+  }
+
+  closeModal() {
+    this.selectedOrderForModal = null;
+  }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      this.uiService.showToast('Copied to clipboard!');
+    });
   }
 
   updateStatus(orderId: number, nextStatus: string) {
