@@ -14,7 +14,7 @@ export class WhatsappService {
     const itemsList = orderData.orderItems
       .map(
         (item: OrderItem) =>
-          `• ${item.itemName} x ${item.quantity} (₹${
+          `• ${item.itemName} × ${item.quantity} (₹${
             item.price * item.quantity
           })`,
       )
