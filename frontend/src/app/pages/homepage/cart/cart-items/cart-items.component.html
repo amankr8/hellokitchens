@@ -152,25 +152,19 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-1 flex-shrink-0">
+          <div class="flex flex-col gap-2">
             <button
               (click)="startEditingNotes()"
-              class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 active:bg-orange-100 active:text-orange-600 transition-all"
+              class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
             >
-              <fa-icon
-                [icon]="icons.edit"
-                class="text-[10px] leading-none"
-              ></fa-icon>
+              <fa-icon [icon]="icons.edit"></fa-icon>
             </button>
 
             <button
               (click)="deleteNotes()"
-              class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 active:bg-red-50 active:text-red-500 transition-all"
+              class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500"
             >
-              <fa-icon
-                [icon]="icons.trashCan"
-                class="text-[10px] leading-none"
-              ></fa-icon>
+              <fa-icon [icon]="icons.trashCan"></fa-icon>
             </button>
           </div>
         </div>
