@@ -43,7 +43,7 @@ export class DashboardComponent {
 
   icons = Icons;
 
-  isSidebarCollapsed = signal(false);
+  isSidebarCollapsed = signal(true);
 
   navLinks: NavLink[] = [
     {
