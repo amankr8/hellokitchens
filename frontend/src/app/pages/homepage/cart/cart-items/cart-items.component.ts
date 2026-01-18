@@ -42,6 +42,7 @@ export class CartItemsComponent {
   toggleBill() {
     this.isBillExpanded.update((val) => !val);
   }
+
   startEditingNotes() {
     this.isEditingNotes.set(true);
   }
