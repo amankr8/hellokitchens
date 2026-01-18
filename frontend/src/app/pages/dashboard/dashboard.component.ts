@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import {
   RouterOutlet,
   Router,
@@ -30,6 +30,7 @@ interface NavLink {
     RouterLink,
     RouterLinkActive,
     FontAwesomeModule,
+    TitleCasePipe,
   ],
   templateUrl: './dashboard.component.html',
 })

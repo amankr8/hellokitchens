@@ -72,14 +72,14 @@
 
           <span
             *ngIf="!isSidebarCollapsed()"
-            class="flex-1 whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300"
+            class="flex-1 uppercase text-[11px] font-black tracking-wider whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300"
           >
             {{ link.label }}
           </span>
 
           <div
             *ngIf="isSidebarCollapsed()"
-            class="absolute left-16 px-3 py-2 bg-gray-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-x-1 transition-all z-50 whitespace-nowrap shadow-xl"
+            class="absolute left-full ml-4 px-3 py-2 bg-gray-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-x-1 transition-all z-[100] whitespace-nowrap shadow-xl"
           >
             {{ link.label }}
             <div
