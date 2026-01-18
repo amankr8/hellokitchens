@@ -165,7 +165,7 @@
               class="text-gray-200"
             ></fa-icon>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-black text-gray-900 line-clamp-1">
+              <p class="text-sm font-black text-gray-900 line-clamp-2">
                 {{ addr.streetAddress }}
               </p>
               <p class="text-[10px] font-bold text-gray-400 line-clamp-1">
@@ -173,7 +173,7 @@
               </p>
             </div>
 
-            <div class="flex gap-1">
+            <div class="flex flex-col gap-1">
               <button
                 (click)="startEditingAddress($event, addr)"
                 class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
