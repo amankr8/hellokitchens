@@ -23,6 +23,13 @@ export class LiveOrdersComponent {
   preparingOrders = this.orderService.preparingOrders;
   dispatchedOrders = this.orderService.dispatchedOrders;
 
+  totalActiveCount = computed(
+    () =>
+      this.pendingOrders().length +
+      this.preparingOrders().length +
+      this.dispatchedOrders().length,
+  );
+
   ngOnInit() {
     this.menuService.loadMenuItems();
     this.orderService.loadOrders();
