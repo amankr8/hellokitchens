@@ -35,15 +35,19 @@ import {
   faTruck,
   faCopy,
   faBars,
+  faChevronLeft,
+  faBowlRice,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  bowl: faBowlRice,
   bars: faBars,
   copy: faCopy,
   truck: faTruck,
   refresh: faArrowsRotate,
+  chevronLeft: faChevronLeft,
   chevronDown: faChevronDown,
   bagShopping: faBagShopping,
   check: faCheck,

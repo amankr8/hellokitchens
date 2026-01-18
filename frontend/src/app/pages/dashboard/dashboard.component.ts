@@ -13,6 +13,13 @@ import { KitchenService } from '../../service/kitchen.service';
 import { UiService } from '../../service/ui.service';
 import { APP_NAME } from '../../constants/app.constant';
 
+interface NavLink {
+  path: string;
+  label: string;
+  icon: any; // Use the specific IconDefinition type if using FontAwesome
+  showPulse?: boolean;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -36,6 +43,25 @@ export class DashboardComponent {
   icons = Icons;
 
   isSidebarCollapsed = signal(false);
+
+  navLinks: NavLink[] = [
+    {
+      path: '/dashboard/live-orders',
+      label: 'Live Orders',
+      icon: this.icons.location,
+      showPulse: true,
+    },
+    {
+      path: '/dashboard/menu',
+      label: 'Menu Items',
+      icon: this.icons.bowl,
+    },
+    {
+      path: '/dashboard/kitchen',
+      label: 'Kitchen Profile',
+      icon: this.icons.kitchen,
+    },
+  ];
 
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;

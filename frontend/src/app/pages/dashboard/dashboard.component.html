@@ -5,21 +5,17 @@
     <div class="flex items-center gap-4">
       <button
         (click)="toggleSidebar()"
-        class="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-500 active:scale-95"
+        class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-all text-gray-400 active:scale-90"
       >
         <fa-icon
-          [icon]="isSidebarCollapsed() ? icons.menu : icons.bars"
+          [icon]="icons.chevronLeft"
+          [class.rotate-180]="isSidebarCollapsed()"
+          class="transition-transform duration-500 ease-in-out"
         ></fa-icon>
       </button>
 
-      <div
-        routerLink="/"
-        class="flex items-center gap-2 cursor-pointer group hover:opacity-80 transition-all active:scale-95"
-      >
-        <fa-icon
-          [icon]="icons.logo"
-          class="text-orange-600 text-xl transition-transform group-hover:rotate-12"
-        ></fa-icon>
+      <div routerLink="/" class="flex items-center gap-2 cursor-pointer group">
+        <fa-icon [icon]="icons.logo" class="text-orange-600 text-xl"></fa-icon>
         <span class="text-orange-600 font-bold text-xl ml-1 tracking-tight"
           >LiveMenu</span
         >
@@ -54,63 +50,31 @@
     >
       <nav class="space-y-2 flex-1">
         <a
-          routerLink="/dashboard/live-orders"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm"
-          [class.justify-center]="isSidebarCollapsed()"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden h-[48px]"
+          *ngFor="let link of navLinks"
+          [routerLink]="link.path"
+          routerLinkActive="bg-orange-50 text-orange-600"
+          class="flex items-center h-12 px-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden"
         >
-          <fa-icon
-            [icon]="icons.location"
-            class="text-lg min-w-[20px] transition-transform group-hover:scale-110"
-          ></fa-icon>
+          <div
+            class="w-10 h-10 grid place-items-center shrink-0 transition-all"
+          >
+            <fa-icon
+              [icon]="link.icon"
+              class="text-lg transition-transform group-hover:scale-110"
+            ></fa-icon>
+          </div>
 
           <span
             *ngIf="!isSidebarCollapsed()"
-            class="flex-1 whitespace-nowrap animate-in fade-in duration-300"
+            class="ml-2 flex-1 whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300"
           >
-            Live Orders
+            {{ link.label }}
           </span>
 
           <span
-            *ngIf="!isSidebarCollapsed()"
-            class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"
+            *ngIf="!isSidebarCollapsed() && link.label === 'Live Orders'"
+            class="w-2 h-2 bg-orange-500 rounded-full animate-pulse mr-2"
           ></span>
-        </a>
-
-        <a
-          routerLink="/dashboard/menu"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm"
-          [class.justify-center]="isSidebarCollapsed()"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden h-[48px]"
-        >
-          <fa-icon
-            [icon]="icons.menu"
-            class="text-lg min-w-[20px] transition-transform group-hover:scale-110"
-          ></fa-icon>
-          <span
-            *ngIf="!isSidebarCollapsed()"
-            class="whitespace-nowrap animate-in fade-in duration-300"
-          >
-            Menu Items
-          </span>
-        </a>
-
-        <a
-          routerLink="/dashboard/kitchen"
-          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm"
-          [class.justify-center]="isSidebarCollapsed()"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden h-[48px]"
-        >
-          <fa-icon
-            [icon]="icons.kitchen"
-            class="text-lg min-w-[20px] transition-transform group-hover:scale-110"
-          ></fa-icon>
-          <span
-            *ngIf="!isSidebarCollapsed()"
-            class="whitespace-nowrap animate-in fade-in duration-300"
-          >
-            Kitchen Profile
-          </span>
         </a>
       </nav>
 
