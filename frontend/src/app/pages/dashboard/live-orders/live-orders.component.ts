@@ -71,4 +71,6 @@ export class LiveOrdersComponent {
         this.uiService.showToast('Failed to update order status', 'error'),
     });
   }
+
+  deleteOrder() {}
 }
