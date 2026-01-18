@@ -138,7 +138,7 @@
             </button>
 
             <button
-              (click)="updateStatus(order.id, 'DISPATCHED')"
+              (click)="updateStatus(order.id, orderStatus.PREPARING)"
               class="flex-1 py-3.5 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 active:scale-95 transition-all shadow-lg shadow-gray-100 flex items-center justify-center gap-2"
             >
               <fa-icon [icon]="icons.success"></fa-icon>
@@ -249,7 +249,7 @@
             </button>
 
             <button
-              (click)="updateStatus(order.id, 'DISPATCHED')"
+              (click)="updateStatus(order.id, orderStatus.DISPATCHED)"
               class="flex-1 py-3.5 bg-orange-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 active:scale-95 transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-2"
             >
               <fa-icon [icon]="icons.success"></fa-icon>

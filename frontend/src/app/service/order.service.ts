@@ -3,6 +3,7 @@ import { computed, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Order, OrderPayload } from '../model/order';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { OrderStatus } from '../enum/order-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +22,17 @@ export class OrderService {
   readonly error = this._error.asReadonly();
 
   readonly pendingOrders = computed(
-    () => this._orders()?.filter((o) => o.status === 'PENDING') ?? [],
+    () => this._orders()?.filter((o) => o.status === OrderStatus.PENDING) ?? [],
   );
 
   readonly preparingOrders = computed(
-    () => this._orders()?.filter((o) => o.status === 'PREPARING') ?? [],
+    () =>
+      this._orders()?.filter((o) => o.status === OrderStatus.PREPARING) ?? [],
   );
 
   readonly dispatchedOrders = computed(
-    () => this._orders()?.filter((o) => o.status === 'DISPATCHED') ?? [],
+    () =>
+      this._orders()?.filter((o) => o.status === OrderStatus.DISPATCHED) ?? [],
   );
 
   constructor(private http: HttpClient) {}

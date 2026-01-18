@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiService } from '../../../service/ui.service';
 import { MenuService } from '../../../service/menu.service';
 import { Order } from '../../../model/order';
+import { OrderStatus } from '../../../enum/order-status.enum';
 
 @Component({
   selector: 'app-live-orders',
@@ -17,6 +18,7 @@ export class LiveOrdersComponent {
   menuService = inject(MenuService);
   uiService = inject(UiService);
   icons = Icons;
+  orderStatus = OrderStatus;
 
   menuItems = this.menuService.menuItems;
   pendingOrders = this.orderService.pendingOrders;
