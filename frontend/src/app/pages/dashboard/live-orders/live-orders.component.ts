@@ -72,5 +72,5 @@ export class LiveOrdersComponent {
     });
   }
 
-  deleteOrder() {}
+  deleteOrder(orderId: number) {}
 }
