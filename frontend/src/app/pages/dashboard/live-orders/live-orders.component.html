@@ -482,11 +482,21 @@
       <span class="flex-1 text-sm font-bold text-gray-700 truncate">{{
         value
       }}</span>
+
       <button
-        (click)="copyToClipboard(value)"
-        class="w-8 h-8 flex items-center justify-center bg-white rounded-xl shadow-sm hover:text-orange-600 transition-colors"
+        #btn
+        (click)="copyToClipboard(value); showSuccess(btn)"
+        class="w-8 h-8 flex items-center justify-center bg-white rounded-xl shadow-sm hover:text-orange-600 transition-all active:scale-90"
       >
-        <fa-icon [icon]="icons.copy" class="text-xs"></fa-icon>
+        <fa-icon
+          [icon]="
+            btn.getAttribute('data-copied') === 'true'
+              ? icons.check
+              : icons.copy
+          "
+          [class.text-green-600]="btn.getAttribute('data-copied') === 'true'"
+          class="text-xs transition-colors"
+        ></fa-icon>
       </button>
     </div>
   </div>

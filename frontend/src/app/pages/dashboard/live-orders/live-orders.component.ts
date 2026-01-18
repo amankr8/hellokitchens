@@ -38,9 +38,21 @@ export class LiveOrdersComponent {
   }
 
   copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(() => {
-      this.uiService.showToast('Copied to clipboard!');
-    });
+    navigator.clipboard?.writeText(text).then(
+      () => {
+        this.uiService.showToast('Copied to clipboard!');
+      },
+      (err) => {
+        this.uiService.showToast('Could not copy', 'error');
+      },
+    );
+  }
+
+  showSuccess(btn: HTMLButtonElement) {
+    btn.setAttribute('data-copied', 'true');
+    setTimeout(() => {
+      btn.setAttribute('data-copied', 'false');
+    }, 2000);
   }
 
   updateStatus(orderId: number, nextStatus: string) {
