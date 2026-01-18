@@ -50,7 +50,7 @@
       <div class="space-y-4 overflow-y-auto">
         <div
           *ngFor="let order of pendingOrders()"
-          class="bg-white rounded-[2rem] p-5 shadow-sm border border-gray-100 hover:border-orange-200 transition-all flex flex-col gap-4 animate-fade-in"
+          class="bg-white rounded-[2rem] p-5 border border-gray-100 hover:border-orange-200 transition-all flex flex-col gap-4 animate-fade-in"
         >
           <div class="flex justify-between items-start">
             <div class="flex flex-col">
@@ -93,17 +93,17 @@
           >
             <div
               *ngFor="let item of order.orderItems"
-              class="flex items-start justify-between gap-4"
+              class="flex items-center justify-between gap-4"
             >
-              <div class="flex gap-3">
+              <div class="flex items-center gap-3">
                 <span
-                  class="w-6 h-6 flex items-center justify-center bg-white border-2 border-orange-200 rounded-lg text-xs font-black text-orange-600 shadow-sm"
+                  class="w-6 h-6 flex items-center justify-center bg-white border-2 border-orange-200 rounded-lg text-[10px] font-black text-orange-600 shadow-sm shrink-0"
                 >
                   {{ item.quantity }}
                 </span>
-                <span class="text-sm font-black text-gray-800 leading-tight">{{
-                  item.itemName
-                }}</span>
+                <span class="text-sm font-black text-gray-800 tracking-tight">
+                  {{ item.itemName }}
+                </span>
               </div>
             </div>
           </div>
