@@ -37,11 +37,15 @@ import {
   faBars,
   faChevronLeft,
   faBowlRice,
+  faEyeSlash,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  eyeSlash: faEyeSlash,
+  eye: faEye,
   bowl: faBowlRice,
   bars: faBars,
   copy: faCopy,

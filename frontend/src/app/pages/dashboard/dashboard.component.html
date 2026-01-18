@@ -19,11 +19,27 @@
         ></fa-icon>
       </button>
 
-      <div routerLink="/" class="flex items-center gap-2 cursor-pointer group">
-        <fa-icon [icon]="icons.logo" class="text-orange-600 text-xl"></fa-icon>
-        <span class="text-orange-600 font-bold text-xl ml-1 tracking-tight"
-          >LiveMenu</span
+      <div
+        routerLink="/"
+        class="flex items-center gap-2 cursor-pointer group relative"
+      >
+        <div
+          class="p-2 rounded-xl group-hover:bg-orange-50 transition-all duration-500"
         >
+          <fa-icon
+            [icon]="icons.logo"
+            class="text-orange-600 text-xl block transition-transform duration-500 group-hover:rotate-[15deg] group-hover:scale-110"
+          ></fa-icon>
+        </div>
+
+        <span
+          class="text-orange-600 font-black text-xl tracking-tight transition-all duration-500 group-hover:tracking-normal group-hover:text-orange-500 relative"
+        >
+          LiveMenu
+          <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-500 group-hover:w-full"
+          ></span>
+        </span>
       </div>
     </div>
 
