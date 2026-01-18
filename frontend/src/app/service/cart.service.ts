@@ -6,7 +6,7 @@ import { MenuItem } from '../model/menu-item';
   providedIn: 'root',
 })
 export class CartService {
-  STORAGE_KEY = 'cart';
+  STORAGE_KEY = 'cartV2';
 
   private loadItemsFromStorage(): CartItem[] {
     try {
@@ -33,11 +33,11 @@ export class CartService {
   readonly notes = this._notes.asReadonly();
 
   private animationQueue = signal<{ x: number; y: number; imageUrl: string }[]>(
-    []
+    [],
   );
 
   readonly totalCount = computed(() =>
-    this._cartItems().reduce((acc, item) => acc + item.quantity, 0)
+    this._cartItems().reduce((acc, item) => acc + item.quantity, 0),
   );
 
   readonly isEmpty = computed(() => this._cartItems().length === 0);
@@ -48,7 +48,7 @@ export class CartService {
       const items = this._cartItems();
       localStorage.setItem(
         this.STORAGE_KEY,
-        JSON.stringify({ notes: notes, items: items })
+        JSON.stringify({ notes: notes, items: items }),
       );
     });
   }
@@ -76,7 +76,7 @@ export class CartService {
 
       if (existing) {
         return items.map((i) =>
-          i.menuItem.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.menuItem.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
         );
       }
 
@@ -91,7 +91,7 @@ export class CartService {
 
       if (existing.quantity > 1) {
         return items.map((i) =>
-          i.menuItem.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
+          i.menuItem.id === item.id ? { ...i, quantity: i.quantity - 1 } : i,
         );
       }
 

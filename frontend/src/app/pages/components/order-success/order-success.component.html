@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-[#F9FAFB] flex flex-col items-center p-6 pt-12">
+<div class="min-h-[100dvh] flex flex-col items-center p-6 pt-12">
   <div class="mb-8 text-center animate-bounce-in">
     <div
       class="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl shadow-green-100"
@@ -31,7 +31,7 @@
               >{{ item.quantity }} x {{ item.itemName }}</span
             >
             <span class="text-sm font-black text-gray-900"
-              >₹{{ item.price }}</span
+              >₹{{ item.price * item.quantity }}</span
             >
           </div>
         }
@@ -41,7 +41,7 @@
     <div class="p-6 space-y-2">
       <div class="flex justify-between text-xs font-bold text-gray-400">
         <span>Taxes & Fees</span>
-        <span>{{ taxesAndFees() }}</span>
+        <span>₹{{ taxesAndFees() }}</span>
       </div>
       <div class="flex justify-between text-lg font-black text-gray-900 pt-2">
         <span>To Be Paid</span>
