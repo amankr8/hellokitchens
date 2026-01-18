@@ -30,7 +30,6 @@ interface NavLink {
     RouterLink,
     RouterLinkActive,
     FontAwesomeModule,
-    TitleCasePipe,
   ],
   templateUrl: './dashboard.component.html',
 })
@@ -68,6 +67,12 @@ export class DashboardComponent {
 
   toggleSidebar() {
     this.isSidebarCollapsed.update((val) => !val);
+  }
+
+  closeOnMobile() {
+    if (window.innerWidth < 768) {
+      this.isSidebarCollapsed.set(true);
+    }
   }
 
   onLogout() {
