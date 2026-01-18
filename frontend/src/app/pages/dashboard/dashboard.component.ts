@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   RouterOutlet,
@@ -35,9 +35,15 @@ export class DashboardComponent {
 
   icons = Icons;
 
+  isSidebarCollapsed = signal(false);
+
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Dashboard';
+  }
+
+  toggleSidebar() {
+    this.isSidebarCollapsed.update((val) => !val);
   }
 
   onLogout() {

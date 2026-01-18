@@ -34,11 +34,13 @@ import {
   faArrowsRotate,
   faTruck,
   faCopy,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  bars: faBars,
   copy: faCopy,
   truck: faTruck,
   refresh: faArrowsRotate,
