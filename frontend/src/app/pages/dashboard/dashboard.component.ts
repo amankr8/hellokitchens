@@ -12,11 +12,12 @@ import { AuthService } from '../../service/auth.service';
 import { KitchenService } from '../../service/kitchen.service';
 import { UiService } from '../../service/ui.service';
 import { APP_NAME } from '../../constants/app.constant';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 interface NavLink {
   path: string;
   label: string;
-  icon: any; // Use the specific IconDefinition type if using FontAwesome
+  icon: IconDefinition;
   showPulse?: boolean;
 }
 
@@ -51,14 +52,10 @@ export class DashboardComponent {
       icon: this.icons.location,
       showPulse: true,
     },
-    {
-      path: '/dashboard/menu',
-      label: 'Menu Items',
-      icon: this.icons.bowl,
-    },
+    { path: '/dashboard/menu', label: 'Menu List', icon: this.icons.bowl },
     {
       path: '/dashboard/kitchen',
-      label: 'Kitchen Profile',
+      label: 'My Kitchen',
       icon: this.icons.kitchen,
     },
   ];

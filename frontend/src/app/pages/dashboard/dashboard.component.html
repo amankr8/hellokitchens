@@ -1,11 +1,11 @@
 <div class="h-screen flex flex-col bg-gray-50 overflow-hidden">
   <header
-    class="sticky top-0 h-16 bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm z-30"
+    class="sticky top-0 h-16 bg-white border-b border-gray-100 p-4 flex justify-between items-center shadow-sm z-30"
   >
     <div class="flex items-center gap-4">
       <button
         (click)="toggleSidebar()"
-        class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-all text-gray-400 active:scale-90"
+        class="w-10 h-10 px-6 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-all text-gray-400 active:scale-90"
       >
         <fa-icon
           [icon]="icons.chevronLeft"
@@ -52,11 +52,17 @@
         <a
           *ngFor="let link of navLinks"
           [routerLink]="link.path"
-          routerLinkActive="bg-orange-50 text-orange-600"
-          class="flex items-center h-12 px-3 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden"
+          routerLinkActive="bg-orange-50 text-orange-600 shadow-sm shadow-orange-100/50 is-active"
+          #rla="routerLinkActive"
+          class="flex items-center h-12 rounded-xl text-gray-600 font-semibold transition-all hover:bg-gray-50 group overflow-hidden relative"
         >
           <div
-            class="w-10 h-10 grid place-items-center shrink-0 transition-all"
+            *ngIf="rla.isActive"
+            class="absolute left-0 top-3 bottom-3 w-1 bg-orange-500 rounded-r-full animate-in slide-in-from-left-full duration-300"
+          ></div>
+
+          <div
+            class="w-12 h-12 shrink-0 grid place-items-center transition-all"
           >
             <fa-icon
               [icon]="link.icon"
@@ -66,14 +72,14 @@
 
           <span
             *ngIf="!isSidebarCollapsed()"
-            class="ml-2 flex-1 whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300"
+            class="flex-1 whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300"
           >
             {{ link.label }}
           </span>
 
           <span
-            *ngIf="!isSidebarCollapsed() && link.label === 'Live Orders'"
-            class="w-2 h-2 bg-orange-500 rounded-full animate-pulse mr-2"
+            *ngIf="!isSidebarCollapsed() && link.showPulse"
+            class="w-2 h-2 bg-orange-500 rounded-full animate-pulse mr-4"
           ></span>
         </a>
       </nav>
