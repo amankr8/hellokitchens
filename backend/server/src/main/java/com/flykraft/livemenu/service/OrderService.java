@@ -17,7 +17,7 @@ public interface OrderService {
     Order createOrder(OrderRequestDto orderRequestDto);
 
     @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
-    Order updateOrderStatus(Long orderId, String status);
+    Order updateOrderStatus(Long orderId, String newStatus);
 
     @PreAuthorize("hasAuthority('KITCHEN_OWNER')")
     void cancelOrder(Long orderId);

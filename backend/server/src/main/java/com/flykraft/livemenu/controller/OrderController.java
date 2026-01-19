@@ -14,7 +14,7 @@ public interface OrderController {
     ResponseEntity<?> createOrder(@RequestBody OrderRequestDto orderRequestDto);
 
     @PatchMapping("/{orderId}/update")
-    ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestParam String status);
+    ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestParam String newStatus);
 
     @DeleteMapping("/{orderId}")
     ResponseEntity<?> cancelOrder(@PathVariable Long orderId);

@@ -24,20 +24,19 @@ export class AuthService {
       .pipe(
         tap((res) => {
           localStorage.setItem(this.STORAGE_KEY, res.token);
-        })
+        }),
       );
   }
 
   firebaseLogin(firebaseToken: string) {
     return this.http
-      .post<{ token: string }>(
-        `${this.apiUrl}/phone-login?firebaseToken=${firebaseToken}`,
-        null
-      )
+      .post<{ token: string }>(`${this.apiUrl}/phone-login`, null, {
+        params: { firebaseToken },
+      })
       .pipe(
         tap((res) => {
           localStorage.setItem(this.STORAGE_KEY, res.token);
-        })
+        }),
       );
   }
 
