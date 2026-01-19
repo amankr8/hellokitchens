@@ -24,9 +24,10 @@
             class="w-14 h-14 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0"
           >
             <img
-              [src]="item.menuItem.imageUrl"
               class="w-full h-full object-cover"
+              [src]="item.menuItem.imageUrl"
               [alt]="item.menuItem.name"
+              (error)="onImageError($event)"
             />
           </div>
           <div class="min-w-0">

@@ -79,9 +79,13 @@ export class HomepageComponent {
     document.title = kitchenName + ' - Home';
   }
 
+  onImageError(event: any): void {
+    event.target.src = this.defaultImage;
+  }
+
   private startFlyAnimation(
     data: { x: number; y: number; imageUrl: string },
-    cartButton: ElementRef
+    cartButton: ElementRef,
   ) {
     this.flyingItem.set(data);
     this.flyX.set(data.x);

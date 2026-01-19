@@ -22,6 +22,8 @@ export class CartItemsComponent {
 
   icons = Icons;
 
+  defaultImage: string = 'images/dish.png';
+
   constructor() {
     effect(() => {
       const specialInstructions = this.cartService.notes();
@@ -37,6 +39,10 @@ export class CartItemsComponent {
 
   decreaseQty(item: CartItem) {
     this.cartService.removeFromCart(item.menuItem);
+  }
+
+  onImageError(event: any): void {
+    event.target.src = this.defaultImage;
   }
 
   toggleBill() {
