@@ -6,7 +6,6 @@ import { Observable, tap } from 'rxjs';
 import { OrderStatus } from '../enum/order-status.enum';
 
 import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { KitchenService } from './kitchen.service';
 
 @Injectable({
