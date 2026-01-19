@@ -7,6 +7,7 @@ import { OrderStatus } from '../enum/order-status.enum';
 
 import { Client } from '@stomp/stompjs';
 import { KitchenService } from './kitchen.service';
+import { UiService } from './ui.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class OrderService {
   private stompClient: Client;
   http = inject(HttpClient);
   kitchenService = inject(KitchenService);
+  uiService = inject(UiService);
 
   private apiUrl = environment.apiBaseUrl + '/api/v1/orders';
 
@@ -103,6 +105,11 @@ export class OrderService {
     if (!this._orders()) {
       this.refreshOrders();
     } else {
+      const audio = new Audio('audio/notification.mp3');
+      audio
+        .play()
+        .catch(() => console.log('User interaction required for audio'));
+      this.uiService.showToast('Incoming Order! Ticket #' + order.id, 'info');
       this._orders.update((orders) => [...orders!, order]);
     }
   }
