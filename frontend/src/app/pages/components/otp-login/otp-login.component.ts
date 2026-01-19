@@ -32,7 +32,7 @@ export class OtpLoginComponent {
   phoneNumber = '';
   otpValue = '';
 
-  recaptchaVerifier: any;
+  recaptchaVerifier: RecaptchaVerifier | null = null;
   confirmationResult: ConfirmationResult | null = null;
 
   success = output<void>();
@@ -60,11 +60,14 @@ export class OtpLoginComponent {
       'recaptcha-container',
       {
         size: 'invisible',
-      }
+      },
     );
   }
 
   async sendOtp() {
+    const recaptchaVerifier = this.recaptchaVerifier;
+    if (!recaptchaVerifier) return;
+
     this.loading.set(true);
     this.error.set(null);
     try {
@@ -72,7 +75,7 @@ export class OtpLoginComponent {
       this.confirmationResult = await signInWithPhoneNumber(
         this.auth,
         formattedPhone,
-        this.recaptchaVerifier
+        recaptchaVerifier,
       );
       this.step.set('otp');
       this.startTimer();
