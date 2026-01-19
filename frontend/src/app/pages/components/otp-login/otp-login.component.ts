@@ -27,13 +27,13 @@ export class OtpLoginComponent {
   loading = signal(false);
   error = signal<string | null>(null);
   countdown = signal(0);
-  timerSubscription?: Subscription;
 
   phoneNumber = '';
   otpValue = '';
 
-  recaptchaVerifier: RecaptchaVerifier | null = null;
-  confirmationResult: ConfirmationResult | null = null;
+  timerSubscription?: Subscription;
+  recaptchaVerifier?: RecaptchaVerifier;
+  confirmationResult?: ConfirmationResult;
 
   success = output<void>();
   close = output<void>();
