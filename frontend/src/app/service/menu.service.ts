@@ -63,7 +63,7 @@ export class MenuService {
         } else {
           this.appendMenuItem(item);
         }
-      })
+      }),
     );
   }
 
@@ -79,13 +79,13 @@ export class MenuService {
         } else {
           this.replaceMenuItem(updated);
         }
-      })
+      }),
     );
   }
 
   private replaceMenuItem(updated: MenuItem): void {
     this._menuItems.update((items) =>
-      items!.map((i) => (i.id === updated.id ? updated : i))
+      items!.map((i) => (i.id === updated.id ? updated : i)),
     );
   }
 
@@ -93,14 +93,14 @@ export class MenuService {
     // Optimistic update and rollback on failure
     const previousItems = this._menuItems();
     this._menuItems.update((items) =>
-      items!.map((i) => (i.id === itemId ? { ...i, inStock: !i.inStock } : i))
+      items!.map((i) => (i.id === itemId ? { ...i, inStock: !i.inStock } : i)),
     );
 
     return this.http.patch<void>(`${this.apiUrl}/${itemId}`, null).pipe(
       catchError((err) => {
         this._menuItems.set(previousItems);
         return throwError(() => err);
-      })
+      }),
     );
   }
 
@@ -113,7 +113,7 @@ export class MenuService {
       catchError((err) => {
         this._menuItems.set(previousItems);
         return throwError(() => err);
-      })
+      }),
     );
   }
 

@@ -6,11 +6,13 @@ import com.flykraft.livemenu.entity.Order;
 import com.flykraft.livemenu.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
 public class OrderControllerImpl implements OrderController {
+    private final SimpMessagingTemplate messagingTemplate;
     private final OrderService orderService;
 
     @Override
@@ -20,7 +22,10 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequestDto) {
-        return ResponseEntity.ok(orderService.createOrder(orderRequestDto).toResponseDto());
+        Order order = orderService.createOrder(orderRequestDto);
+        String topic = "/topic/kitchen/" + order.getKitchen().getId();
+        messagingTemplate.convertAndSend(topic, order.toResponseDto());
+        return ResponseEntity.ok(order.toResponseDto());
     }
 
     @Override

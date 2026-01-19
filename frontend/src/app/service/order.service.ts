@@ -1,14 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Order, OrderPayload } from '../model/order';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { OrderStatus } from '../enum/order-status.enum';
+
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { KitchenService } from './kitchen.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
+  private stompClient: Client;
+  http = inject(HttpClient);
+  kitchenService = inject(KitchenService);
+
   private apiUrl = environment.apiBaseUrl + '/api/v1/orders';
 
   // 🔹 State signals
@@ -35,7 +43,25 @@ export class OrderService {
       this._orders()?.filter((o) => o.status === OrderStatus.DISPATCHED) ?? [],
   );
 
-  constructor(private http: HttpClient) {}
+  constructor() {
+    this.stompClient = new Client({
+      webSocketFactory: () => new SockJS(environment.apiBaseUrl + '/ws-orders'),
+      debug: (str) => console.log(str),
+      reconnectDelay: 5000,
+    });
+
+    this.stompClient.onConnect = () => {
+      console.log('Connected to Spring Boot WS');
+
+      const kitchenId = this.kitchenService.kitchen()?.id;
+      this.stompClient.subscribe(`/topic/kitchen/${kitchenId}`, (message) => {
+        const newOrder = JSON.parse(message.body);
+        this.appendOrder(newOrder);
+      });
+    };
+
+    this.stompClient.activate();
+  }
 
   // --------------------
   // Load orders
@@ -72,6 +98,14 @@ export class OrderService {
   // --------------------
   placeOrder(orderPayload: OrderPayload): Observable<Order> {
     return this.http.post<Order>(this.apiUrl, orderPayload);
+  }
+
+  private appendOrder(order: Order): void {
+    if (!this._orders()) {
+      this.refreshOrders();
+    } else {
+      this._orders.update((orders) => [...orders!, order]);
+    }
   }
 
   updateOrderStatus(orderId: number, status: string): Observable<Order> {
