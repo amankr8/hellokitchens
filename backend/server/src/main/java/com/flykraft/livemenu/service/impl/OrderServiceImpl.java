@@ -16,6 +16,7 @@ import com.flykraft.livemenu.service.UserService;
 import com.flykraft.livemenu.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final KitchenService kitchenService;
     private final MenuService menuService;
     private final UserService userService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public Order loadOrderById(Long orderId) {
@@ -95,6 +97,10 @@ public class OrderServiceImpl implements OrderService {
                 .add(order.getPackingCharges())
                 .add(order.getDeliveryFees());
         order.setTotalAmount(totalAmount);
+
+        String topic = "/topic/kitchen/" + kitchen.getId();
+        messagingTemplate.convertAndSend(topic, order.toResponseDto());
+
         return order;
     }
 

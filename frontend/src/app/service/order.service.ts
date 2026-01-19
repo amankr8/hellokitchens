@@ -45,7 +45,7 @@ export class OrderService {
 
   constructor() {
     this.stompClient = new Client({
-      webSocketFactory: () => new SockJS(environment.apiBaseUrl + '/ws-orders'),
+      brokerURL: environment.apiBaseUrl + '/ws-orders',
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
     });
