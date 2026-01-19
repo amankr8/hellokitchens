@@ -72,7 +72,10 @@ export class LiveOrdersComponent {
     this.orderService.updateOrderStatus(orderId, nextStatus).subscribe({
       next: () => this.uiService.showToast(notification),
       error: () =>
-        this.uiService.showToast('Failed to update order status', 'error'),
+        this.uiService.showToast(
+          'Failed to update status. Please try again',
+          'error',
+        ),
     });
   }
 
