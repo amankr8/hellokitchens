@@ -352,7 +352,7 @@
             </button>
 
             <button
-              (click)="updateStatus(order.id, 'DELIVERED')"
+              (click)="updateStatus(order.id, orderStatus.DELIVERED)"
               class="flex-1 py-3.5 bg-green-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-green-700 active:scale-95 transition-all shadow-lg shadow-green-100 leading-none flex items-center justify-center gap-2"
             >
               <fa-icon [icon]="icons.success"></fa-icon>

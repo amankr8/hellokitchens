@@ -64,11 +64,13 @@ export class LiveOrdersComponent {
     }, 2000);
   }
 
-  updateStatus(orderId: number, nextStatus: string) {
-    console.log(`Updating ${orderId} to ${nextStatus}`);
+  updateStatus(orderId: number, nextStatus: OrderStatus) {
+    const notification =
+      nextStatus === OrderStatus.DELIVERED
+        ? `Order #${orderId} marked as ${nextStatus}`
+        : `Order #${orderId} moved to ${nextStatus}`;
     this.orderService.updateOrderStatus(orderId, nextStatus).subscribe({
-      next: () =>
-        this.uiService.showToast(`Order #${orderId} moved to ${nextStatus}`),
+      next: () => this.uiService.showToast(notification),
       error: () =>
         this.uiService.showToast('Failed to update order status', 'error'),
     });
