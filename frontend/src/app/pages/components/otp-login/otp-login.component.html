@@ -53,6 +53,23 @@
         ></fa-icon>
         <span>{{ loading() ? "Sending..." : "Get OTP" }}</span>
       </button>
+      <p class="text-[10px] text-center text-gray-400 px-4 leading-relaxed">
+        This site is protected by reCAPTCHA and the Google
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          class="text-orange-500 hover:underline"
+          >Privacy Policy</a
+        >
+        and
+        <a
+          href="https://policies.google.com/terms"
+          target="_blank"
+          class="text-orange-500 hover:underline"
+          >Terms of Service</a
+        >
+        apply.
+      </p>
     </div>
 
     <div *ngIf="step() === 'otp'" class="space-y-6">
@@ -107,6 +124,6 @@
       </div>
     </div>
 
-    <div id="recaptcha-container"></div>
+    <div id="recaptcha-container" style="display: none"></div>
   </div>
 </div>

@@ -63,7 +63,7 @@ export class OtpLoginComponent {
       this.auth,
       'recaptcha-container',
       {
-        size: 'normal',
+        size: 'invisible',
       },
     );
   }
