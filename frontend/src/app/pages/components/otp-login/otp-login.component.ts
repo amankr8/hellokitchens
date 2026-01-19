@@ -55,11 +55,15 @@ export class OtpLoginComponent {
   }
 
   setupRecaptcha() {
+    if (this.recaptchaVerifier) {
+      this.recaptchaVerifier.clear();
+    }
+
     this.recaptchaVerifier = new RecaptchaVerifier(
       this.auth,
       'recaptcha-container',
       {
-        size: 'invisible',
+        size: 'normal',
       },
     );
   }
@@ -81,9 +85,15 @@ export class OtpLoginComponent {
       this.startTimer();
     } catch (error) {
       this.error.set('Failed to send SMS. Please try again.');
+      this.setupRecaptcha();
     } finally {
       this.loading.set(false);
     }
+  }
+
+  async resendOtp() {
+    this.setupRecaptcha();
+    await this.sendOtp();
   }
 
   async verifyOtp() {
@@ -95,7 +105,10 @@ export class OtpLoginComponent {
 
       if (firebaseToken) {
         this.authService.firebaseLogin(firebaseToken).subscribe({
-          next: () => this.success.emit(),
+          next: () => {
+            this.cleanupRecaptcha();
+            this.success.emit();
+          },
           error: (err) => {
             this.loading.set(false);
             this.error.set('Some error occurred. Please try again');
@@ -110,8 +123,24 @@ export class OtpLoginComponent {
     }
   }
 
+  private cleanupRecaptcha() {
+    if (this.recaptchaVerifier) {
+      this.recaptchaVerifier.clear();
+      this.recaptchaVerifier = undefined;
+    }
+  }
+
+  resetToPhoneStep() {
+    this.step.set('phone');
+    this.otpValue = '';
+    this.error.set(null);
+    this.timerSubscription?.unsubscribe();
+    this.countdown.set(0);
+    this.setupRecaptcha();
+  }
+
   ngOnDestroy() {
     this.timerSubscription?.unsubscribe();
-    this.recaptchaVerifier?.clear();
+    this.cleanupRecaptcha();
   }
 }
