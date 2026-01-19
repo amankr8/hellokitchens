@@ -44,11 +44,16 @@ export class OrderService {
       this._orders()?.filter((o) => o.status === OrderStatus.DISPATCHED) ?? [],
   );
 
+  private notificationSound = new Audio('audio/notification.mp3');
+
   constructor() {
+    this.notificationSound.load();
     this.stompClient = new Client({
       brokerURL: environment.apiBaseUrl + '/ws-orders',
-      debug: (str) => console.log(str),
+      heartbeatIncoming: 10000,
+      heartbeatOutgoing: 10000,
       reconnectDelay: 5000,
+      debug: (str) => console.log(str),
     });
 
     this.stompClient.onConnect = () => {
@@ -105,10 +110,10 @@ export class OrderService {
     if (!this._orders()) {
       this.refreshOrders();
     } else {
-      const audio = new Audio('audio/notification.mp3');
-      audio
+      this.notificationSound.currentTime = 0;
+      this.notificationSound
         .play()
-        .catch(() => console.log('User interaction required for audio'));
+        .catch((e) => console.warn('Audio blocked', e));
       this.uiService.showToast('Incoming Order! Ticket #' + order.id, 'info');
       this._orders.update((orders) => [...orders!, order]);
     }
