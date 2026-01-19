@@ -90,7 +90,6 @@ export class MenuService {
   }
 
   toggleAvailability(itemId: number): Observable<void> {
-    // Optimistic update and rollback on failure
     const previousItems = this._menuItems();
     this._menuItems.update((items) =>
       items!.map((i) => (i.id === itemId ? { ...i, inStock: !i.inStock } : i)),
@@ -105,7 +104,6 @@ export class MenuService {
   }
 
   deleteItem(id: number): Observable<void> {
-    // Optimistic delete and rollback on failure
     const previousItems = this._menuItems();
     this._menuItems.update((items) => items!.filter((i) => i.id !== id));
 

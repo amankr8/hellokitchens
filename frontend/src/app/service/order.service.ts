@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Order, OrderPayload } from '../model/order';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { OrderStatus } from '../enum/order-status.enum';
 
 import { Client } from '@stomp/stompjs';
@@ -107,25 +107,37 @@ export class OrderService {
     }
   }
 
-  updateOrderStatus(orderId: number, status: string): Observable<Order> {
+  updateOrderStatus(orderId: number, newStatus: string): Observable<Order> {
+    const existingOrders = this._orders();
+    this._orders.update((orders) =>
+      orders!.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
+    );
+
     return this.http
       .patch<Order>(`${this.apiUrl}/${orderId}/update`, null, {
-        params: { status },
+        params: { newStatus },
       })
       .pipe(
-        tap((updatedOrder) => {
-          if (this._orders() === null) {
-            this.refreshOrders();
-          } else {
-            this.replaceOrder(updatedOrder);
-          }
+        catchError((err) => {
+          this._orders.set(existingOrders);
+          return throwError(() => err);
         }),
       );
   }
 
-  private replaceOrder(updated: Order): void {
+  discardOrder(orderId: number): Observable<void> {
+    const existingOrders = this._orders();
     this._orders.update((orders) =>
-      orders!.map((o) => (o.id === updated.id ? updated : o)),
+      orders!.map((o) =>
+        o.id === orderId ? { ...o, status: OrderStatus.CANCELLED } : o,
+      ),
+    );
+
+    return this.http.delete<void>(`${this.apiUrl}/${orderId}`).pipe(
+      catchError((err) => {
+        this._orders.set(existingOrders);
+        return throwError(() => err);
+      }),
     );
   }
 }

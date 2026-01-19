@@ -74,5 +74,22 @@ export class LiveOrdersComponent {
     });
   }
 
-  deleteOrder(orderId: number) {}
+  deleteOrder(orderId: number) {
+    this.uiService.ask({
+      title: `Cancel Order #${orderId}?`,
+      message: `Are you sure you want to discard this order? This action cannot be undone.`,
+      confirmText: 'Yes, Discard',
+      action: () => {
+        this.orderService.discardOrder(orderId).subscribe({
+          next: () =>
+            this.uiService.showToast(`Order #${orderId} was DISCARDED`, 'info'),
+          error: () =>
+            this.uiService.showToast(
+              'Failed to cancel order. Please try again',
+              'error',
+            ),
+        });
+      },
+    });
+  }
 }
