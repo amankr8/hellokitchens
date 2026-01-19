@@ -24,6 +24,8 @@ export class LiveOrdersComponent {
   pendingOrders = this.orderService.pendingOrders;
   preparingOrders = this.orderService.preparingOrders;
   dispatchedOrders = this.orderService.dispatchedOrders;
+  loading = this.orderService.loading;
+  error = this.orderService.error;
 
   totalActiveCount = computed(
     () =>
