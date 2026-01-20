@@ -5,6 +5,7 @@ import com.flykraft.livemenu.dto.user.UserReqDto;
 import com.flykraft.livemenu.entity.Address;
 import com.flykraft.livemenu.entity.User;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
 
@@ -15,9 +16,17 @@ public interface UserService {
     User addUser(UserReqDto userReqDto);
 
     @PreAuthorize("hasAuthority('USER')")
+    User updateUser(UserReqDto userReqDto);
+
+    @PreAuthorize("hasAuthority('USER')")
+    void deleteUser();
+
+    @PreAuthorize("hasAuthority('USER')")
     Address addAddressForUser(AddressReqDto addressReqDto);
 
+    @PreAuthorize("hasAuthority('USER')")
     Address updateAddressForUser(Long profileId, AddressReqDto addressReqDto);
 
+    @PreAuthorize("hasAuthority('USER')")
     void deleteAddressForUser(Long addressId);
 }

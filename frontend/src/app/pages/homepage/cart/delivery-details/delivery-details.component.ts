@@ -56,6 +56,7 @@ export class DeliveryDetailsComponent {
   editingAddressId = signal<number | null>(null);
   isPlacingOrder = signal(false);
   isRegistering = signal(false);
+  isEditingName = signal(false);
   isAddingNewAddress = signal(false);
   savingNewAddress = signal(false);
   isLocating = signal(false);
@@ -111,21 +112,36 @@ export class DeliveryDetailsComponent {
     this.userService.loadUser();
   }
 
-  registerName() {
+  saveName() {
     const name = this.userForm.get('name')?.value;
     if (!name || this.isRegistering()) return;
 
     this.isRegistering.set(true);
-    this.userService.registerUser({ name, phone: null }).subscribe({
+    const request$ = this.isUserRegistered()
+      ? this.userService.updateUser({ name, phone: null })
+      : this.userService.registerUser({ name, phone: null });
+
+    request$.subscribe({
       next: () => {
         this.isRegistering.set(false);
-        this.uiService.showToast('Profile registered!');
+        this.isEditingName.set(false);
+        this.userForm.markAsPristine();
+        this.uiService.showToast(
+          this.isUserRegistered()
+            ? 'User details updated!'
+            : 'User details registered!',
+        );
       },
       error: () => {
         this.isRegistering.set(false);
-        this.uiService.showToast('Failed to save name', 'error');
+        this.uiService.showToast('Failed to save changes', 'error');
       },
     });
+  }
+
+  cancelNameEdit() {
+    this.isEditingName.set(false);
+    this.userForm.patchValue({ name: this.user()?.name });
   }
 
   startAddingAddress() {

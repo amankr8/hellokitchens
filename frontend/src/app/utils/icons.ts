@@ -44,6 +44,7 @@ import {
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  user: faUser,
   eyeSlash: faEyeSlash,
   eye: faEye,
   bowl: faBowlRice,

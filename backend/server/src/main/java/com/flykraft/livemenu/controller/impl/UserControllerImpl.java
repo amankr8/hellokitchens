@@ -24,6 +24,17 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public ResponseEntity<?> updateUser(UserReqDto userReqDto) {
+        return ResponseEntity.ok().body(userService.updateUser(userReqDto).toResponseDto());
+    }
+
+    @Override
+    public ResponseEntity<?> deleteUser() {
+        userService.deleteUser();
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
     public ResponseEntity<?> addAddress(AddressReqDto addressReqDto) {
         return ResponseEntity.ok().body(userService.addAddressForUser(addressReqDto).toResponseDto());
     }

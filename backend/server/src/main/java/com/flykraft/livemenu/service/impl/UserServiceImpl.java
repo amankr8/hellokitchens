@@ -36,8 +36,21 @@ public class UserServiceImpl implements UserService {
                 .name(userReqDto.getName())
                 .phone(authUser.getUsername())
                 .build();
-        user = userRepository.save(user);
-        return user;
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public User updateUser(UserReqDto userReqDto) {
+        User currentUser = loadCurrentUser();
+        currentUser.setName(userReqDto.getName());
+        return userRepository.save(currentUser);
+    }
+
+    @Override
+    public void deleteUser() {
+        User currentUser = loadCurrentUser();
+        userRepository.deleteById(currentUser.getId());
     }
 
     @Transactional

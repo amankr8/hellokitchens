@@ -14,6 +14,12 @@ public interface UserController {
     @PostMapping
     ResponseEntity<?> addUser(@RequestBody UserReqDto userReqDto);
 
+    @PutMapping
+    ResponseEntity<?> updateUser(@RequestBody UserReqDto userReqDto);
+
+    @DeleteMapping
+    ResponseEntity<?> deleteUser();
+
     @PostMapping("/addresses")
     ResponseEntity<?> addAddress(@RequestBody AddressReqDto addressReqDto);
 

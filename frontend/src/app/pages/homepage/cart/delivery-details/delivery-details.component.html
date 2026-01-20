@@ -89,48 +89,65 @@
               >
 
               <div
-                *ngIf="!isUserRegistered(); else readonlyName"
+                *ngIf="!isUserRegistered() || isEditingName()"
                 class="space-y-3 animate-fade-in"
               >
-                <input
-                  formControlName="name"
-                  type="text"
-                  placeholder="e.g. John Doe"
-                  class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
-                />
+                <div class="relative">
+                  <input
+                    formControlName="name"
+                    type="text"
+                    placeholder="e.g. John Doe"
+                    class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 transition-all"
+                  />
+                  <button
+                    *ngIf="isEditingName()"
+                    (click)="cancelNameEdit()"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold"
+                  >
+                    Cancel
+                  </button>
+                </div>
+
                 <button
                   type="button"
-                  (click)="registerName()"
-                  [disabled]="isRegistering() || !userForm.get('name')?.value"
-                  class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300"
+                  (click)="saveName()"
+                  [disabled]="
+                    isRegistering() ||
+                    !userForm.get('name')?.value ||
+                    (userForm.get('name')?.pristine && isEditingName())
+                  "
+                  class="w-full py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-300 shadow-lg shadow-gray-200"
                 >
                   <fa-icon
                     *ngIf="isRegistering()"
                     [icon]="icons.spinner"
                     [animation]="'spin'"
                   ></fa-icon>
-                  <span>Save & Continue</span>
+                  <span>{{
+                    isEditingName() ? "Update Name" : "Save & Continue"
+                  }}</span>
                 </button>
               </div>
-            </form>
 
-            <ng-template #readonlyName>
               <div
-                class="flex items-center gap-3 px-6 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl animate-fade-in"
+                *ngIf="isUserRegistered() && !isEditingName()"
+                (click)="isEditingName.set(true)"
+                class="flex items-center gap-3 px-6 py-4 bg-gray-50/50 border border-gray-100 rounded-[2rem] animate-fade-in cursor-pointer hover:border-orange-200 transition-all group"
               >
-                <fa-icon
-                  [icon]="icons.checkCircle"
-                  class="text-green-500 text-xs"
-                ></fa-icon>
+                <div
+                  class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600"
+                >
+                  <fa-icon [icon]="icons.user" class="text-xs"></fa-icon>
+                </div>
                 <span class="text-sm font-black text-gray-700">{{
                   user()?.name
                 }}</span>
-                <span
-                  class="text-[9px] font-black text-gray-400 uppercase ml-auto"
-                  >Verified</span
-                >
+                <fa-icon
+                  [icon]="icons.edit"
+                  class="text-gray-300 ml-auto group-hover:text-orange-500"
+                ></fa-icon>
               </div>
-            </ng-template>
+            </form>
           </div>
         </ng-template>
       </ng-container>

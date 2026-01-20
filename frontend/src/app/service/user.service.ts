@@ -69,6 +69,16 @@ export class UserService {
     );
   }
 
+  updateUser(payload: UserPayload): Observable<User> {
+    this._error.set(null);
+
+    return this.http.put<User>(this.apiUrl, payload).pipe(
+      tap((user) => {
+        this._user.set(user);
+      }),
+    );
+  }
+
   addAddress(payload: AddressPayload): Observable<Address> {
     this._error.set(null);
 
