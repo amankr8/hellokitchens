@@ -1,125 +1,107 @@
-<div class="bg-orange-600 h-32 w-full absolute top-0 left-0 z-0"></div>
-<div class="min-h-[100dvh] relative z-10 max-w-4xl mx-auto pt-12 px-4 pb-12">
-  <header class="sticky top-6 z-50 mb-10 px-2 sm:px-0">
-    <div
-      class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] px-4 py-3 flex items-center justify-between transition-all duration-300"
-    >
-      <div class="flex items-center gap-3 shrink-0">
+<div class="min-h-[100dvh]">
+  <div
+    class="bg-orange-600 h-48 w-full absolute top-0 left-0 rounded-b-[3rem]"
+  ></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 pt-8 pb-24">
+    <header class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3">
         <div
-          class="w-11 h-11 sm:w-13 sm:h-13 bg-gradient-to-br from-orange-400 to-orange-600 rounded-[1.25rem] flex items-center justify-center text-white shadow-lg shadow-orange-200"
+          class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-orange-600 shadow-xl shadow-orange-900/20"
         >
-          <fa-icon [icon]="icons.logo" class="text-xl sm:text-2xl"></fa-icon>
+          <fa-icon [icon]="icons.logo" class="text-2xl"></fa-icon>
         </div>
-        <div class="min-w-0">
-          <h1
-            class="text-base sm:text-xl font-black text-gray-900 leading-none truncate"
-          >
-            {{ kitchen()?.name }}
-          </h1>
+        <div class="text-white">
+          <h1 class="text-xl font-black leading-none">{{ kitchen()?.name }}</h1>
           <p
-            class="text-[9px] sm:text-[10px] font-black text-orange-600/60 uppercase tracking-[0.15em] mt-1 truncate"
+            class="text-[10px] font-bold opacity-80 uppercase tracking-widest mt-1"
           >
             {{ kitchen()?.tagline }}
           </p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-4">
-        <div class="relative" *ngIf="isLoggedIn">
-          <button
-            (click)="toggleUserMenu()"
-            class="flex items-center gap-2 h-11 sm:h-13 px-3 sm:px-4 bg-white/50 border border-white rounded-2xl hover:bg-white transition-all group active:scale-95"
-          >
-            <div
-              class="w-7 h-7 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-[10px]"
-            >
-              <fa-icon [icon]="icons.user"></fa-icon>
-            </div>
-            <fa-icon
-              [icon]="icons.chevronDown"
-              class="text-[10px] text-gray-400 group-hover:text-orange-600"
-            ></fa-icon>
-          </button>
-
+      <div class="flex items-center gap-2">
+        <button
+          *ngIf="isLoggedIn"
+          (click)="toggleUserMenu()"
+          class="h-10 px-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-2 text-white"
+        >
           <div
-            *ngIf="showUserMenu()"
-            class="absolute right-0 mt-4 w-60 bg-white/95 backdrop-blur-lg rounded-[2rem] shadow-2xl border border-white p-2 animate-in fade-in slide-in-from-top-4 duration-300 overflow-hidden z-[60]"
+            class="w-7 h-7 bg-white rounded-full flex items-center justify-center text-orange-600 text-[10px]"
           >
-            <div class="px-5 py-4 border-b border-gray-50">
-              <p
-                class="text-[10px] font-black text-gray-400 uppercase tracking-widest"
-              >
-                Profile
-              </p>
-              <p class="text-sm font-black text-gray-900 truncate">
-                {{ user()?.name || "Guest" }}
-              </p>
-            </div>
-            <div class="p-1 space-y-1">
-              <button
-                (click)="navigateToOrders()"
-                class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-2xl transition-all"
-              >
-                <fa-icon [icon]="icons.history" class="text-xs"></fa-icon>
-                <span class="text-[11px] font-black uppercase tracking-wider"
-                  >Order History</span
-                >
-              </button>
-              <button
-                (click)="logout()"
-                class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-all"
-              >
-                <fa-icon [icon]="icons.logout" class="text-xs"></fa-icon>
-                <span class="text-[11px] font-black uppercase tracking-wider"
-                  >Sign Out</span
-                >
-              </button>
-            </div>
+            <fa-icon [icon]="icons.user"></fa-icon>
           </div>
-        </div>
+          <fa-icon
+            [icon]="icons.chevronDown"
+            class="text-[10px] mr-1"
+          ></fa-icon>
+        </button>
 
         <button
           #cartButton
           (click)="onViewCart()"
           [disabled]="isCartEmpty()"
-          class="h-11 sm:h-13 px-5 sm:px-7 bg-gray-900 text-white rounded-[1.5rem] flex items-center gap-3 relative transition-all active:scale-95 hover:bg-orange-600 shadow-xl shadow-gray-900/10 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none group"
+          class="h-10 px-4 bg-gray-900 text-white rounded-full flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50"
         >
-          <div class="relative">
-            <fa-icon [icon]="icons.cart" class="text-base sm:text-lg"></fa-icon>
-            <span
-              *ngIf="!isCartEmpty()"
-              [class.animate-badge-pulse]="isBadgePulsing()"
-              class="absolute -top-3 -right-3 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-gray-900 group-hover:border-orange-600 transition-colors"
-            >
-              {{ displayedCount() }}
-            </span>
-          </div>
-          <span
-            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.1em] hidden xs:block"
-            >View Cart</span
-          >
+          <fa-icon [icon]="icons.cart"></fa-icon>
+          <span class="text-xs font-black">{{ actualCartCount() }}</span>
         </button>
       </div>
+    </header>
+
+    <div
+      *ngIf="showUserMenu()"
+      class="absolute right-4 top-20 w-56 bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-2 z-[100] animate-in fade-in slide-in-from-top-2"
+    >
+      <button
+        (click)="navigateToOrders()"
+        class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 rounded-2xl transition-all"
+      >
+        <fa-icon [icon]="icons.history" class="text-sm"></fa-icon>
+        <span class="text-[11px] font-black uppercase">My Orders</span>
+      </button>
+      <button
+        (click)="logout()"
+        class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+      >
+        <fa-icon [icon]="icons.logout" class="text-sm"></fa-icon>
+        <span class="text-[11px] font-black uppercase">Logout</span>
+      </button>
     </div>
-  </header>
 
-  <section
-    class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 sm:p-8 min-h-[60vh]"
-  >
-    <div class="flex items-center justify-between mb-8">
-      <h3 class="text-xl font-black text-gray-900">Explore Menu</h3>
-      <div class="h-1 flex-1 mx-4 bg-gray-50 rounded-full"></div>
-      <fa-icon [icon]="icons.search" class="text-gray-400"></fa-icon>
+    <div
+      class="bg-white rounded-[2rem] shadow-xl shadow-orange-900/5 p-2 mb-8 flex items-center"
+    >
+      <div class="flex-1 flex items-center px-4 gap-3">
+        <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
+        <input
+          type="text"
+          placeholder="Search delicious food..."
+          class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
+        />
+      </div>
+      <button
+        class="bg-orange-500 text-white w-12 h-12 rounded-[1.5rem] flex items-center justify-center shadow-lg shadow-orange-200"
+      >
+        <fa-icon [icon]="icons.filter"></fa-icon>
+      </button>
     </div>
 
-    <app-menu></app-menu>
-  </section>
-
-  <p
-    class="mt-8 text-center text-gray-400 text-xs font-bold tracking-widest uppercase"
-  >
-    Powered by LiveMenu
-  </p>
+    <div
+      class="bg-white rounded-[3rem] p-6 sm:p-8 shadow-sm border border-gray-100 min-h-[60vh]"
+    >
+      <div class="flex items-center justify-between mb-8">
+        <h3 class="text-2xl font-black text-gray-900">Explore Menu</h3>
+        <span
+          class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-black uppercase"
+        >
+          {{ 12 }} Items
+        </span>
+      </div>
+      <app-menu></app-menu>
+    </div>
+  </div>
 </div>
 
 <app-otp-login

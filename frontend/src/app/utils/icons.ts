@@ -40,11 +40,13 @@ import {
   faEyeSlash,
   faEye,
   faHistory,
+  faFilter,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  filter: faFilter,
   history: faHistory,
   user: faUser,
   eyeSlash: faEyeSlash,
