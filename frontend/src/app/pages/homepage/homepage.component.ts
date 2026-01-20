@@ -2,6 +2,7 @@ import {
   Component,
   effect,
   ElementRef,
+  HostListener,
   inject,
   signal,
   viewChild,
@@ -50,6 +51,14 @@ export class HomepageComponent {
   isBadgePulsing = signal(false);
   showLoginModal = signal(false);
   showUserMenu = signal(false);
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      this.showUserMenu.set(false);
+    }
+  }
 
   toggleUserMenu() {
     this.showUserMenu.update((v) => !v);

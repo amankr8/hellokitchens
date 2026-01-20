@@ -1,72 +1,80 @@
 <div class="bg-orange-600 h-32 w-full absolute top-0 left-0 z-0"></div>
 <div class="min-h-[100dvh] relative z-10 max-w-4xl mx-auto pt-12 px-4 pb-12">
-  <header class="sticky top-6 z-50 mb-10">
+  <header class="sticky top-6 z-50 mb-10 px-2 sm:px-0">
     <div
-      class="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl px-4 py-3 sm:px-6 sm:py-5 flex items-center justify-between"
+      class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] px-4 py-3 flex items-center justify-between transition-all duration-300"
     >
-      <div class="flex items-center gap-3 sm:gap-4">
+      <div class="flex items-center gap-3 shrink-0">
         <div
-          class="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 shadow-inner shrink-0"
+          class="w-11 h-11 sm:w-13 sm:h-13 bg-gradient-to-br from-orange-400 to-orange-600 rounded-[1.25rem] flex items-center justify-center text-white shadow-lg shadow-orange-200"
         >
           <fa-icon [icon]="icons.logo" class="text-xl sm:text-2xl"></fa-icon>
         </div>
         <div class="min-w-0">
           <h1
-            class="text-lg sm:text-2xl font-black text-gray-900 leading-tight truncate"
+            class="text-base sm:text-xl font-black text-gray-900 leading-none truncate"
           >
             {{ kitchen()?.name }}
           </h1>
           <p
-            class="text-[10px] sm:text-sm font-bold text-orange-600/70 uppercase tracking-widest truncate"
+            class="text-[9px] sm:text-[10px] font-black text-orange-600/60 uppercase tracking-[0.15em] mt-1 truncate"
           >
             {{ kitchen()?.tagline }}
           </p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-2 sm:gap-4">
         <div class="relative" *ngIf="isLoggedIn">
           <button
             (click)="toggleUserMenu()"
-            class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-90"
+            class="flex items-center gap-2 h-11 sm:h-13 px-3 sm:px-4 bg-white/50 border border-white rounded-2xl hover:bg-white transition-all group active:scale-95"
           >
-            <fa-icon [icon]="icons.user" class="text-lg"></fa-icon>
+            <div
+              class="w-7 h-7 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-[10px]"
+            >
+              <fa-icon [icon]="icons.user"></fa-icon>
+            </div>
+            <fa-icon
+              [icon]="icons.chevronDown"
+              class="text-[10px] text-gray-400 group-hover:text-orange-600"
+            ></fa-icon>
           </button>
 
           <div
             *ngIf="showUserMenu()"
-            class="absolute right-0 mt-4 w-56 bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-3 animate-in fade-in slide-in-from-top-4 duration-200"
+            class="absolute right-0 mt-4 w-60 bg-white/95 backdrop-blur-lg rounded-[2rem] shadow-2xl border border-white p-2 animate-in fade-in slide-in-from-top-4 duration-300 overflow-hidden z-[60]"
           >
-            <div class="px-4 py-3 border-b border-gray-50 mb-2">
+            <div class="px-5 py-4 border-b border-gray-50">
               <p
-                class="text-[10px] font-black uppercase text-gray-400 tracking-widest"
+                class="text-[10px] font-black text-gray-400 uppercase tracking-widest"
               >
-                Logged in as
+                Profile
               </p>
               <p class="text-sm font-black text-gray-900 truncate">
-                {{ user()?.name || "Customer" }}
+                {{ user()?.name || "Guest" }}
               </p>
             </div>
-
-            <button
-              (click)="navigateToOrders()"
-              class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-2xl transition-colors"
-            >
-              <fa-icon [icon]="icons.history" class="text-sm"></fa-icon>
-              <span class="text-xs font-black uppercase tracking-widest"
-                >Past Orders</span
+            <div class="p-1 space-y-1">
+              <button
+                (click)="navigateToOrders()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-2xl transition-all"
               >
-            </button>
-
-            <button
-              (click)="logout()"
-              class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-colors"
-            >
-              <fa-icon [icon]="icons.logout" class="text-sm"></fa-icon>
-              <span class="text-xs font-black uppercase tracking-widest"
-                >Logout</span
+                <fa-icon [icon]="icons.history" class="text-xs"></fa-icon>
+                <span class="text-[11px] font-black uppercase tracking-wider"
+                  >Order History</span
+                >
+              </button>
+              <button
+                (click)="logout()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-all"
               >
-            </button>
+                <fa-icon [icon]="icons.logout" class="text-xs"></fa-icon>
+                <span class="text-[11px] font-black uppercase tracking-wider"
+                  >Sign Out</span
+                >
+              </button>
+            </div>
           </div>
         </div>
 
@@ -74,18 +82,22 @@
           #cartButton
           (click)="onViewCart()"
           [disabled]="isCartEmpty()"
-          class="group relative flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-lg active:scale-95 bg-gray-900 text-white hover:bg-orange-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
-          aria-label="View Cart"
+          class="h-11 sm:h-13 px-5 sm:px-7 bg-gray-900 text-white rounded-[1.5rem] flex items-center gap-3 relative transition-all active:scale-95 hover:bg-orange-600 shadow-xl shadow-gray-900/10 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none group"
         >
-          <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
-          <span class="hidden sm:inline">My Cart</span>
-
+          <div class="relative">
+            <fa-icon [icon]="icons.cart" class="text-base sm:text-lg"></fa-icon>
+            <span
+              *ngIf="!isCartEmpty()"
+              [class.animate-badge-pulse]="isBadgePulsing()"
+              class="absolute -top-3 -right-3 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-gray-900 group-hover:border-orange-600 transition-colors"
+            >
+              {{ displayedCount() }}
+            </span>
+          </div>
           <span
-            [class.animate-badge-pulse]="isBadgePulsing()"
-            class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
+            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.1em] hidden xs:block"
+            >View Cart</span
           >
-            {{ displayedCount() }}
-          </span>
         </button>
       </div>
     </div>
