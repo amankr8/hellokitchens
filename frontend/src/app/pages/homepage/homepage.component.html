@@ -17,7 +17,7 @@
             {{ kitchen()?.name }}
           </h1>
           <p
-            class="text-[10px] font-bold opacity-80 uppercase tracking-widest mt-1"
+            class="text-[10px] font-bold opacity-80 uppercase tracking-widest mt-1 truncate"
           >
             {{ kitchen()?.tagline }}
           </p>
@@ -45,10 +45,18 @@
           #cartButton
           (click)="onViewCart()"
           [disabled]="isCartEmpty()"
-          class="h-10 px-4 bg-gray-900 text-white rounded-full flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 flex-shrink-0"
+          class="relative h-10 px-4 bg-gray-900 text-white rounded-full flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 flex-shrink-0"
         >
           <fa-icon [icon]="icons.cart"></fa-icon>
-          <span class="text-xs font-black">{{ actualCartCount() }}</span>
+          <span class="text-xs font-black">Cart</span>
+
+          <span
+            *ngIf="!isCartEmpty()"
+            [class.animate-badge-pulse]="isBadgePulsing()"
+            class="absolute -top-1.5 -right-1.5 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm"
+          >
+            {{ displayedCount() }}
+          </span>
         </button>
       </div>
     </header>
