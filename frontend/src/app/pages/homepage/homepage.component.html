@@ -2,45 +2,92 @@
 <div class="min-h-[100dvh] relative z-10 max-w-4xl mx-auto pt-12 px-4 pb-12">
   <header class="sticky top-6 z-50 mb-10">
     <div
-      class="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl px-6 py-5 flex items-center justify-between"
+      class="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl px-4 py-3 sm:px-6 sm:py-5 flex items-center justify-between"
     >
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3 sm:gap-4">
         <div
-          class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 shadow-inner"
+          class="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 shadow-inner shrink-0"
         >
-          <fa-icon [icon]="icons.logo" class="text-2xl"></fa-icon>
+          <fa-icon [icon]="icons.logo" class="text-xl sm:text-2xl"></fa-icon>
         </div>
-        <div>
+        <div class="min-w-0">
           <h1
-            class="text-xl sm:text-2xl font-black text-gray-900 leading-tight"
+            class="text-lg sm:text-2xl font-black text-gray-900 leading-tight truncate"
           >
             {{ kitchen()?.name }}
           </h1>
           <p
-            class="text-xs sm:text-sm font-bold text-orange-600/70 uppercase tracking-widest"
+            class="text-[10px] sm:text-sm font-bold text-orange-600/70 uppercase tracking-widest truncate"
           >
             {{ kitchen()?.tagline }}
           </p>
         </div>
       </div>
 
-      <button
-        #cartButton
-        (click)="onViewCart()"
-        [disabled]="isCartEmpty()"
-        class="group relative flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-lg active:scale-95 bg-gray-900 text-white hover:bg-orange-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
-        aria-label="View Cart"
-      >
-        <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
-        <span class="hidden sm:inline">My Cart</span>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="relative" *ngIf="isLoggedIn">
+          <button
+            (click)="toggleUserMenu()"
+            class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-90"
+          >
+            <fa-icon [icon]="icons.user" class="text-lg"></fa-icon>
+          </button>
 
-        <span
-          [class.animate-badge-pulse]="isBadgePulsing()"
-          class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
+          <div
+            *ngIf="showUserMenu()"
+            class="absolute right-0 mt-4 w-56 bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-3 animate-in fade-in slide-in-from-top-4 duration-200"
+          >
+            <div class="px-4 py-3 border-b border-gray-50 mb-2">
+              <p
+                class="text-[10px] font-black uppercase text-gray-400 tracking-widest"
+              >
+                Logged in as
+              </p>
+              <p class="text-sm font-black text-gray-900 truncate">
+                {{ user()?.name || "Customer" }}
+              </p>
+            </div>
+
+            <button
+              (click)="navigateToOrders()"
+              class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-2xl transition-colors"
+            >
+              <fa-icon [icon]="icons.history" class="text-sm"></fa-icon>
+              <span class="text-xs font-black uppercase tracking-widest"
+                >Past Orders</span
+              >
+            </button>
+
+            <button
+              (click)="logout()"
+              class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-colors"
+            >
+              <fa-icon [icon]="icons.logout" class="text-sm"></fa-icon>
+              <span class="text-xs font-black uppercase tracking-widest"
+                >Logout</span
+              >
+            </button>
+          </div>
+        </div>
+
+        <button
+          #cartButton
+          (click)="onViewCart()"
+          [disabled]="isCartEmpty()"
+          class="group relative flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-lg active:scale-95 bg-gray-900 text-white hover:bg-orange-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
+          aria-label="View Cart"
         >
-          {{ displayedCount() }}
-        </span>
-      </button>
+          <fa-icon [icon]="icons.cart" class="text-lg"></fa-icon>
+          <span class="hidden sm:inline">My Cart</span>
+
+          <span
+            [class.animate-badge-pulse]="isBadgePulsing()"
+            class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
+          >
+            {{ displayedCount() }}
+          </span>
+        </button>
+      </div>
     </div>
   </header>
 

@@ -16,6 +16,9 @@ import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { OtpLoginComponent } from '../components/otp-login/otp-login.component';
 import { APP_NAME } from '../../constants/app.constant';
+import { UserRole } from '../../enum/user-role.enum';
+import { UiService } from '../../service/ui.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-homepage',
@@ -27,18 +30,49 @@ export class HomepageComponent {
   private kitchenService = inject(KitchenService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private uiService = inject(UiService);
   private router = inject(Router);
 
   cartButton = viewChild<ElementRef>('cartButton');
 
   kitchen = this.kitchenService.kitchen;
-  showLoginModal = signal(false);
+  user = this.userService.user;
 
   isCartEmpty = this.cartService.isEmpty;
   actualCartCount = this.cartService.totalCount;
   displayedCount = signal(this.actualCartCount());
 
+  isLoggedIn =
+    this.authService.isAuthenticated() &&
+    this.authService.hasRole(UserRole.USER);
+
   isBadgePulsing = signal(false);
+  showLoginModal = signal(false);
+  showUserMenu = signal(false);
+
+  toggleUserMenu() {
+    this.showUserMenu.update((v) => !v);
+  }
+
+  logout() {
+    const kitchenName = this.kitchen()?.name ?? APP_NAME;
+    this.uiService.ask({
+      title: 'Logout?',
+      message: `Please confirm if you want to logout from ${kitchenName}?`,
+      confirmText: 'Logout',
+      action: () => {
+        this.authService.logout();
+        this.showUserMenu.set(false);
+        this.uiService.showToast('Logged out successfully');
+      },
+    });
+  }
+
+  navigateToOrders() {
+    this.showUserMenu.set(false);
+    this.router.navigate(['/my-orders']);
+  }
 
   icons = Icons;
 
@@ -77,6 +111,7 @@ export class HomepageComponent {
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Home';
+    this.userService.loadUser();
   }
 
   onImageError(event: any): void {
