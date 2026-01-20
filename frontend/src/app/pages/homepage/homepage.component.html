@@ -45,10 +45,11 @@
           #cartButton
           (click)="onViewCart()"
           [disabled]="isCartEmpty()"
-          class="relative h-10 px-4 bg-gray-900 text-white rounded-full flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 flex-shrink-0"
+          class="relative h-10 px-3 sm:px-4 bg-gray-900 text-white rounded-full flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 flex-shrink-0"
         >
           <fa-icon [icon]="icons.cart"></fa-icon>
-          <span class="text-xs font-black">Cart</span>
+
+          <span class="text-xs font-black hidden sm:inline">Cart</span>
 
           <span
             *ngIf="!isCartEmpty()"
