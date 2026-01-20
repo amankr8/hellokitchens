@@ -100,18 +100,28 @@
       </button>
     </div>
 
-    <div
-      class="bg-white rounded-[3rem] p-6 sm:p-8 shadow-sm border border-gray-100 min-h-[60vh]"
-    >
-      <div class="flex items-center justify-between mb-8">
-        <h3 class="text-2xl font-black text-gray-900">Explore Menu</h3>
-        <span
-          class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-black uppercase"
-        >
-          {{ 12 }} Items
-        </span>
+    <div class="mt-12">
+      <div class="flex flex-col gap-2 mb-2 px-2">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-8 bg-orange-600 rounded-full"></div>
+          <h3 class="text-3xl font-black text-gray-900 tracking-tight">
+            Explore Menu
+          </h3>
+        </div>
+        <p class="text-gray-500 text-sm font-medium ml-5">
+          Freshly prepared dishes, delivered from our kitchen to yours.
+        </p>
       </div>
-      <app-menu></app-menu>
+
+      <div class="min-h-[60vh] relative">
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent -z-10 rounded-[3rem]"
+        ></div>
+
+        <div class="py-4">
+          <app-menu></app-menu>
+        </div>
+      </div>
     </div>
   </div>
 </div>
