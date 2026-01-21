@@ -27,6 +27,10 @@ export class MyOrdersComponent implements OnInit {
     this.orderService.loadUserOrders();
   }
 
+  refreshOrders() {
+    this.orderService.refreshUserOrders();
+  }
+
   getStatusClass(status: string): string {
     switch (status.toUpperCase()) {
       case 'PENDING':

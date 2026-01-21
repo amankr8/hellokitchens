@@ -1,4 +1,4 @@
-<div class="min-h-[100dvh] bg-[#F9FAFB] pb-24">
+<div class="min-h-[100dvh] pb-24">
   <div
     class="sticky top-0 z-50 bg-[#F9FAFB]/80 backdrop-blur-md border-b border-gray-100"
   >
@@ -27,6 +27,16 @@
           Your Culinary History
         </p>
       </div>
+      <button
+        (click)="refreshOrders()"
+        [disabled]="loading()"
+        class="absolute right-4 w-10 h-10 flex items-center justify-center bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-orange-600 hover:border-orange-100 transition-all shadow-sm active:scale-90 disabled:opacity-50"
+      >
+        <fa-icon
+          [icon]="icons.refresh"
+          [class.animate-spin]="loading()"
+        ></fa-icon>
+      </button>
     </div>
   </div>
 
@@ -110,11 +120,13 @@
                     >Confirm</span
                   >
                 </button>
-
                 <button
-                  class="h-11 px-6 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-gray-200"
+                  class="h-11 px-4 bg-gray-900 text-white rounded-2xl flex items-center gap-2 shadow-lg shadow-green-100 active:scale-95 transition-all"
                 >
-                  Details
+                  <fa-icon [icon]="icons.info" class="text-base"></fa-icon>
+                  <span class="text-[10px] font-black uppercase tracking-wider"
+                    >Details</span
+                  >
                 </button>
               </div>
             </div>
