@@ -41,6 +41,9 @@ import {
   faEye,
   faHistory,
   faFilter,
+  faUserAlt,
+  faUserAltSlash,
+  faUserCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
@@ -48,7 +51,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 export const Icons = {
   filter: faFilter,
   history: faHistory,
-  user: faUser,
+  user: faUserCheck,
   eyeSlash: faEyeSlash,
   eye: faEye,
   bowl: faBowlRice,
