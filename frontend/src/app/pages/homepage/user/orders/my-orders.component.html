@@ -99,11 +99,24 @@
                 </p>
               </div>
 
-              <button
-                class="h-11 px-6 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-gray-200"
-              >
-                Details
-              </button>
+              <div class="flex gap-2">
+                <button
+                  *ngIf="order.status === 'PENDING'"
+                  (click)="onSendToWhatsApp(order)"
+                  class="h-11 px-4 bg-[#25D366] text-white rounded-2xl flex items-center gap-2 shadow-lg shadow-green-100 active:scale-95 transition-all"
+                >
+                  <fa-icon [icon]="icons.whatsapp" class="text-base"></fa-icon>
+                  <span class="text-[10px] font-black uppercase tracking-wider"
+                    >Confirm</span
+                  >
+                </button>
+
+                <button
+                  class="h-11 px-6 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-gray-200"
+                >
+                  Details
+                </button>
+              </div>
             </div>
           </div>
         </div>

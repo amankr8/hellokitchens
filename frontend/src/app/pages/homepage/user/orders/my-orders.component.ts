@@ -4,6 +4,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterLink } from '@angular/router';
 import { OrderService } from '../../../../service/order.service';
 import { Icons } from '../../../../utils/icons';
+import { WhatsappService } from '../../../../service/whatsapp.service';
+import { Order } from '../../../../model/order';
 
 @Component({
   selector: 'app-my-orders',
@@ -13,6 +15,7 @@ import { Icons } from '../../../../utils/icons';
 })
 export class MyOrdersComponent implements OnInit {
   private orderService = inject(OrderService);
+  private whatsappService = inject(WhatsappService);
   location = inject(Location);
 
   orders = this.orderService.userOrders;
@@ -37,6 +40,11 @@ export class MyOrdersComponent implements OnInit {
       default:
         return 'bg-gray-100 text-gray-600';
     }
+  }
+
+  onSendToWhatsApp(order: Order) {
+    const url = this.whatsappService.generateWhatsAppLink(order);
+    window.open(url, '_blank');
   }
 
   goBack() {
