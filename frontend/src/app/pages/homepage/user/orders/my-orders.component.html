@@ -57,79 +57,94 @@
     </div>
 
     <ng-container *ngIf="!loading() && !error()">
-      <div *ngIf="orders()?.length; else emptyOrders" class="space-y-4">
-        <div
-          *ngFor="let order of orders()"
-          class="group bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-orange-900/5 transition-all duration-300"
-        >
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-6">
-              <div>
-                <p
-                  class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1"
-                >
-                  ID #{{ order.id }}
-                </p>
-                <p class="text-xs text-gray-900 font-black">
-                  {{ order.createdAt | date: "shortTime" }}
-                </p>
-              </div>
-              <span
-                [class]="
-                  'px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider ' +
-                  getStatusClass(order.status)
-                "
-              >
-                {{ order.status }}
-              </span>
-            </div>
+      <div *ngIf="groupedOrders().length; else emptyOrders" class="space-y-8">
+        <div *ngFor="let group of groupedOrders()" class="space-y-4">
+          <div class="flex items-center gap-4 px-2">
+            <span
+              class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 whitespace-nowrap"
+            >
+              {{ group.label }}
+            </span>
+            <div class="h-[1px] w-full bg-gray-100"></div>
+          </div>
 
-            <div class="space-y-3 mb-6 bg-gray-50/50 p-4 rounded-2xl">
-              <div
-                *ngFor="let item of order.orderItems"
-                class="flex justify-between text-xs"
-              >
-                <span class="text-gray-600 font-bold">
-                  <span class="text-orange-600">{{ item.quantity }} ×</span>
-                  {{ item.itemName }}
+          <div
+            *ngFor="let order of group.orders"
+            class="group bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-orange-900/5 transition-all duration-300"
+          >
+            <div class="p-6">
+              <div class="flex justify-between items-start mb-6">
+                <div>
+                  <p
+                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1"
+                  >
+                    ID #{{ order.id }}
+                  </p>
+                  <p class="text-xs text-gray-900 font-black">
+                    {{ order.createdAt | date: "shortTime" }}
+                  </p>
+                </div>
+                <span
+                  [class]="
+                    'px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider ' +
+                    getStatusClass(order.status)
+                  "
+                >
+                  {{ order.status }}
                 </span>
-                <span class="text-gray-900 font-black"
-                  >₹{{ item.price * item.quantity }}</span
-                >
-              </div>
-            </div>
-
-            <div class="flex justify-between items-end">
-              <div>
-                <p
-                  class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1"
-                >
-                  Total Paid
-                </p>
-                <p class="text-2xl font-black text-gray-900">
-                  ₹{{ order.totalAmount }}
-                </p>
               </div>
 
-              <div class="flex gap-2">
-                <button
-                  *ngIf="order.status === 'PENDING'"
-                  (click)="onSendToWhatsApp(order)"
-                  class="h-11 px-4 bg-[#25D366] text-white rounded-2xl flex items-center gap-2 shadow-lg shadow-green-100 active:scale-95 transition-all"
+              <div class="space-y-3 mb-6 bg-gray-50/50 p-4 rounded-2xl">
+                <div
+                  *ngFor="let item of order.orderItems"
+                  class="flex justify-between text-xs"
                 >
-                  <fa-icon [icon]="icons.whatsapp" class="text-base"></fa-icon>
-                  <span class="text-[10px] font-black uppercase tracking-wider"
-                    >Confirm</span
+                  <span class="text-gray-600 font-bold">
+                    <span class="text-orange-600">{{ item.quantity }} ×</span>
+                    {{ item.itemName }}
+                  </span>
+                  <span class="text-gray-900 font-black"
+                    >₹{{ item.price * item.quantity }}</span
                   >
-                </button>
-                <button
-                  class="h-11 px-4 bg-gray-900 text-white rounded-2xl flex items-center gap-2 shadow-lg shadow-green-100 active:scale-95 transition-all"
-                >
-                  <fa-icon [icon]="icons.info" class="text-base"></fa-icon>
-                  <span class="text-[10px] font-black uppercase tracking-wider"
-                    >Details</span
+                </div>
+              </div>
+
+              <div class="flex justify-between items-end">
+                <div>
+                  <p
+                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1"
                   >
-                </button>
+                    Total Paid
+                  </p>
+                  <p class="text-2xl font-black text-gray-900">
+                    ₹{{ order.totalAmount }}
+                  </p>
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    *ngIf="order.status === 'PENDING'"
+                    (click)="onSendToWhatsApp(order)"
+                    class="h-11 px-4 bg-[#25D366] text-white rounded-2xl flex items-center gap-2 shadow-lg shadow-green-100 active:scale-95 transition-all"
+                  >
+                    <fa-icon
+                      [icon]="icons.whatsapp"
+                      class="text-base"
+                    ></fa-icon>
+                    <span
+                      class="text-[10px] font-black uppercase tracking-wider"
+                      >Confirm</span
+                    >
+                  </button>
+                  <button
+                    class="h-11 px-4 bg-gray-900 text-white rounded-2xl flex items-center gap-2 shadow-lg shadow-gray-200 active:scale-95 transition-all"
+                  >
+                    <fa-icon [icon]="icons.info" class="text-base"></fa-icon>
+                    <span
+                      class="text-[10px] font-black uppercase tracking-wider"
+                      >Details</span
+                    >
+                  </button>
+                </div>
               </div>
             </div>
           </div>
