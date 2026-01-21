@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -10,7 +10,7 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  STORAGE_KEY = 'token';
+  private readonly STORAGE_KEY = 'token';
 
   private jwtHelper = inject(JwtHelperService);
   private router = inject(Router);
@@ -18,12 +18,47 @@ export class AuthService {
 
   private apiUrl = environment.apiBaseUrl + '/api/v1/auth';
 
+  /** -------------------------------
+   * Core signals
+   * -------------------------------- */
+  private _token = signal<string | null>(
+    localStorage.getItem(this.STORAGE_KEY),
+  );
+
+  private _decodedToken = computed(() => {
+    const token = this._token();
+    return token ? this.jwtHelper.decodeToken(token) : null;
+  });
+
+  /** -------------------------------
+   * Public readonly signals
+   * -------------------------------- */
+  isAuthenticated = computed(() => {
+    const token = this._token();
+    return token ? !this.jwtHelper.isTokenExpired(token) : false;
+  });
+
+  role = computed<UserRole | null>(() => {
+    return this._decodedToken()?.role ?? null;
+  });
+
+  isKitchenLoggedIn = computed(
+    () => this.isAuthenticated() && this.role() === UserRole.KITCHEN_OWNER,
+  );
+
+  isUserLoggedIn = computed(
+    () => this.isAuthenticated() && this.role() === UserRole.USER,
+  );
+
+  /** -------------------------------
+   * API calls
+   * -------------------------------- */
   login(credentials: { username: string; password: string }) {
     return this.http
       .post<{ token: string }>(`${this.apiUrl}/login`, credentials)
       .pipe(
-        tap((res) => {
-          localStorage.setItem(this.STORAGE_KEY, res.token);
+        tap(({ token }) => {
+          this.setToken(token);
         }),
       );
   }
@@ -34,33 +69,31 @@ export class AuthService {
         params: { firebaseToken },
       })
       .pipe(
-        tap((res) => {
-          localStorage.setItem(this.STORAGE_KEY, res.token);
+        tap(({ token }) => {
+          this.setToken(token);
         }),
       );
   }
 
   logout() {
+    this.clearToken();
+    this.router.navigate(['/']);
+  }
+
+  /** -------------------------------
+   * Helpers
+   * -------------------------------- */
+  hasRole(role: UserRole): boolean {
+    return this.role() === role;
+  }
+
+  private setToken(token: string) {
+    localStorage.setItem(this.STORAGE_KEY, token);
+    this._token.set(token);
+  }
+
+  private clearToken() {
     localStorage.removeItem(this.STORAGE_KEY);
-    this.router.navigate(['/login']);
-  }
-
-  isAuthenticated(): boolean {
-    const token = localStorage.getItem(this.STORAGE_KEY);
-    return token ? !this.jwtHelper.isTokenExpired(token) : false;
-  }
-
-  getDecodedToken() {
-    const token = localStorage.getItem(this.STORAGE_KEY);
-    return token ? this.jwtHelper.decodeToken(token) : null;
-  }
-
-  hasRole(role: UserRole) {
-    const decodedToken = this.getDecodedToken();
-    return role === decodedToken?.role;
-  }
-
-  isUserLogin() {
-    return this.isAuthenticated() && this.hasRole(UserRole.USER);
+    this._token.set(null);
   }
 }

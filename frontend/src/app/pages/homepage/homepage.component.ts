@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   effect,
   ElementRef,
   HostListener,
@@ -17,7 +18,6 @@ import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { OtpLoginComponent } from '../components/otp-login/otp-login.component';
 import { APP_NAME } from '../../constants/app.constant';
-import { UserRole } from '../../enum/user-role.enum';
 import { UiService } from '../../service/ui.service';
 import { UserService } from '../../service/user.service';
 
@@ -44,9 +44,7 @@ export class HomepageComponent {
   actualCartCount = this.cartService.totalCount;
   displayedCount = signal(this.actualCartCount());
 
-  isLoggedIn =
-    this.authService.isAuthenticated() &&
-    this.authService.hasRole(UserRole.USER);
+  isLoggedIn = computed(() => this.authService.isUserLoggedIn());
 
   isBadgePulsing = signal(false);
   showLoginModal = signal(false);
@@ -172,7 +170,7 @@ export class HomepageComponent {
     if (this.isCartEmpty()) {
       return;
     }
-    if (this.authService.isUserLogin()) {
+    if (this.isLoggedIn()) {
       this.router.navigate(['/cart']);
     } else {
       this.showLoginModal.set(true);
