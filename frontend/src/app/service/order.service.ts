@@ -81,7 +81,7 @@ export class OrderService {
           'Incoming Order! Ticket #' + newOrder.id,
           'info',
         );
-        this.appendOrder(newOrder);
+        this.handleNewOrder(newOrder);
       });
     };
 
@@ -148,16 +148,24 @@ export class OrderService {
   // --------------------
   // Mutations
   // --------------------
-  placeOrder(orderPayload: OrderPayload): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, orderPayload);
-  }
-
-  private appendOrder(order: Order): void {
+  private handleNewOrder(order: Order): void {
     if (!this._kitchenOrders()) {
       this.refreshKitchenOrders();
     } else {
       this._kitchenOrders.update((orders) => [...orders!, order]);
     }
+  }
+
+  placeOrder(orderPayload: OrderPayload): Observable<Order> {
+    return this.http.post<Order>(this.apiUrl, orderPayload).pipe(
+      tap((order) => {
+        if (this._userOrders() === null) {
+          this.refreshUserOrders();
+        } else {
+          this._userOrders.update((orders) => [...orders!, order]);
+        }
+      }),
+    );
   }
 
   updateOrderStatus(orderId: number, newStatus: string): Observable<Order> {
