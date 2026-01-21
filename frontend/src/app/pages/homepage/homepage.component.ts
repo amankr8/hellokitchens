@@ -19,7 +19,6 @@ import { Router } from '@angular/router';
 import { OtpLoginComponent } from '../components/otp-login/otp-login.component';
 import { APP_NAME } from '../../constants/app.constant';
 import { UiService } from '../../service/ui.service';
-import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-homepage',
@@ -51,7 +50,7 @@ export class HomepageComponent {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    if (!target.closest('.relative')) {
+    if (!target.closest('#userMenuContainer')) {
       this.showUserMenu.set(false);
     }
   }
