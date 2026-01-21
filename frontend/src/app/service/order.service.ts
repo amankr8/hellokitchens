@@ -61,7 +61,15 @@ export class OrderService {
 
       const kitchenId = this.kitchenService.kitchen()?.id;
       this.stompClient.subscribe(`/topic/kitchen/${kitchenId}`, (message) => {
-        const newOrder = JSON.parse(message.body);
+        const newOrder = JSON.parse(message.body) as Order;
+        this.notificationSound.currentTime = 0;
+        this.notificationSound
+          .play()
+          .catch((e) => console.warn('Audio blocked', e));
+        this.uiService.showToast(
+          'Incoming Order! Ticket #' + newOrder.id,
+          'info',
+        );
         this.appendOrder(newOrder);
       });
     };
@@ -110,11 +118,6 @@ export class OrderService {
     if (!this._orders()) {
       this.refreshOrders();
     } else {
-      this.notificationSound.currentTime = 0;
-      this.notificationSound
-        .play()
-        .catch((e) => console.warn('Audio blocked', e));
-      this.uiService.showToast('Incoming Order! Ticket #' + order.id, 'info');
       this._orders.update((orders) => [...orders!, order]);
     }
   }
