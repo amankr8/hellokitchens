@@ -6,6 +6,7 @@ import { OrderService } from '../../../../service/order.service';
 import { Icons } from '../../../../utils/icons';
 import { WhatsappService } from '../../../../service/whatsapp.service';
 import { Order } from '../../../../model/order';
+import { UserService } from '../../../../service/user.service';
 
 interface OrderGroup {
   label: string;
@@ -20,6 +21,7 @@ interface OrderGroup {
 })
 export class MyOrdersComponent implements OnInit {
   private orderService = inject(OrderService);
+  private userService = inject(UserService);
   private whatsappService = inject(WhatsappService);
   location = inject(Location);
 
@@ -30,6 +32,7 @@ export class MyOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.orderService.loadUserOrders();
+    this.userService.loadUser();
   }
 
   refreshOrders() {

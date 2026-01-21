@@ -20,6 +20,8 @@ import { OtpLoginComponent } from '../components/otp-login/otp-login.component';
 import { APP_NAME } from '../../constants/app.constant';
 import { UiService } from '../../service/ui.service';
 import { OrderService } from '../../service/order.service';
+import { UserRole } from '../../enum/user-role.enum';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-homepage',
@@ -39,6 +41,7 @@ export class HomepageComponent {
   private kitchenService = inject(KitchenService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
+  private userService = inject(UserService);
   private orderService = inject(OrderService);
   private uiService = inject(UiService);
   private router = inject(Router);
@@ -94,6 +97,9 @@ export class HomepageComponent {
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Home';
+    if (this.authService.hasRole(UserRole.USER)) {
+      this.userService.loadUser();
+    }
   }
 
   toggleUserMenu() {

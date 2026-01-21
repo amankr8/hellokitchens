@@ -38,6 +38,9 @@ export class OrderService {
   private readonly _error = signal<string | null>(null);
   readonly error = this._error.asReadonly();
 
+  private readonly _wsConnected = signal(false);
+  readonly wsConnected = this._wsConnected.asReadonly();
+
   sortByNewest = (a: Order, b: Order) =>
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 
@@ -88,6 +91,12 @@ export class OrderService {
         console.log('Syncing user order status...');
         this.refreshUserOrders();
       }
+
+      this._wsConnected.set(true);
+    };
+
+    this.stompClient.onDisconnect = () => {
+      this._wsConnected.set(false);
     };
 
     this.stompClient.activate();
@@ -95,7 +104,7 @@ export class OrderService {
     effect(() => {
       const user = this.userService.user();
       const kitchen = this.kitchenService.kitchen();
-      const isConnected = this.stompClient.connected;
+      const isConnected = this.wsConnected();
 
       if (!isConnected) return;
 
