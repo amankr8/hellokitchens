@@ -72,9 +72,7 @@ export class OrderService {
       reconnectDelay: 5000,
       debug: (str) => console.log(str),
     });
-  }
 
-  wsConnect() {
     this.notificationSound.load();
     this.stompClient.onConnect = () => {
       console.log('Connected to Spring Boot WS');

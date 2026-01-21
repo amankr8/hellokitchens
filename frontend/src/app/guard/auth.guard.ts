@@ -9,11 +9,6 @@ export const authGuard =
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (!authService.isAuthenticated()) {
-      router.navigate(['/login']);
-      return false;
-    }
-
     if (!authService.hasRole(allowedRole)) {
       router.navigate(['/not-found']);
       return false;

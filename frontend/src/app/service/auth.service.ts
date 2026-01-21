@@ -84,7 +84,7 @@ export class AuthService {
    * Helpers
    * -------------------------------- */
   hasRole(role: UserRole): boolean {
-    return this.role() === role;
+    return this.isAuthenticated() && this.role() === role;
   }
 
   private setToken(token: string) {

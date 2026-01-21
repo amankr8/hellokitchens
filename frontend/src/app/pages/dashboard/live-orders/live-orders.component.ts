@@ -36,7 +36,6 @@ export class LiveOrdersComponent {
 
   ngOnInit() {
     this.orderService.loadKitchenOrders();
-    this.orderService.wsConnect();
   }
 
   refreshOrders() {
