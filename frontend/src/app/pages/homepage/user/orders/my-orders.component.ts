@@ -1,6 +1,5 @@
-// my-orders.component.ts
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterLink } from '@angular/router';
 import { OrderService } from '../../../../service/order.service';
@@ -14,6 +13,7 @@ import { Icons } from '../../../../utils/icons';
 })
 export class MyOrdersComponent implements OnInit {
   private orderService = inject(OrderService);
+  location = inject(Location);
 
   orders = this.orderService.userOrders;
   loading = this.orderService.loading;
@@ -37,5 +37,9 @@ export class MyOrdersComponent implements OnInit {
       default:
         return 'bg-gray-100 text-gray-600';
     }
+  }
+
+  goBack() {
+    throw new Error('Method not implemented.');
   }
 }
