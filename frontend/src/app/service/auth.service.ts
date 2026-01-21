@@ -24,6 +24,7 @@ export class AuthService {
   private _token = signal<string | null>(
     localStorage.getItem(this.STORAGE_KEY),
   );
+  readonly token = this._token.asReadonly();
 
   private _decodedToken = computed(() => {
     const token = this._token();

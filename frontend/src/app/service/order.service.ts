@@ -71,6 +71,9 @@ export class OrderService {
   constructor() {
     this.stompClient = new Client({
       brokerURL: environment.apiBaseUrl + '/ws-orders',
+      connectHeaders: {
+        Authorization: `Bearer ${this.authService.token()}`,
+      },
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
       reconnectDelay: 5000,
@@ -79,19 +82,7 @@ export class OrderService {
 
     this.stompClient.onConnect = (frame) => {
       console.log('✅ Connected to WS');
-
       this.activeSubscriptions.clear();
-
-      if (this.authService.hasRole(UserRole.KITCHEN_OWNER)) {
-        console.log('Syncing kitchen dashboard...');
-        this.refreshKitchenOrders();
-      }
-
-      if (this.authService.hasRole(UserRole.USER)) {
-        console.log('Syncing user order status...');
-        this.refreshUserOrders();
-      }
-
       this._wsConnected.set(true);
     };
 
