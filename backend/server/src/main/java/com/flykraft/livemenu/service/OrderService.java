@@ -14,6 +14,9 @@ public interface OrderService {
     List<Order> loadAllOrders();
 
     @PreAuthorize("hasAuthority('USER')")
+    List<Order> loadAllUserOrders();
+
+    @PreAuthorize("hasAuthority('USER')")
     Order createOrder(OrderRequestDto orderRequestDto);
 
     @PreAuthorize("hasAuthority('KITCHEN_OWNER')")

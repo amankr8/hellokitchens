@@ -6,7 +6,6 @@ import com.flykraft.livemenu.entity.Order;
 import com.flykraft.livemenu.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -17,6 +16,11 @@ public class OrderControllerImpl implements OrderController {
     @Override
     public ResponseEntity<?> getOrdersForKitchen() {
         return ResponseEntity.ok(orderService.loadAllOrders().stream().map(Order::toResponseDto).toList());
+    }
+
+    @Override
+    public ResponseEntity<?> getOrdersForUser() {
+        return ResponseEntity.ok(orderService.loadAllUserOrders().stream().map(Order::toResponseDto).toList());
     }
 
     @Override

@@ -44,6 +44,12 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll();
     }
 
+    @Override
+    public List<Order> loadAllUserOrders() {
+        User currentUser = userService.loadCurrentUser();
+        return orderRepository.findByUser(currentUser);
+    }
+
     @Transactional
     @Override
     public Order createOrder(OrderRequestDto orderRequestDto) {

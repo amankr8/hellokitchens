@@ -10,6 +10,9 @@ public interface OrderController {
     @GetMapping
     ResponseEntity<?> getOrdersForKitchen();
 
+    @GetMapping("/user")
+    ResponseEntity<?> getOrdersForUser();
+
     @PostMapping
     ResponseEntity<?> createOrder(@RequestBody OrderRequestDto orderRequestDto);
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Icons } from '../../../utils/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -10,7 +11,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class PageNotFoundComponent {
   icons = Icons;
 
+  constructor(private router: Router) {}
+
   goBack(): void {
-    window.history.back();
+    if (window.history.length > 0) {
+      window.history.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }
