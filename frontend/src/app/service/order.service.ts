@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Order, OrderPayload } from '../model/order';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -63,6 +63,7 @@ export class OrderService {
   );
 
   private notificationSound = new Audio('audio/notification.mp3');
+  private activeSubscriptions: Map<string, any> = new Map();
 
   constructor() {
     this.stompClient = new Client({
@@ -73,39 +74,65 @@ export class OrderService {
       debug: (str) => console.log(str),
     });
 
-    this.notificationSound.load();
-    this.stompClient.onConnect = () => {
-      console.log('Connected to Spring Boot WS');
+    this.stompClient.onConnect = (frame) => {
+      console.log('✅ Connected to WS');
+
+      this.activeSubscriptions.clear();
 
       if (this.authService.hasRole(UserRole.KITCHEN_OWNER)) {
-        const kitchenId = this.kitchenService.kitchen()?.id;
-        this.stompClient.subscribe(`/topic/kitchen/${kitchenId}`, (message) => {
-          const newOrder = JSON.parse(message.body) as Order;
-          this.notificationSound.currentTime = 0;
-          this.notificationSound
-            .play()
-            .catch((e) => console.warn('Audio blocked', e));
-          this.uiService.showToast(
-            'Incoming Order! Ticket #' + newOrder.id,
-            'info',
-          );
+        console.log('Syncing kitchen dashboard...');
+        this.refreshKitchenOrders();
+      }
+
+      if (this.authService.hasRole(UserRole.USER)) {
+        console.log('Syncing user order status...');
+        this.refreshUserOrders();
+      }
+    };
+
+    this.stompClient.activate();
+
+    effect(() => {
+      const user = this.userService.user();
+      const kitchen = this.kitchenService.kitchen();
+      const isConnected = this.stompClient.connected;
+
+      if (!isConnected) return;
+
+      if (this.authService.hasRole(UserRole.KITCHEN_OWNER) && kitchen?.id) {
+        this.subscribeToTopic(`/topic/kitchen/${kitchen.id}`, (msg) => {
+          const newOrder = JSON.parse(msg.body);
+          this.playKitchenAlert(newOrder);
           this.handleNewKitchenOrder(newOrder);
         });
       }
 
-      if (this.authService.hasRole(UserRole.USER)) {
-        const userId = this.userService.user()?.id;
-        this.stompClient.subscribe(`/topic/user/${userId}`, (message) => {
-          const updatedOrder = JSON.parse(message.body) as Order;
+      if (this.authService.hasRole(UserRole.USER) && user?.id) {
+        this.subscribeToTopic(`/topic/user/${user.id}`, (msg) => {
+          const updatedOrder = JSON.parse(msg.body);
           this.uiService.showToast(
             `Order #${updatedOrder.id} is now ${updatedOrder.status}!`,
           );
           this.handleUserOrderUpdate(updatedOrder);
         });
       }
-    };
+    });
+  }
 
-    this.stompClient.activate();
+  private subscribeToTopic(topic: string, callback: (msg: any) => void) {
+    if (this.activeSubscriptions.has(topic)) return;
+
+    const subscription = this.stompClient.subscribe(topic, callback);
+    this.activeSubscriptions.set(topic, subscription);
+    console.log(`✅ Subscription established for: ${topic}`);
+  }
+
+  private playKitchenAlert(order: Order) {
+    this.notificationSound.currentTime = 0;
+    this.notificationSound
+      .play()
+      .catch((e) => console.warn('Audio blocked', e));
+    this.uiService.showToast(`Incoming Order! Ticket #${order.id}`, 'info');
   }
 
   // --------------------
