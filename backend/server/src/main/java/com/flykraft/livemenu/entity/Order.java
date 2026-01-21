@@ -96,6 +96,8 @@ public class Order extends Auditable {
                 .orderItems(this.orderItems.stream()
                         .map(OrderItem::toResponseDto)
                         .toList())
+                .createdAt(this.getCreatedAt())
+                .updatedAt(this.getUpdatedAt())
                 .build();
     }
 }

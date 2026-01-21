@@ -201,4 +201,11 @@ export class OrderService {
       }),
     );
   }
+
+  // --------------------
+  // Utilities
+  // --------------------
+  clearUserCache(): void {
+    this._userOrders.set(null);
+  }
 }

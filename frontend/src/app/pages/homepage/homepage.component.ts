@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { OtpLoginComponent } from '../components/otp-login/otp-login.component';
 import { APP_NAME } from '../../constants/app.constant';
 import { UiService } from '../../service/ui.service';
+import { OrderService } from '../../service/order.service';
 
 @Component({
   selector: 'app-homepage',
@@ -38,6 +39,7 @@ export class HomepageComponent {
   private kitchenService = inject(KitchenService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
+  private orderService = inject(OrderService);
   private uiService = inject(UiService);
   private router = inject(Router);
 
@@ -105,6 +107,7 @@ export class HomepageComponent {
       message: `Please confirm if you want to logout from ${kitchenName}?`,
       confirmText: 'Logout',
       action: () => {
+        this.orderService.clearUserCache();
         this.authService.logout();
         this.showUserMenu.set(false);
         this.uiService.showToast('Logged out successfully');
