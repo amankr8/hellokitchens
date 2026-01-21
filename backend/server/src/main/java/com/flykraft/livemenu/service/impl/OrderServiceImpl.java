@@ -114,13 +114,21 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrderStatus(Long orderId, String newStatus) {
         Order order = loadOrderById(orderId);
         order.setStatus(OrderStatus.valueOf(newStatus));
-        return orderRepository.save(order);
+        Order updatedOrder = orderRepository.save(order);
+
+        String userTopic = "/topic/user/" + updatedOrder.getUser().getId();
+        messagingTemplate.convertAndSend(userTopic, updatedOrder.toResponseDto());
+
+        return updatedOrder;
     }
 
     @Override
     public void cancelOrder(Long orderId) {
         Order order = loadOrderById(orderId);
         order.setStatus(OrderStatus.CANCELLED);
-        orderRepository.save(order);
+        Order updatedOrder = orderRepository.save(order);
+
+        String userTopic = "/topic/user/" + updatedOrder.getUser().getId();
+        messagingTemplate.convertAndSend(userTopic, updatedOrder.toResponseDto());
     }
 }

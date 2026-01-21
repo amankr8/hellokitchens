@@ -4,7 +4,6 @@ import { Icons } from '../../../utils/icons';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiService } from '../../../service/ui.service';
-import { MenuService } from '../../../service/menu.service';
 import { Order } from '../../../model/order';
 import { OrderStatus } from '../../../enum/order-status.enum';
 

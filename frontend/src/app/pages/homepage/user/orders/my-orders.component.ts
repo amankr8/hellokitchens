@@ -30,6 +30,7 @@ export class MyOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.orderService.loadUserOrders();
+    this.orderService.wsConnect();
   }
 
   refreshOrders() {

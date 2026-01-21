@@ -8,6 +8,9 @@ import { OrderStatus } from '../enum/order-status.enum';
 import { Client } from '@stomp/stompjs';
 import { KitchenService } from './kitchen.service';
 import { UiService } from './ui.service';
+import { AuthService } from './auth.service';
+import { UserRole } from '../enum/user-role.enum';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +18,8 @@ import { UiService } from './ui.service';
 export class OrderService {
   private stompClient: Client;
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
   private kitchenService = inject(KitchenService);
   private uiService = inject(UiService);
 
@@ -74,19 +79,32 @@ export class OrderService {
     this.stompClient.onConnect = () => {
       console.log('Connected to Spring Boot WS');
 
-      const kitchenId = this.kitchenService.kitchen()?.id;
-      this.stompClient.subscribe(`/topic/kitchen/${kitchenId}`, (message) => {
-        const newOrder = JSON.parse(message.body) as Order;
-        this.notificationSound.currentTime = 0;
-        this.notificationSound
-          .play()
-          .catch((e) => console.warn('Audio blocked', e));
-        this.uiService.showToast(
-          'Incoming Order! Ticket #' + newOrder.id,
-          'info',
-        );
-        this.handleNewOrder(newOrder);
-      });
+      if (this.authService.hasRole(UserRole.KITCHEN_OWNER)) {
+        const kitchenId = this.kitchenService.kitchen()?.id;
+        this.stompClient.subscribe(`/topic/kitchen/${kitchenId}`, (message) => {
+          const newOrder = JSON.parse(message.body) as Order;
+          this.notificationSound.currentTime = 0;
+          this.notificationSound
+            .play()
+            .catch((e) => console.warn('Audio blocked', e));
+          this.uiService.showToast(
+            'Incoming Order! Ticket #' + newOrder.id,
+            'info',
+          );
+          this.handleNewKitchenOrder(newOrder);
+        });
+      }
+
+      if (this.authService.hasRole(UserRole.USER)) {
+        const userId = this.userService.user()?.id;
+        this.stompClient.subscribe(`/topic/user/${userId}`, (message) => {
+          const updatedOrder = JSON.parse(message.body) as Order;
+          this.uiService.showToast(
+            `Order #${updatedOrder.id} is now ${updatedOrder.status}!`,
+          );
+          this.handleUserOrderUpdate(updatedOrder);
+        });
+      }
     };
 
     this.stompClient.activate();
@@ -152,11 +170,23 @@ export class OrderService {
   // --------------------
   // Mutations
   // --------------------
-  private handleNewOrder(order: Order): void {
+  private handleNewKitchenOrder(order: Order): void {
     if (!this._kitchenOrders()) {
       this.refreshKitchenOrders();
     } else {
       this._kitchenOrders.update((orders) => [...orders!, order]);
+    }
+  }
+
+  private handleUserOrderUpdate(updatedOrder: Order) {
+    if (!this._userOrders()) {
+      this.refreshUserOrders();
+    } else {
+      this._userOrders.update((orders) => {
+        return orders!.map((o) =>
+          o.id === updatedOrder.id ? updatedOrder : o,
+        );
+      });
     }
   }
 
