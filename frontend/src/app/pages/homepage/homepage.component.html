@@ -30,14 +30,15 @@
             (click)="toggleUserMenu()"
             class="z-[110] h-10 px-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-2 text-white active:scale-95 transition-all"
           >
-            <div
-              class="w-7 h-7 text-white flex items-center justify-center text-orange-600"
-            >
-              <fa-icon [icon]="icons.user"></fa-icon>
+            <div class="w-7 h-7 flex items-center justify-center text-white">
+              <fa-icon
+                [icon]="isLoggedIn() ? icons.userCheck : icons.user"
+              ></fa-icon>
             </div>
+
             <fa-icon
               [icon]="icons.chevronDown"
-              class="text-[10px] mr-1 hidden sm:block"
+              class="text-[10px] mr-1 hidden sm:block opacity-70"
             ></fa-icon>
           </button>
 
@@ -54,11 +55,15 @@
             <ng-container *ngIf="isLoggedIn(); else guestOptions">
               <button
                 (click)="navigateToOrders()"
-                class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 rounded-2xl transition-all"
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 rounded-2xl transition-all group"
               >
-                <fa-icon [icon]="icons.history" class="text-sm"></fa-icon>
+                <fa-icon
+                  [icon]="icons.history"
+                  class="text-sm group-hover:text-orange-600"
+                ></fa-icon>
                 <span class="text-[11px] font-black uppercase">My Orders</span>
               </button>
+
               <button
                 (click)="logout()"
                 class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-all"
@@ -71,7 +76,7 @@
             <ng-template #guestOptions>
               <button
                 (click)="showLoginModal.set(true); showUserMenu.set(false)"
-                class="w-full flex items-center gap-3 px-4 py-3 text-orange-600 hover:bg-orange-50 rounded-2xl transition-all"
+                class="w-full flex items-center gap-3 px-4 py-3 text-orange-600 hover:bg-orange-50 rounded-2xl transition-all group"
               >
                 <fa-icon [icon]="icons.user" class="text-sm"></fa-icon>
                 <span class="text-[11px] font-black uppercase"
