@@ -27,6 +27,14 @@ import { UiService } from '../../service/ui.service';
   styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('#userMenuContainer')) {
+      this.showUserMenu.set(false);
+    }
+  }
+
   private kitchenService = inject(KitchenService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
@@ -46,37 +54,6 @@ export class HomepageComponent {
   isBadgePulsing = signal(false);
   showLoginModal = signal(false);
   showUserMenu = signal(false);
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#userMenuContainer')) {
-      this.showUserMenu.set(false);
-    }
-  }
-
-  toggleUserMenu() {
-    this.showUserMenu.update((v) => !v);
-  }
-
-  logout() {
-    const kitchenName = this.kitchen()?.name ?? APP_NAME;
-    this.uiService.ask({
-      title: 'Logout?',
-      message: `Please confirm if you want to logout from ${kitchenName}?`,
-      confirmText: 'Logout',
-      action: () => {
-        this.authService.logout();
-        this.showUserMenu.set(false);
-        this.uiService.showToast('Logged out successfully');
-      },
-    });
-  }
-
-  navigateToOrders() {
-    this.showUserMenu.set(false);
-    this.router.navigate(['/my-orders']);
-  }
 
   icons = Icons;
 
@@ -115,6 +92,29 @@ export class HomepageComponent {
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Home';
+  }
+
+  toggleUserMenu() {
+    this.showUserMenu.update((v) => !v);
+  }
+
+  logout() {
+    const kitchenName = this.kitchen()?.name ?? APP_NAME;
+    this.uiService.ask({
+      title: 'Logout?',
+      message: `Please confirm if you want to logout from ${kitchenName}?`,
+      confirmText: 'Logout',
+      action: () => {
+        this.authService.logout();
+        this.showUserMenu.set(false);
+        this.uiService.showToast('Logged out successfully');
+      },
+    });
+  }
+
+  navigateToOrders() {
+    this.showUserMenu.set(false);
+    this.router.navigate(['/my-orders']);
   }
 
   onImageError(event: any): void {

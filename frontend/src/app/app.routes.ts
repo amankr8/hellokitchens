@@ -14,9 +14,15 @@ import { OrderSuccessComponent } from './pages/components/order-success/order-su
 import { DeliveryDetailsComponent } from './pages/homepage/cart/delivery-details/delivery-details.component';
 import { LiveOrdersComponent } from './pages/dashboard/live-orders/live-orders.component';
 import { CartItemsComponent } from './pages/homepage/cart/cart-items/cart-items.component';
+import { MyOrdersComponent } from './pages/homepage/user/orders/my-orders.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
+  {
+    path: 'my-orders',
+    component: MyOrdersComponent,
+    canActivate: [authGuard(UserRole.USER)],
+  },
   {
     path: 'cart',
     component: CartComponent,
