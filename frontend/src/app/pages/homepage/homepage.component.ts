@@ -31,14 +31,12 @@ export class HomepageComponent {
   private kitchenService = inject(KitchenService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
-  private userService = inject(UserService);
   private uiService = inject(UiService);
   private router = inject(Router);
 
   cartButton = viewChild<ElementRef>('cartButton');
 
   kitchen = this.kitchenService.kitchen;
-  user = this.userService.user;
 
   isCartEmpty = this.cartService.isEmpty;
   actualCartCount = this.cartService.totalCount;
@@ -118,7 +116,6 @@ export class HomepageComponent {
   ngOnInit() {
     const kitchenName = this.kitchen()?.name ?? APP_NAME;
     document.title = kitchenName + ' - Home';
-    this.userService.loadUser();
   }
 
   onImageError(event: any): void {
