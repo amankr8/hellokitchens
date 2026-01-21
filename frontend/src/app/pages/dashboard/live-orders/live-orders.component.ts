@@ -15,13 +15,11 @@ import { OrderStatus } from '../../../enum/order-status.enum';
 })
 export class LiveOrdersComponent {
   private orderService = inject(OrderService);
-  private menuService = inject(MenuService);
   private uiService = inject(UiService);
 
   orderStatus = OrderStatus;
   icons = Icons;
 
-  menuItems = this.menuService.menuItems;
   pendingOrders = this.orderService.pendingKitchenOrders;
   preparingOrders = this.orderService.preparingKitchenOrders;
   dispatchedOrders = this.orderService.dispatchedKitchenOrders;
@@ -38,8 +36,8 @@ export class LiveOrdersComponent {
   );
 
   ngOnInit() {
-    this.menuService.loadMenuItems();
     this.orderService.loadKitchenOrders();
+    this.orderService.wsConnect();
   }
 
   refreshOrders() {

@@ -56,7 +56,6 @@ export class OrderService {
   private notificationSound = new Audio('audio/notification.mp3');
 
   constructor() {
-    this.notificationSound.load();
     this.stompClient = new Client({
       brokerURL: environment.apiBaseUrl + '/ws-orders',
       heartbeatIncoming: 10000,
@@ -64,7 +63,10 @@ export class OrderService {
       reconnectDelay: 5000,
       debug: (str) => console.log(str),
     });
+  }
 
+  wsConnect() {
+    this.notificationSound.load();
     this.stompClient.onConnect = () => {
       console.log('Connected to Spring Boot WS');
 
