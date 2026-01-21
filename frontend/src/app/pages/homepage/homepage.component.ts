@@ -184,6 +184,6 @@ export class HomepageComponent {
 
   onLoginSuccess(): void {
     this.showLoginModal.set(false);
-    this.router.navigate(['/cart']);
+    this.uiService.showToast('Logged in successfully!');
   }
 }
