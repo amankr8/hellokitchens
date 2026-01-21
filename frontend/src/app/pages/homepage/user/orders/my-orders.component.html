@@ -70,7 +70,9 @@
                 >
                   ID #{{ order.id }}
                 </p>
-                <p class="text-xs text-gray-900 font-black">12:55am</p>
+                <p class="text-xs text-gray-900 font-black">
+                  {{ order.createdAt | date: "shortTime" }}
+                </p>
               </div>
               <span
                 [class]="

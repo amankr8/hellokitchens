@@ -15,6 +15,8 @@ export interface Order {
   totalAmount: number;
   specialInstructions: string | null;
   orderItems: OrderItem[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OrderItem {
