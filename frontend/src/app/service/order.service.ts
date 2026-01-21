@@ -33,24 +33,28 @@ export class OrderService {
   private readonly _error = signal<string | null>(null);
   readonly error = this._error.asReadonly();
 
+  sortByNewest = (a: Order, b: Order) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+
   readonly pendingKitchenOrders = computed(
     () =>
-      this._kitchenOrders()?.filter((o) => o.status === OrderStatus.PENDING) ??
-      [],
+      this._kitchenOrders()
+        ?.filter((o) => o.status === OrderStatus.PENDING)
+        .sort(this.sortByNewest) ?? [],
   );
 
   readonly preparingKitchenOrders = computed(
     () =>
-      this._kitchenOrders()?.filter(
-        (o) => o.status === OrderStatus.PREPARING,
-      ) ?? [],
+      this._kitchenOrders()
+        ?.filter((o) => o.status === OrderStatus.PREPARING)
+        .sort(this.sortByNewest) ?? [],
   );
 
   readonly dispatchedKitchenOrders = computed(
     () =>
-      this._kitchenOrders()?.filter(
-        (o) => o.status === OrderStatus.DISPATCHED,
-      ) ?? [],
+      this._kitchenOrders()
+        ?.filter((o) => o.status === OrderStatus.DISPATCHED)
+        .sort(this.sortByNewest) ?? [],
   );
 
   private notificationSound = new Audio('audio/notification.mp3');

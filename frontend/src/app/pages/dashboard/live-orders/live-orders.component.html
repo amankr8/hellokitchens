@@ -156,9 +156,9 @@
                 >
                   #{{ order.id }}
                 </span>
-                <span class="text-[9px] font-bold text-gray-300 ml-1"
-                  >12:55 PM</span
-                >
+                <span class="text-[9px] font-bold text-gray-300 ml-1">{{
+                  order.createdAt | date: "shortTime"
+                }}</span>
               </div>
               <h4 class="text-sm font-black text-gray-900 mt-1">
                 {{ order.customerName }}
@@ -278,9 +278,9 @@
                   class="text-[10px] font-black text-gray-900 uppercase tracking-widest"
                   >#{{ order.id }}</span
                 >
-                <span class="text-[9px] font-bold text-gray-300 ml-1"
-                  >12:55 PM</span
-                >
+                <span class="text-[9px] font-bold text-gray-300 ml-1">{{
+                  order.createdAt | date: "shortTime"
+                }}</span>
               </div>
               <h4 class="text-sm font-black text-gray-900 mt-1">
                 {{ order.customerName }}
@@ -389,9 +389,9 @@
                   class="text-[10px] font-black text-gray-900 uppercase tracking-widest"
                   >#{{ order.id }}</span
                 >
-                <span class="text-[9px] font-bold text-gray-300 ml-1"
-                  >12:55 PM</span
-                >
+                <span class="text-[9px] font-bold text-gray-300 ml-1">{{
+                  order.createdAt | date: "shortTime"
+                }}</span>
               </div>
               <h4 class="text-sm font-black text-gray-900 mt-1">
                 {{ order.customerName }}
