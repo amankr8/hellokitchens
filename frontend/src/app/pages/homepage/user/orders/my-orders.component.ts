@@ -48,10 +48,6 @@ export class MyOrdersComponent implements OnInit {
 
   onSendToWhatsApp(order: Order) {
     const url = this.whatsappService.generateWhatsAppLink(order);
-    window.open(url, '_blank');
-  }
-
-  goBack() {
-    throw new Error('Method not implemented.');
+    window.location.href = url;
   }
 }
