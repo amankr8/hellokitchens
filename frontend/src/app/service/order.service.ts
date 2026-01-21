@@ -14,15 +14,18 @@ import { UiService } from './ui.service';
 })
 export class OrderService {
   private stompClient: Client;
-  http = inject(HttpClient);
-  kitchenService = inject(KitchenService);
-  uiService = inject(UiService);
+  private http = inject(HttpClient);
+  private kitchenService = inject(KitchenService);
+  private uiService = inject(UiService);
 
   private apiUrl = environment.apiBaseUrl + '/api/v1/orders';
 
   // 🔹 State signals
-  private readonly _orders = signal<Order[] | null>(null);
-  readonly orders = this._orders.asReadonly();
+  private readonly _kitchenOrders = signal<Order[] | null>(null);
+  readonly kitchenOrders = this._kitchenOrders.asReadonly();
+
+  private readonly _userOrders = signal<Order[] | null>(null);
+  readonly userOrders = this._userOrders.asReadonly();
 
   private readonly _loading = signal(false);
   readonly loading = this._loading.asReadonly();
@@ -30,18 +33,24 @@ export class OrderService {
   private readonly _error = signal<string | null>(null);
   readonly error = this._error.asReadonly();
 
-  readonly pendingOrders = computed(
-    () => this._orders()?.filter((o) => o.status === OrderStatus.PENDING) ?? [],
+  readonly pendingKitchenOrders = computed(
+    () =>
+      this._kitchenOrders()?.filter((o) => o.status === OrderStatus.PENDING) ??
+      [],
   );
 
-  readonly preparingOrders = computed(
+  readonly preparingKitchenOrders = computed(
     () =>
-      this._orders()?.filter((o) => o.status === OrderStatus.PREPARING) ?? [],
+      this._kitchenOrders()?.filter(
+        (o) => o.status === OrderStatus.PREPARING,
+      ) ?? [],
   );
 
-  readonly dispatchedOrders = computed(
+  readonly dispatchedKitchenOrders = computed(
     () =>
-      this._orders()?.filter((o) => o.status === OrderStatus.DISPATCHED) ?? [],
+      this._kitchenOrders()?.filter(
+        (o) => o.status === OrderStatus.DISPATCHED,
+      ) ?? [],
   );
 
   private notificationSound = new Audio('audio/notification.mp3');
@@ -80,16 +89,16 @@ export class OrderService {
   // --------------------
   // Load orders
   // --------------------
-  loadOrders(): void {
-    if (this._orders() !== null || this._loading()) return;
-    this.fetchOrders();
+  loadKitchenOrders(): void {
+    if (this._kitchenOrders() !== null || this._loading()) return;
+    this.fetchKitchenOrders();
   }
 
-  refreshOrders(): void {
-    this.fetchOrders();
+  refreshKitchenOrders(): void {
+    this.fetchKitchenOrders();
   }
 
-  private fetchOrders(): void {
+  private fetchKitchenOrders(): void {
     if (this._loading()) return;
 
     this._loading.set(true);
@@ -97,7 +106,34 @@ export class OrderService {
 
     this.http.get<Order[]>(this.apiUrl).subscribe({
       next: (items) => {
-        this._orders.set(items);
+        this._kitchenOrders.set(items);
+        this._loading.set(false);
+      },
+      error: () => {
+        this._error.set('Failed to load orders');
+        this._loading.set(false);
+      },
+    });
+  }
+
+  loadUserOrders(): void {
+    if (this._userOrders() !== null || this._loading()) return;
+    this.fetchUserOrders();
+  }
+
+  refreshUserOrders(): void {
+    this.fetchUserOrders();
+  }
+
+  private fetchUserOrders(): void {
+    if (this._loading()) return;
+
+    this._loading.set(true);
+    this._error.set(null);
+
+    this.http.get<Order[]>(`${this.apiUrl}/user`).subscribe({
+      next: (items) => {
+        this._userOrders.set(items);
         this._loading.set(false);
       },
       error: () => {
@@ -115,16 +151,16 @@ export class OrderService {
   }
 
   private appendOrder(order: Order): void {
-    if (!this._orders()) {
-      this.refreshOrders();
+    if (!this._kitchenOrders()) {
+      this.refreshKitchenOrders();
     } else {
-      this._orders.update((orders) => [...orders!, order]);
+      this._kitchenOrders.update((orders) => [...orders!, order]);
     }
   }
 
   updateOrderStatus(orderId: number, newStatus: string): Observable<Order> {
-    const existingOrders = this._orders();
-    this._orders.update((orders) =>
+    const existingOrders = this._kitchenOrders();
+    this._kitchenOrders.update((orders) =>
       orders!.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
     );
 
@@ -134,15 +170,15 @@ export class OrderService {
       })
       .pipe(
         catchError((err) => {
-          this._orders.set(existingOrders);
+          this._kitchenOrders.set(existingOrders);
           return throwError(() => err);
         }),
       );
   }
 
   discardOrder(orderId: number): Observable<void> {
-    const existingOrders = this._orders();
-    this._orders.update((orders) =>
+    const existingOrders = this._kitchenOrders();
+    this._kitchenOrders.update((orders) =>
       orders!.map((o) =>
         o.id === orderId ? { ...o, status: OrderStatus.CANCELLED } : o,
       ),
@@ -150,7 +186,7 @@ export class OrderService {
 
     return this.http.delete<void>(`${this.apiUrl}/${orderId}`).pipe(
       catchError((err) => {
-        this._orders.set(existingOrders);
+        this._kitchenOrders.set(existingOrders);
         return throwError(() => err);
       }),
     );

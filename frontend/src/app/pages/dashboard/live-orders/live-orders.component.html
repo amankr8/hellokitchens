@@ -14,7 +14,7 @@
     </div>
 
     <button
-      (click)="orderService.refreshOrders()"
+      (click)="refreshOrders()"
       [disabled]="loading()"
       class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-orange-200 transition-all active:scale-95 disabled:opacity-50 group"
     >
@@ -27,7 +27,7 @@
       <span
         class="text-[10px] font-black uppercase tracking-widest text-gray-600 group-hover:text-orange-600"
       >
-        {{ orderService.loading() ? "Syncing..." : "Refresh" }}
+        {{ loading() ? "Syncing..." : "Refresh" }}
       </span>
     </button>
   </div>

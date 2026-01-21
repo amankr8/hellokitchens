@@ -14,18 +14,21 @@ import { OrderStatus } from '../../../enum/order-status.enum';
   templateUrl: './live-orders.component.html',
 })
 export class LiveOrdersComponent {
-  orderService = inject(OrderService);
-  menuService = inject(MenuService);
-  uiService = inject(UiService);
-  icons = Icons;
+  private orderService = inject(OrderService);
+  private menuService = inject(MenuService);
+  private uiService = inject(UiService);
+
   orderStatus = OrderStatus;
+  icons = Icons;
 
   menuItems = this.menuService.menuItems;
-  pendingOrders = this.orderService.pendingOrders;
-  preparingOrders = this.orderService.preparingOrders;
-  dispatchedOrders = this.orderService.dispatchedOrders;
+  pendingOrders = this.orderService.pendingKitchenOrders;
+  preparingOrders = this.orderService.preparingKitchenOrders;
+  dispatchedOrders = this.orderService.dispatchedKitchenOrders;
   loading = this.orderService.loading;
   error = this.orderService.error;
+
+  selectedOrderForModal: Order | null = null;
 
   totalActiveCount = computed(
     () =>
@@ -36,9 +39,12 @@ export class LiveOrdersComponent {
 
   ngOnInit() {
     this.menuService.loadMenuItems();
-    this.orderService.loadOrders();
+    this.orderService.loadKitchenOrders();
   }
-  selectedOrderForModal: Order | null = null;
+
+  refreshOrders() {
+    this.orderService.refreshKitchenOrders();
+  }
 
   openDeliveryModal(order: Order) {
     this.selectedOrderForModal = order;
