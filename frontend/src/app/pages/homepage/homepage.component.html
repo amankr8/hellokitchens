@@ -1,9 +1,14 @@
-<div class="min-h-[100dvh]">
-  <div class="relative overflow-hidden">
+<div class="min-h-[100dvh] bg-gray-50">
+  <!-- ================= HERO LAYER ================= -->
+  <div class="relative">
+    <!-- ORANGE BACKGROUND (clipped safely) -->
     <div
-      class="absolute inset-x-0 top-0 h-48 bg-orange-600 rounded-b-[3rem]"
-    ></div>
+      class="absolute inset-x-0 top-0 h-48 overflow-hidden pointer-events-none"
+    >
+      <div class="h-full bg-orange-600 rounded-b-[3rem]"></div>
+    </div>
 
+    <!-- ================= STICKY HEADER ================= -->
     <div
       [class]="
         isScrolled()
@@ -14,6 +19,7 @@
     >
       <div class="max-w-4xl mx-auto px-4">
         <header class="flex items-center justify-between gap-4">
+          <!-- LEFT -->
           <div class="flex items-center gap-3 min-w-0">
             <div
               class="w-12 h-12 bg-white rounded-2xl flex-shrink-0 flex items-center justify-center text-orange-600"
@@ -40,7 +46,9 @@
             </div>
           </div>
 
+          <!-- RIGHT -->
           <div class="flex items-center gap-3 flex-shrink-0">
+            <!-- USER MENU -->
             <div class="relative flex items-center" id="userMenuContainer">
               <button
                 (click)="toggleUserMenu()"
@@ -70,7 +78,7 @@
 
               <div
                 *ngIf="showUserMenu()"
-                class="absolute right-0 top-12 w-56 bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-2 z-[110] animate-in fade-in slide-in-from-top-2 duration-200"
+                class="absolute right-0 top-12 w-56 bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-2 z-[110]"
               >
                 <ng-container *ngIf="isLoggedIn(); else guestOptions">
                   <button
@@ -109,16 +117,16 @@
               </div>
             </div>
 
+            <!-- CART -->
             <button
               #cartButton
               (click)="onViewCart()"
               [disabled]="isCartEmpty()"
               [class]="isScrolled() ? 'bg-orange-600' : 'bg-gray-900'"
-              class="relative h-10 px-3 sm:px-4 text-white rounded-full flex items-center gap-2 border border-transparent active:scale-95 transition-all disabled:opacity-50"
+              class="relative h-10 px-3 sm:px-4 text-white rounded-full flex items-center gap-2 active:scale-95 transition-all disabled:opacity-50"
             >
               <fa-icon [icon]="icons.cart"></fa-icon>
-              <span class="text-xs font-black hidden sm:inline">Cart</span>
-
+              <span class="hidden sm:inline text-xs font-black">Cart</span>
               <span
                 *ngIf="!isCartEmpty()"
                 [class.animate-badge-pulse]="isBadgePulsing()"
@@ -132,6 +140,8 @@
       </div>
     </div>
   </div>
+
+  <!-- ================= CONTENT ================= -->
   <div class="relative z-10 max-w-4xl mx-auto px-4 pb-24">
     <div
       class="bg-white rounded-[2rem] border border-gray-100 p-2 my-5 flex items-center"
