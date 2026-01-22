@@ -141,45 +141,65 @@
             </div>
           </header>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="relative z-10 max-w-4xl mx-auto px-4 pb-24">
-    <div
-      class="bg-white rounded-[2rem] border border-gray-100 p-2 my-5 flex items-center"
-    >
-      <div class="flex-1 flex items-center px-4 gap-3">
-        <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
-        <input
-          type="text"
-          placeholder="Search delicious food..."
-          class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
-        />
-      </div>
-      <button
-        class="bg-orange-500 text-white w-12 h-12 rounded-[1.5rem] flex items-center justify-center"
-      >
-        <fa-icon [icon]="icons.filter"></fa-icon>
-      </button>
-    </div>
-
-    <div class="mt-4 mb-8 px-2">
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-8 bg-orange-600 rounded-full"></div>
-          <h3 class="text-3xl font-black text-gray-900 tracking-tight">
-            Explore Menu
-          </h3>
+        <div
+          *ngIf="!isScrolled()"
+          class="bg-white rounded-[2rem] border border-gray-100 p-2 mt-6 flex items-center"
+        >
+          <div class="flex-1 flex items-center px-4 gap-3">
+            <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
+            <input
+              type="text"
+              placeholder="Search delicious food..."
+              class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
+            />
+          </div>
+          <button
+            class="bg-orange-500 text-white w-12 h-12 rounded-[1.5rem] flex items-center justify-center"
+          >
+            <fa-icon [icon]="icons.filter"></fa-icon>
+          </button>
         </div>
-        <p class="text-gray-500 text-sm font-medium ml-5">
-          Freshly prepared dishes, delivered from our kitchen to yours.
-        </p>
       </div>
     </div>
-
-    <app-menu></app-menu>
   </div>
+</div>
+
+<div class="relative z-10 max-w-4xl mx-auto px-4 pb-24">
+  <div
+    *ngIf="isScrolled()"
+    class="bg-white rounded-[2rem] border border-gray-100 p-2 my-5 flex items-center"
+  >
+    <div class="flex-1 flex items-center px-4 gap-3">
+      <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
+      <input
+        type="text"
+        placeholder="Search delicious food..."
+        class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
+      />
+    </div>
+    <button
+      class="bg-orange-500 text-white w-12 h-12 rounded-[1.5rem] flex items-center justify-center"
+    >
+      <fa-icon [icon]="icons.filter"></fa-icon>
+    </button>
+  </div>
+
+  <div class="mt-4 mb-8 px-2">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-3">
+        <div class="w-2 h-8 bg-orange-600 rounded-full"></div>
+        <h3 class="text-3xl font-black text-gray-900 tracking-tight">
+          Explore Menu
+        </h3>
+      </div>
+      <p class="text-gray-500 text-sm font-medium ml-5">
+        Freshly prepared dishes, delivered from our kitchen to yours.
+      </p>
+    </div>
+  </div>
+
+  <app-menu></app-menu>
 </div>
 
 <app-otp-login
