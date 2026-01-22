@@ -7,13 +7,16 @@
     "
     class="transition-all duration-300"
   >
-    <div class="relative overflow-hidden">
+    <div class="relative">
       <div
         *ngIf="!isScrolled()"
-        class="absolute inset-x-0 top-0 h-48 bg-orange-600 rounded-b-[3rem]"
+        class="absolute inset-x-0 top-0 h-48 bg-orange-600 rounded-b-[3rem] overflow-hidden"
       ></div>
 
-      <div [class]="isScrolled() ? 'py-3' : 'py-8'" class="relative z-10">
+      <div
+        [class]="isScrolled() ? 'py-3' : 'py-8'"
+        class="relative z-10 overflow-visible"
+      >
         <div class="max-w-4xl mx-auto px-4">
           <header class="flex items-center justify-between gap-4">
             <div class="flex items-center gap-3 min-w-0">
