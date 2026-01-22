@@ -59,6 +59,7 @@ export class HomepageComponent {
   isBadgePulsing = signal(false);
   showLoginModal = signal(false);
   showUserMenu = signal(false);
+  isOpeningCart = signal(false);
 
   icons = Icons;
 
@@ -175,6 +176,8 @@ export class HomepageComponent {
     if (this.isCartEmpty()) {
       return;
     }
+
+    this.isOpeningCart.set(true);
     if (this.isLoggedIn()) {
       this.router.navigate(['/cart']);
     } else {
@@ -185,5 +188,8 @@ export class HomepageComponent {
   onLoginSuccess(): void {
     this.showLoginModal.set(false);
     this.uiService.showToast('Logged in successfully!');
+    if (this.isOpeningCart()) {
+      this.router.navigate(['/cart']);
+    }
   }
 }
