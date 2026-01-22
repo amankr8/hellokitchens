@@ -200,13 +200,13 @@
             <div class="flex flex-col gap-2">
               <button
                 (click)="startEditingAddress($event, addr)"
-                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-orange-600"
+                class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all active:scale-90"
               >
                 <fa-icon [icon]="icons.edit"></fa-icon>
               </button>
               <button
                 (click)="deleteAddress($event, addr.id)"
-                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500"
+                class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all active:scale-90"
               >
                 <fa-icon [icon]="icons.trashCan"></fa-icon>
               </button>
