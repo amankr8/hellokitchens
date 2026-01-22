@@ -1,216 +1,141 @@
-<div class="min-h-[100dvh]">
-  <div
-    [class]="
-      isScrolled()
-        ? 'sticky top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100'
-        : 'relative z-[100]'
-    "
-    class="transition-all duration-300"
+<div class="min-h-[100dvh] bg-gray-50 flex flex-col">
+  <header
+    class="sticky top-0 z-[100] bg-white border-b border-gray-100 py-3 shadow-sm"
   >
-    <div class="relative">
-      <div
-        *ngIf="!isScrolled()"
-        class="absolute inset-x-0 top-0 h-48 bg-orange-600 rounded-b-[3rem] overflow-hidden"
-      ></div>
-
-      <div
-        [class]="isScrolled() ? 'py-3' : 'py-8'"
-        class="relative z-10 overflow-visible"
-      >
-        <div class="max-w-4xl mx-auto px-4">
-          <header class="flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 min-w-0">
-              <div
-                class="w-12 h-12 bg-white rounded-2xl flex-shrink-0 flex items-center justify-center text-orange-600"
-              >
-                <fa-icon [icon]="icons.logo" class="text-2xl"></fa-icon>
-              </div>
-
-              <div class="min-w-0">
-                <h1
-                  [class]="
-                    isScrolled()
-                      ? 'text-gray-900 text-xl'
-                      : 'text-white text-xl'
-                  "
-                  class="font-black leading-none truncate transition-colors"
-                >
-                  {{ kitchen()?.name }}
-                </h1>
-
-                <p
-                  *ngIf="!isScrolled()"
-                  class="text-[10px] font-bold text-white opacity-80 uppercase tracking-widest mt-1 truncate"
-                >
-                  {{ kitchen()?.tagline }}
-                </p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-3 flex-shrink-0">
-              <div class="relative flex items-center" id="userMenuContainer">
-                <button
-                  (click)="toggleUserMenu()"
-                  [class]="
-                    isScrolled()
-                      ? 'bg-gray-100 text-gray-600 border-gray-200'
-                      : 'bg-white/20 text-white border-white/30'
-                  "
-                  class="z-[110] h-10 px-1.5 backdrop-blur-md border rounded-full flex items-center gap-2 active:scale-95 transition-all"
-                >
-                  <div class="w-7 h-7 flex items-center justify-center">
-                    <fa-icon
-                      [icon]="isLoggedIn() ? icons.userCheck : icons.user"
-                    ></fa-icon>
-                  </div>
-                  <fa-icon
-                    [icon]="icons.chevronDown"
-                    class="text-[10px] mr-1 hidden sm:block opacity-70"
-                  ></fa-icon>
-                </button>
-
-                <div
-                  *ngIf="showUserMenu()"
-                  (click)="showUserMenu.set(false)"
-                  class="fixed inset-0 bg-transparent z-[100]"
-                ></div>
-
-                <div
-                  *ngIf="showUserMenu()"
-                  class="absolute right-0 top-12 w-56 bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-2 z-[110] animate-in fade-in slide-in-from-top-2 duration-200"
-                >
-                  <ng-container *ngIf="isLoggedIn(); else guestOptions">
-                    <button
-                      (click)="navigateToOrders()"
-                      class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 rounded-2xl transition-all group"
-                    >
-                      <fa-icon
-                        [icon]="icons.history"
-                        class="text-sm group-hover:text-orange-600"
-                      ></fa-icon>
-                      <span class="text-[11px] font-black uppercase"
-                        >My Orders</span
-                      >
-                    </button>
-
-                    <button
-                      (click)="logout()"
-                      class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-all"
-                    >
-                      <fa-icon [icon]="icons.logout" class="text-sm"></fa-icon>
-                      <span class="text-[11px] font-black uppercase"
-                        >Logout</span
-                      >
-                    </button>
-                  </ng-container>
-
-                  <ng-template #guestOptions>
-                    <button
-                      (click)="
-                        showLoginModal.set(true); showUserMenu.set(false)
-                      "
-                      class="w-full flex items-center gap-3 px-4 py-3 text-orange-600 hover:bg-orange-50 rounded-2xl transition-all group"
-                    >
-                      <fa-icon [icon]="icons.user" class="text-sm"></fa-icon>
-                      <span class="text-[11px] font-black uppercase"
-                        >Login / Register</span
-                      >
-                    </button>
-                  </ng-template>
-                </div>
-              </div>
-
-              <button
-                #cartButton
-                (click)="onViewCart()"
-                [disabled]="isCartEmpty()"
-                [class]="isScrolled() ? 'bg-orange-600' : 'bg-gray-900'"
-                class="relative h-10 px-3 sm:px-4 text-white rounded-full flex items-center gap-2 border border-transparent active:scale-95 transition-all disabled:opacity-50"
-              >
-                <fa-icon [icon]="icons.cart"></fa-icon>
-                <span class="text-xs font-black hidden sm:inline">Cart</span>
-
-                <span
-                  *ngIf="!isCartEmpty()"
-                  [class.animate-badge-pulse]="isBadgePulsing()"
-                  class="absolute -top-1.5 -right-1.5 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
-                >
-                  {{ displayedCount() }}
-                </span>
-              </button>
-            </div>
-          </header>
-        </div>
-
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 min-w-0">
         <div
-          *ngIf="!isScrolled()"
-          class="bg-white rounded-[2rem] border border-gray-100 p-2 mt-6 flex items-center"
+          class="w-10 h-10 bg-orange-600 rounded-xl flex-shrink-0 flex items-center justify-center text-white shadow-lg shadow-orange-200"
         >
-          <div class="flex-1 flex items-center px-4 gap-3">
-            <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
-            <input
-              type="text"
-              placeholder="Search delicious food..."
-              class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
-            />
-          </div>
-          <button
-            class="bg-orange-500 text-white w-12 h-12 rounded-[1.5rem] flex items-center justify-center"
+          <fa-icon [icon]="icons.logo" class="text-xl"></fa-icon>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-gray-900 text-lg font-black leading-none truncate">
+            {{ kitchen()?.name }}
+          </h1>
+          <p
+            class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1 truncate"
           >
-            <fa-icon [icon]="icons.filter"></fa-icon>
-          </button>
+            {{ kitchen()?.tagline }}
+          </p>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<div class="relative z-10 max-w-4xl mx-auto px-4 pb-24">
-  <div
-    *ngIf="isScrolled()"
-    class="bg-white rounded-[2rem] border border-gray-100 p-2 my-5 flex items-center"
-  >
-    <div class="flex-1 flex items-center px-4 gap-3">
-      <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
-      <input
-        type="text"
-        placeholder="Search delicious food..."
-        class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
-      />
-    </div>
-    <button
-      class="bg-orange-500 text-white w-12 h-12 rounded-[1.5rem] flex items-center justify-center"
-    >
-      <fa-icon [icon]="icons.filter"></fa-icon>
-    </button>
-  </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <div class="relative flex items-center" id="userMenuContainer">
+          <button
+            (click)="toggleUserMenu()"
+            class="z-[110] h-10 w-10 bg-gray-50 border border-gray-200 rounded-full flex items-center justify-center text-gray-600 active:scale-95 transition-all"
+          >
+            <fa-icon
+              [icon]="isLoggedIn() ? icons.userCheck : icons.user"
+            ></fa-icon>
+          </button>
 
-  <div class="mt-4 mb-8 px-2">
-    <div class="flex flex-col gap-2">
+          <div
+            *ngIf="showUserMenu()"
+            (click)="showUserMenu.set(false)"
+            class="fixed inset-0 bg-transparent z-[100]"
+          ></div>
+
+          <div
+            *ngIf="showUserMenu()"
+            class="absolute right-0 top-12 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 z-[110] animate-in fade-in zoom-in-95 duration-200"
+          >
+            <ng-container *ngIf="isLoggedIn(); else guestOptions">
+              <button
+                (click)="navigateToOrders()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-orange-50 rounded-xl transition-all group"
+              >
+                <fa-icon
+                  [icon]="icons.history"
+                  class="text-sm group-hover:text-orange-600"
+                ></fa-icon>
+                <span class="text-[11px] font-black uppercase">My Orders</span>
+              </button>
+              <button
+                (click)="logout()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all"
+              >
+                <fa-icon [icon]="icons.logout" class="text-sm"></fa-icon>
+                <span class="text-[11px] font-black uppercase">Logout</span>
+              </button>
+            </ng-container>
+            <ng-template #guestOptions>
+              <button
+                (click)="showLoginModal.set(true); showUserMenu.set(false)"
+                class="w-full flex items-center gap-3 px-4 py-3 text-orange-600 hover:bg-orange-50 rounded-xl transition-all group"
+              >
+                <fa-icon [icon]="icons.user" class="text-sm"></fa-icon>
+                <span class="text-[11px] font-black uppercase"
+                  >Login / Register</span
+                >
+              </button>
+            </ng-template>
+          </div>
+        </div>
+
+        <button
+          #cartButton
+          (click)="onViewCart()"
+          [disabled]="isCartEmpty()"
+          class="relative h-10 px-4 bg-gray-900 text-white rounded-full flex items-center gap-2 active:scale-95 transition-all disabled:opacity-50"
+        >
+          <fa-icon [icon]="icons.cart"></fa-icon>
+          <span class="text-xs font-black hidden sm:inline">Cart</span>
+
+          <span
+            *ngIf="!isCartEmpty()"
+            [class.animate-badge-pulse]="isBadgePulsing()"
+            class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm"
+          >
+            {{ displayedCount() }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 w-full">
+    <div class="mt-8 mb-6 px-2">
       <div class="flex items-center gap-3">
         <div class="w-2 h-8 bg-orange-600 rounded-full"></div>
         <h3 class="text-3xl font-black text-gray-900 tracking-tight">
           Explore Menu
         </h3>
       </div>
-      <p class="text-gray-500 text-sm font-medium ml-5">
+      <p class="text-gray-500 text-sm font-medium ml-5 mt-1">
         Freshly prepared dishes, delivered from our kitchen to yours.
       </p>
     </div>
-  </div>
 
-  <app-menu></app-menu>
+    <div
+      class="bg-white rounded-2xl border border-gray-200 p-2 mb-8 flex items-center shadow-sm"
+    >
+      <div class="flex-1 flex items-center px-4 gap-3">
+        <fa-icon [icon]="icons.search" class="text-gray-300"></fa-icon>
+        <input
+          type="text"
+          placeholder="Search delicious food..."
+          class="w-full py-3 bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 placeholder:text-gray-300"
+        />
+      </div>
+      <button
+        class="bg-orange-500 text-white w-12 h-12 rounded-xl flex items-center justify-center active:scale-95 transition-transform shadow-md shadow-orange-100"
+      >
+        <fa-icon [icon]="icons.filter"></fa-icon>
+      </button>
+    </div>
+
+    <div class="pb-24">
+      <app-menu></app-menu>
+    </div>
+  </main>
 </div>
-
-<app-otp-login
-  *ngIf="showLoginModal()"
-  (close)="showLoginModal.set(false)"
-  (success)="onLoginSuccess()"
-></app-otp-login>
 
 <a
   [href]="'tel:+91' + kitchen()?.whatsapp"
-  class="fixed bottom-6 right-6 z-[60] flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-2xl shadow-2xl shadow-green-200 hover:bg-green-600 transition-all active:scale-90 md:w-auto md:px-6 md:gap-3"
+  class="fixed bottom-6 right-6 z-[60] flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-2xl shadow-xl hover:bg-green-600 transition-all active:scale-90 md:w-auto md:px-6 md:gap-3"
 >
   <fa-icon [icon]="icons.phone" class="text-xl"></fa-icon>
   <span class="hidden md:inline font-black text-sm uppercase tracking-wider"
@@ -218,12 +143,18 @@
   >
 </a>
 
+<app-otp-login
+  *ngIf="showLoginModal()"
+  (close)="showLoginModal.set(false)"
+  (success)="onLoginSuccess()"
+></app-otp-login>
+
 <div
   *ngIf="flyingItem()"
   [style.left.px]="flyX()"
   [style.top.px]="flyY()"
-  class="fixed w-12 h-12 z-[100] pointer-events-none transition-all duration-700 ease-in-out"
   [ngStyle]="flyStyle()"
+  class="fixed w-12 h-12 z-[150] pointer-events-none transition-all duration-700 ease-in-out"
 >
   <img
     [src]="flyingItem()?.imageUrl"

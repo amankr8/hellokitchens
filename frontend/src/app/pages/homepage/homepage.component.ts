@@ -59,12 +59,6 @@ export class HomepageComponent {
   isBadgePulsing = signal(false);
   showLoginModal = signal(false);
   showUserMenu = signal(false);
-  isScrolled = signal(false);
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled.set(window.scrollY > 20);
-  }
 
   icons = Icons;
 
