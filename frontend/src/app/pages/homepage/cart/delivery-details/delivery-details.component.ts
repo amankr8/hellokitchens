@@ -88,6 +88,10 @@ export class DeliveryDetailsComponent {
 
   searchSubject = new Subject<string>();
   mapLocationSubject = new Subject<{ lat: number; lng: number }>();
+  mapCenter = signal<{ lat: number; lng: number }>({
+    lat: 12.9716,
+    lng: 77.5946,
+  });
 
   constructor() {
     this.searchSubject
@@ -320,6 +324,7 @@ export class DeliveryDetailsComponent {
       if (place.location) {
         const lat = place.location.lat();
         const lng = place.location.lng();
+        this.mapCenter.set({ lat, lng });
         location = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
       }
       const address = place.formattedAddress || '';
@@ -330,74 +335,11 @@ export class DeliveryDetailsComponent {
       });
 
       this.clearSearch();
-
       setTimeout(() => this.addressDetailsArea?.nativeElement.focus(), 100);
     } catch (error) {
       console.error('Error fetching place details:', error);
       this.uiService.showToast('Could not load address details', 'error');
     }
-  }
-
-  async getCurrentLocation() {
-    if (!navigator.geolocation) {
-      this.uiService.showToast('Geolocation not supported', 'error');
-      return;
-    }
-
-    this.isLocating.set(true);
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-
-        try {
-          const { Geocoder } = await this.locationService.getGeocodingLibrary();
-          const geocoder = new Geocoder();
-
-          const response = await geocoder.geocode({
-            location: { lat: latitude, lng: longitude },
-          });
-
-          if (response.results && response.results[0]) {
-            const result = response.results[0];
-
-            const location = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-            const address = result.formatted_address;
-            this.addressForm.patchValue({
-              fullAddress: address,
-              location: location,
-            });
-
-            this.uiService.showToast('Location detected!');
-          }
-        } catch (error) {
-          console.error(error);
-          this.uiService.showToast('Failed to resolve address', 'error');
-        } finally {
-          this.isLocating.set(false);
-        }
-      },
-      (error) => {
-        this.isLocating.set(false);
-        this.handleLocationError(error);
-      },
-    );
-  }
-
-  private handleLocationError(error: GeolocationPositionError) {
-    let message = 'An unknown error occurred';
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        message = 'Please allow location access in your browser settings';
-        break;
-      case error.POSITION_UNAVAILABLE:
-        message = 'Location information is unavailable';
-        break;
-      case error.TIMEOUT:
-        message = 'The request to get user location timed out';
-        break;
-    }
-    this.uiService.showToast(message, 'error');
   }
 
   onMapLocationChange(coords: { lat: number; lng: number }) {

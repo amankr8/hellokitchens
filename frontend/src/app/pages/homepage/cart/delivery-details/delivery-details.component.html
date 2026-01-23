@@ -337,8 +337,8 @@
           </div>
 
           <app-map-picker
-            [lat]="12.9716"
-            [lng]="77.5946"
+            [lat]="mapCenter().lat"
+            [lng]="mapCenter().lng"
             (locationChange)="onMapLocationChange($event)"
             (locating)="isLocating.set($event)"
           ></app-map-picker>

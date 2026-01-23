@@ -5,6 +5,7 @@ import {
   inject,
   Input,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Icons } from '../../../utils/icons';
@@ -60,6 +61,17 @@ export class MapPickerComponent {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (!this.map) return;
+
+    if (changes['lat'] || changes['lng']) {
+      this.map.panTo({
+        lat: this.lat,
+        lng: this.lng,
+      });
+    }
+  }
+
   locateMe() {
     if (!navigator.geolocation) {
       this.uiService.showToast('Geolocation not supported', 'error');
@@ -71,23 +83,34 @@ export class MapPickerComponent {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-
         this.map.panTo({ lat: latitude, lng: longitude });
 
         this.locationChange.emit({
           lat: latitude,
           lng: longitude,
         });
-
         this.locating.emit(false);
       },
       (error) => {
         this.locating.emit(false);
-        this.uiService.showToast(
-          'Please allow location access in browser settings',
-          'error',
-        );
+        this.handleLocationError(error);
       },
     );
+  }
+
+  private handleLocationError(error: GeolocationPositionError) {
+    let message = 'An unknown error occurred';
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        message = 'Please allow location access in your browser settings';
+        break;
+      case error.POSITION_UNAVAILABLE:
+        message = 'Location information is unavailable';
+        break;
+      case error.TIMEOUT:
+        message = 'The request to get user location timed out';
+        break;
+    }
+    this.uiService.showToast(message, 'error');
   }
 }
