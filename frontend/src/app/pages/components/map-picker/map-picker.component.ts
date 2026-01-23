@@ -48,6 +48,16 @@ export class MapPickerComponent {
       disableDefaultUI: true,
       gestureHandling: 'greedy',
     });
+
+    this.map.addListener('idle', () => {
+      const center = this.map.getCenter();
+      if (!center) return;
+
+      this.locationChange.emit({
+        lat: center.lat(),
+        lng: center.lng(),
+      });
+    });
   }
 
   locateMe() {

@@ -87,11 +87,16 @@ export class DeliveryDetailsComponent {
   });
 
   searchSubject = new Subject<string>();
+  mapLocationSubject = new Subject<{ lat: number; lng: number }>();
 
   constructor() {
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((query) => this.onSearchChange(query));
+
+    this.mapLocationSubject.pipe(debounceTime(500)).subscribe((coords) => {
+      this.resolveAddressFromCoords(coords);
+    });
 
     effect(() => {
       const user = this.user();
@@ -395,7 +400,12 @@ export class DeliveryDetailsComponent {
     this.uiService.showToast(message, 'error');
   }
 
-  async onMapLocationChange(coords: { lat: number; lng: number }) {
+  onMapLocationChange(coords: { lat: number; lng: number }) {
+    this.isLocating.set(true);
+    this.mapLocationSubject.next(coords);
+  }
+
+  private async resolveAddressFromCoords(coords: { lat: number; lng: number }) {
     try {
       const { Geocoder } = await this.locationService.getGeocodingLibrary();
       const geocoder = new Geocoder();
@@ -412,6 +422,8 @@ export class DeliveryDetailsComponent {
       }
     } catch (e) {
       this.uiService.showToast('Failed to resolve address', 'error');
+    } finally {
+      this.isLocating.set(false);
     }
   }
 
