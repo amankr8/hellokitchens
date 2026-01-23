@@ -172,6 +172,11 @@ export class DeliveryDetailsComponent {
     event.stopPropagation();
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
+
+    const location = addr.location.split(', ');
+    const lat = parseFloat(location[0]);
+    const lng = parseFloat(location[1]);
+    this.mapCenter.set({ lat, lng });
     this.addressForm.patchValue({
       streetAddress: addr.streetAddress,
       fullAddress: addr.fullAddress,
