@@ -395,6 +395,26 @@ export class DeliveryDetailsComponent {
     this.uiService.showToast(message, 'error');
   }
 
+  async onMapLocationChange(coords: { lat: number; lng: number }) {
+    try {
+      const { Geocoder } = await this.locationService.getGeocodingLibrary();
+      const geocoder = new Geocoder();
+
+      const response = await geocoder.geocode({
+        location: coords,
+      });
+
+      if (response.results?.[0]) {
+        this.addressForm.patchValue({
+          fullAddress: response.results[0].formatted_address,
+          location: `${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`,
+        });
+      }
+    } catch (e) {
+      this.uiService.showToast('Failed to resolve address', 'error');
+    }
+  }
+
   placeOrder() {
     if (this.userForm.invalid || !this.selectedAddressId()) {
       this.userForm.markAllAsTouched();

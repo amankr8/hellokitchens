@@ -1,22 +1,27 @@
-<div class="relative h-56 md:h-64 rounded-[2rem] overflow-hidden bg-gray-100">
+<div class="relative h-56 rounded-[2rem] overflow-hidden bg-gray-100">
   <div #mapContainer class="absolute inset-0"></div>
 
   <div
     class="absolute inset-0 flex items-center justify-center pointer-events-none"
   >
-    <div
-      class="absolute inset-0 flex items-center justify-center pointer-events-none"
-    >
-      <div class="relative -translate-y-6">
-        <div
-          class="w-10 h-10 bg-orange-600 rounded-full shadow-lg flex items-center justify-center"
-        >
-          <fa-icon [icon]="icons.location" class="text-white text-lg"></fa-icon>
-        </div>
-        <div
-          class="w-3 h-3 bg-orange-600 rotate-45 absolute left-1/2 -bottom-1 -translate-x-1/2 shadow-md"
-        ></div>
+    <div class="relative -translate-y-6">
+      <div
+        class="w-10 h-10 bg-orange-600 rounded-full shadow-lg flex items-center justify-center"
+      >
+        <fa-icon [icon]="icons.location" class="text-white text-lg"></fa-icon>
       </div>
+      <div
+        class="w-3 h-3 bg-orange-600 rotate-45 absolute left-1/2 -bottom-1 -translate-x-1/2 shadow-md"
+      ></div>
     </div>
   </div>
+
+  <button
+    type="button"
+    (click)="locateMe()"
+    class="absolute bottom-5 left-1/2 -translate-x-1/2 backdrop-blur bg-white/90 px-3 py-2 rounded-full shadow-md text-[10px] font-black uppercase text-orange-600 flex items-center gap-1 active:scale-95"
+  >
+    <fa-icon [icon]="icons.location"></fa-icon>
+    Locate me
+  </button>
 </div>

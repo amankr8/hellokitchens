@@ -17,6 +17,10 @@ export class LocationService {
     });
   }
 
+  async getMapsLibrary() {
+    return (await importLibrary('maps')) as google.maps.MapsLibrary;
+  }
+
   async getPlacesLibrary() {
     return (await importLibrary('places')) as google.maps.PlacesLibrary;
   }
