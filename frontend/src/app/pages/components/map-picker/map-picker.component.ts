@@ -22,6 +22,7 @@ import { UiService } from '../../../service/ui.service';
 export class MapPickerComponent {
   @Input() lat!: number;
   @Input() lng!: number;
+  @Input() isLocating = false;
 
   @Output() locationChange = new EventEmitter<{
     lat: number;
@@ -51,6 +52,8 @@ export class MapPickerComponent {
     });
 
     this.map.addListener('idle', () => {
+      if (this.isLocating) return;
+
       const center = this.map.getCenter();
       if (!center) return;
 

@@ -19,9 +19,16 @@
   <button
     type="button"
     (click)="locateMe()"
-    class="absolute bottom-2 left-1/2 -translate-x-1/2 backdrop-blur bg-white/90 px-3 py-2 rounded-full shadow-md text-[10px] font-black uppercase text-orange-600 flex items-center gap-1 active:scale-95"
+    [disabled]="isLocating"
+    class="absolute bottom-2 left-1/2 -translate-x-1/2 backdrop-blur bg-white/90 px-3 py-2 rounded-full shadow-md text-[10px] font-black uppercase text-orange-600 flex items-center gap-1 active:scale-95 disabled:opacity-60 disabled:active:scale-100"
   >
-    <fa-icon [icon]="icons.location"></fa-icon>
-    Use current location
+    <fa-icon
+      [icon]="isLocating ? icons.spinner : icons.location"
+      [animation]="isLocating ? 'spin' : undefined"
+    ></fa-icon>
+
+    <span>
+      {{ isLocating ? "Locating…" : "Locate me" }}
+    </span>
   </button>
 </div>
