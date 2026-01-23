@@ -27,7 +27,7 @@ export class WhatsappService {
       `--------------------------`,
       `*Customer Details:*`,
       `👤 ${orderData.customerName}`,
-      `📍 ${orderData.streetAddress}`,
+      `📍 ${orderData.deliveryAddress}`,
       `📞 ${orderData.customerPhone || 'N/A'}`,
       `\n*Items:*`,
       itemsList,
