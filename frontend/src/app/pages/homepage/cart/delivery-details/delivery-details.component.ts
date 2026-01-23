@@ -352,21 +352,48 @@ export class DeliveryDetailsComponent {
       const { Geocoder } = await this.locationService.getGeocodingLibrary();
       const geocoder = new Geocoder();
 
-      const response = await geocoder.geocode({
-        location: coords,
-      });
+      const response = await geocoder.geocode({ location: coords });
 
-      if (response.results?.[0]) {
-        this.addressForm.patchValue({
-          fullAddress: response.results[0].formatted_address,
-          location: `${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`,
-        });
-      }
+      if (!response.results?.length) return;
+
+      const components = response.results[0].address_components;
+
+      const route = this.getComponent(components, 'route');
+
+      const sublocality =
+        this.getComponent(components, 'sublocality_level_1') ||
+        this.getComponent(components, 'sublocality');
+
+      const locality = this.getComponent(components, 'locality');
+
+      const city = this.getComponent(components, 'administrative_area_level_2');
+
+      const state = this.getComponent(
+        components,
+        'administrative_area_level_1',
+      );
+
+      const addressParts = [route, sublocality, locality || city, state].filter(
+        Boolean,
+      );
+
+      this.addressForm.patchValue({
+        fullAddress: addressParts.join(', '),
+        location: `${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`,
+      });
     } catch (e) {
+      console.error(e);
       this.uiService.showToast('Failed to resolve address', 'error');
     } finally {
       this.isLocating.set(false);
     }
+  }
+
+  private getComponent(
+    components: google.maps.GeocoderAddressComponent[],
+    type: string,
+  ): string | null {
+    return components.find((c) => c.types.includes(type))?.long_name ?? null;
   }
 
   placeOrder() {
