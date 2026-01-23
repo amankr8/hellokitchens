@@ -42,11 +42,13 @@ import {
   faHistory,
   faFilter,
   faUserCheck,
+  faLocationArrow,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const Icons = {
+  locationArrow: faLocationArrow,
   filter: faFilter,
   history: faHistory,
   user: faUser,

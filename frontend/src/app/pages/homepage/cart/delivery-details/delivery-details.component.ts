@@ -88,9 +88,12 @@ export class DeliveryDetailsComponent {
 
   searchSubject = new Subject<string>();
   mapLocationSubject = new Subject<{ lat: number; lng: number }>();
+
+  defaultLat = 12.9716;
+  defaultLng = 77.5946;
   mapCenter = signal<{ lat: number; lng: number }>({
-    lat: 12.9716,
-    lng: 77.5946,
+    lat: this.defaultLat,
+    lng: this.defaultLng,
   });
 
   constructor() {
@@ -161,6 +164,8 @@ export class DeliveryDetailsComponent {
 
   startAddingAddress() {
     this.isAddingNewAddress.set(true);
+
+    this.mapCenter.set({ lat: this.defaultLat, lng: this.defaultLng });
     this.addressForm.patchValue({
       streetAddress: '',
       fullAddress: '',
