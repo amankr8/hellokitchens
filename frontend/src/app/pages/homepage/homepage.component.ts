@@ -49,6 +49,7 @@ export class HomepageComponent {
   cartButton = viewChild<ElementRef>('cartButton');
 
   kitchen = this.kitchenService.kitchen;
+  username = this.authService.username;
 
   isCartEmpty = this.cartService.isEmpty;
   actualCartCount = this.cartService.totalCount;

@@ -39,6 +39,10 @@ export class AuthService {
     return token ? !this.jwtHelper.isTokenExpired(token) : false;
   });
 
+  username = computed<string | null>(() => {
+    return this._decodedToken()?.sub ?? 'Guest';
+  });
+
   role = computed<UserRole | null>(() => {
     return this._decodedToken()?.role ?? null;
   });
