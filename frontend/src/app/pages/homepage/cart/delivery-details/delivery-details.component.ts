@@ -405,7 +405,7 @@ export class DeliveryDetailsComponent {
     this.mapLocationSubject.next(coords);
   }
 
-  private async resolveAddressFromCoords(coords: { lat: number; lng: number }) {
+  async resolveAddressFromCoords(coords: { lat: number; lng: number }) {
     try {
       const { Geocoder } = await this.locationService.getGeocodingLibrary();
       const geocoder = new Geocoder();
