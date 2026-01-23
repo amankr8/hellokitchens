@@ -333,18 +333,20 @@
         </div>
       </div>
 
+      <app-map-picker [lat]="12.9716" [lng]="77.5946"></app-map-picker>
+
       <form [formGroup]="addressForm" class="space-y-6">
         <div class="space-y-4">
           <label class="text-[10px] font-black uppercase text-gray-400 ml-2"
             >Area / Locality</label
           >
           <div class="relative group">
-            <textarea
+            <input
               formControlName="fullAddress"
-              placeholder="Search or use current location..."
-              rows="3"
-              class="w-full px-6 py-5 bg-gray-50 border-none rounded-[2rem] text-sm font-bold focus:ring-0 transition-all resize-none"
-            ></textarea>
+              type="text"
+              placeholder="Search or use locate me..."
+              class="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+            />
 
             <div class="absolute bottom-4 right-4 flex gap-2">
               <button
@@ -370,7 +372,7 @@
               #addressDetails
               formControlName="streetAddress"
               type="text"
-              placeholder="e.g. Flat 402, Sunshine Apartments..."
+              placeholder="flat 402, Sunshine Apartments..."
               class="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
             />
           </div>

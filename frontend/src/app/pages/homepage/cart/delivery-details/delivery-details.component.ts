@@ -26,10 +26,16 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CartItem } from '../../../../model/cart-item';
 import { Address } from '../../../../model/user';
 import { OrderPayload } from '../../../../model/order';
+import { MapPickerComponent } from '../../../components/map-picker/map-picker.component';
 
 @Component({
   selector: 'app-delivery-details',
-  imports: [FontAwesomeModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    FontAwesomeModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MapPickerComponent,
+  ],
   templateUrl: './delivery-details.component.html',
 })
 export class DeliveryDetailsComponent {
