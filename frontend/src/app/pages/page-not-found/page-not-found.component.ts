@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Icons } from '../../../utils/icons';
+import { Icons } from '../../utils/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({

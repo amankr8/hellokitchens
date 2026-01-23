@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { KitchenNotFoundComponent } from './pages/components/kitchen-not-found/kitchen-not-found.component';
+import { KitchenNotFoundComponent } from './pages/kitchen-not-found/kitchen-not-found.component';
 import { KitchenService } from './service/kitchen.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icons } from './utils/icons';

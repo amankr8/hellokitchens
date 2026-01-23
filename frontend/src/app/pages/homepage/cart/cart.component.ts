@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { CartService } from '../../../service/cart.service';
 import { KitchenService } from '../../../service/kitchen.service';
 import { APP_NAME } from '../../../constants/app.constant';
-import { EmptyCartComponent } from '../../components/empty-cart/empty-cart.component';
+import { EmptyCartComponent } from '../empty-cart/empty-cart.component';
 
 @Component({
   selector: 'app-cart',
