@@ -269,7 +269,7 @@
       class="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mb-8 md:hidden"
     ></div>
 
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center justify-between mb-4">
       <div class="ml-2">
         <h3 class="text-xl font-black text-gray-900">
           {{ editingAddressId() ? "Update" : "Add New" }} Address
@@ -287,7 +287,7 @@
     </div>
 
     <form [formGroup]="addressForm" class="space-y-4">
-      <div class="space-y-4">
+      <div class="space-y-2">
         <div class="relative group">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
             <fa-icon [icon]="icons.search"></fa-icon>
