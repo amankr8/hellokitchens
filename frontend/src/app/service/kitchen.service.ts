@@ -34,8 +34,12 @@ export class KitchenService {
         this._kitchen.set(kitchen);
         this._loading.set(false);
       },
-      error: () => {
-        this._error.set('Failed to load kitchen');
+      error: (err) => {
+        if (err.status === 404) {
+          this._kitchen.set(null);
+        } else {
+          this._error.set('Failed to load kitchen details');
+        }
         this._loading.set(false);
       },
     });

@@ -1,5 +1,5 @@
 <ng-container *ngIf="!loading(); else loadingState">
-  <div *ngIf="error(); else liveMenu">
+  <div *ngIf="!kitchen(); else liveMenu">
     <app-kitchen-not-found></app-kitchen-not-found>
   </div>
 
