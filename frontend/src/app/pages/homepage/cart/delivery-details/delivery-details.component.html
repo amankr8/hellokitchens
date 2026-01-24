@@ -364,9 +364,12 @@
                 </p>
 
                 <p
-                  class="text-sm font-semibold text-gray-600 leading-snug line-clamp-1"
+                  class="text-sm font-semibold text-gray-600 leading-snug truncate"
                 >
-                  {{ addressForm.get("fullAddress")?.value || "..." }}
+                  {{
+                    addressForm.get("fullAddress")?.value ||
+                      "5th B Cross Rd., Domlur, Bengaluru, Karnataka"
+                  }}
                 </p>
               </div>
             </div>
