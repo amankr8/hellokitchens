@@ -335,9 +335,7 @@
           </div>
         </div>
 
-        <div
-          class="rounded-[2rem] bg-gray-50 p-3 ring-1 ring-black/5 shadow-sm"
-        >
+        <div class="rounded-4xl bg-gray-50 p-2 ring-1 ring-black/5 shadow-sm">
           <app-map-picker
             [lat]="mapCenter().lat"
             [lng]="mapCenter().lng"
@@ -345,9 +343,9 @@
             (locating)="isLocating.set($event)"
           ></app-map-picker>
 
-          <div class="mt-3">
+          <div class="mt-2">
             <div
-              class="w-full p-4 bg-white rounded-2xl flex items-start gap-3 shadow-inner"
+              class="w-full p-4 bg-white rounded-4xl flex items-start gap-3 shadow-inner"
             >
               <div
                 class="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center mt-0.5"
@@ -365,11 +363,10 @@
                   Delivery area
                 </p>
 
-                <p class="text-sm font-semibold text-gray-600 leading-snug">
-                  {{
-                    addressForm.get("fullAddress")?.value ||
-                      "Select an area or move the pin"
-                  }}
+                <p
+                  class="text-sm font-semibold text-gray-600 leading-snug line-clamp-1"
+                >
+                  {{ addressForm.get("fullAddress")?.value || "..." }}
                 </p>
               </div>
             </div>
