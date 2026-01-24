@@ -178,7 +178,7 @@ export class DeliveryDetailsComponent {
     this.editingAddressId.set(addr.id);
     this.isAddingNewAddress.set(true);
 
-    const location = addr.location.split(', ');
+    const location = addr.location.split(',');
     const lat = parseFloat(location[0]);
     const lng = parseFloat(location[1]);
     this.mapCenter.set({ lat, lng });
@@ -335,7 +335,7 @@ export class DeliveryDetailsComponent {
         const lat = place.location.lat();
         const lng = place.location.lng();
         this.mapCenter.set({ lat, lng });
-        location = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        location = `${lat.toFixed(6)},${lng.toFixed(6)}`;
       }
       const address = place.formattedAddress || '';
 
@@ -389,7 +389,7 @@ export class DeliveryDetailsComponent {
 
       this.addressForm.patchValue({
         fullAddress: addressParts.join(', '),
-        location: `${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`,
+        location: `${coords.lat.toFixed(6)},${coords.lng.toFixed(6)}`,
       });
     } catch (e) {
       console.error(e);
