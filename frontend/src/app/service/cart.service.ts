@@ -46,10 +46,7 @@ export class CartService {
     effect(() => {
       const notes = this._notes();
       const items = this._cartItems();
-      localStorage.setItem(
-        this.STORAGE_KEY,
-        JSON.stringify({ notes: notes, items: items }),
-      );
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify({ notes, items }));
     });
   }
 
