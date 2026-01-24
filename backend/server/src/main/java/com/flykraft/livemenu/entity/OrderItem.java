@@ -24,10 +24,6 @@ public class OrderItem {
     @JoinColumn(name = "o_id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "mi_id", nullable = false)
-    private MenuItem menuItem;
-
     @Column(name = "oi_item_name", nullable = false)
     private String itemName;
 
@@ -40,7 +36,6 @@ public class OrderItem {
     public OrderItemResponseDto toResponseDto() {
         return OrderItemResponseDto.builder()
                 .id(this.id)
-                .menuItemId(this.menuItem.getId())
                 .itemName(this.itemName)
                 .quantity(this.quantity)
                 .price(this.price)

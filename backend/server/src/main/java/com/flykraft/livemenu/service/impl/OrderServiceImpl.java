@@ -87,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
             MenuItem menuItem = menuService.loadMenuItemById(itemDto.getMenuItemId());
             OrderItem orderItem = OrderItem.builder()
                     .order(order)
-                    .menuItem(menuItem)
                     .itemName(menuItem.getName())
                     .quantity(itemDto.getQuantity())
                     .price(menuItem.getPrice())

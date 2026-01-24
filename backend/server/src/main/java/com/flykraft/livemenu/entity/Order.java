@@ -52,6 +52,9 @@ public class Order extends Auditable {
     @Column(name = "o_delivery_location", nullable = false)
     private String deliveryLocation;
 
+    @Column(name = "o_tracking_url")
+    private String trackingUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "o_status", nullable = false)
     private OrderStatus status;
