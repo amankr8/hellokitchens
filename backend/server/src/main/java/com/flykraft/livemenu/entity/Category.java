@@ -1,5 +1,6 @@
 package com.flykraft.livemenu.entity;
 
+import com.flykraft.livemenu.dto.menu.CategoryResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,4 +24,11 @@ public class Category {
 
     @Column(name = "c_name", nullable = false)
     private String name;
+
+    public CategoryResponseDto toResponseDto() {
+        return CategoryResponseDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
+    }
 }

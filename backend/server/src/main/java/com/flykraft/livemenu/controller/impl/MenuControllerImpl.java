@@ -1,8 +1,10 @@
 package com.flykraft.livemenu.controller.impl;
 
 import com.flykraft.livemenu.controller.MenuController;
+import com.flykraft.livemenu.dto.menu.CategoryRequestDto;
 import com.flykraft.livemenu.dto.menu.MenuItemRequestDto;
 import com.flykraft.livemenu.dto.menu.MenuItemResponseDto;
+import com.flykraft.livemenu.entity.Category;
 import com.flykraft.livemenu.entity.MenuItem;
 import com.flykraft.livemenu.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,28 @@ import java.util.List;
 @RestController
 public class MenuControllerImpl implements MenuController {
     private final MenuService menuService;
+
+    @Override
+    public ResponseEntity<?> getAllCategories() {
+        return ResponseEntity.ok().body(menuService.loadAllCategories()
+        .stream().map(Category::toResponseDto).toList());
+    }
+
+    @Override
+    public ResponseEntity<?> createCategory(CategoryRequestDto categoryRequestDto) {
+        return ResponseEntity.ok().body(menuService.addNewCategory(categoryRequestDto).toResponseDto());
+    }
+
+    @Override
+    public ResponseEntity<?> updateCategory(Long categoryId, CategoryRequestDto categoryRequestDto) {
+        return ResponseEntity.ok().body(menuService.updateCategory(categoryId, categoryRequestDto).toResponseDto());
+    }
+
+    @Override
+    public ResponseEntity<?> deleteCategory(Long categoryId) {
+        menuService.deleteCategoryById(categoryId);
+        return ResponseEntity.ok().build();
+    }
 
     @Override
     public ResponseEntity<?> getMenu() {

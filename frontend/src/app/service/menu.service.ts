@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-  private apiUrl = environment.apiBaseUrl + '/api/v1/menus';
+  private apiUrl = environment.apiBaseUrl + '/api/v1/menu';
 
   // 🔹 State signals
   private readonly _menuItems = signal<MenuItem[] | null>(null);
