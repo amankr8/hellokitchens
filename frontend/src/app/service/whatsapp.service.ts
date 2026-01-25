@@ -39,12 +39,6 @@ export class WhatsappService {
       `Subtotal: ₹${orderData.subtotal}`,
       `Taxes & Fees: ₹${taxesAndFees}`,
       `*Total Payable: ₹${orderData.subtotal + taxesAndFees}*`,
-
-      `\n--------------------------`,
-      `*FOR PORTER / RAPIDO (COPY BELOW)*`,
-      `${orderData.customerName}`,
-      `${orderData.customerPhone}`,
-      `${orderData.streetAddress}`,
       `--------------------------`,
 
       `\n*Notes:* ${orderData.specialInstructions || 'NIL'}`,
