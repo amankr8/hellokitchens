@@ -21,22 +21,33 @@ export class WhatsappService {
 
     const taxesAndFees =
       orderData.deliveryFees + orderData.packingCharges + orderData.taxes;
+
     const message = [
       `*NEW ORDER RECEIVED!* 🍕`,
       `*Order ID:* #${orderData.id}`,
       `--------------------------`,
       `*Customer Details:*`,
       `👤 ${orderData.customerName}`,
-      `📍 https://www.google.com/maps?q=${orderData.location}`,
       `📞 ${orderData.customerPhone || 'N/A'}`,
+      `📍 ${orderData.streetAddress}`,
+      `🔗 Maps: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(orderData.location)}`,
+
       `\n*Items:*`,
       itemsList,
+
       `\n*Bill Summary:*`,
       `Subtotal: ₹${orderData.subtotal}`,
       `Taxes & Fees: ₹${taxesAndFees}`,
       `*Total Payable: ₹${orderData.subtotal + taxesAndFees}*`,
+
+      `\n--------------------------`,
+      `*FOR PORTER / RAPIDO (COPY BELOW)*`,
+      `${orderData.customerName}`,
+      `${orderData.customerPhone}`,
+      `${orderData.streetAddress}`,
       `--------------------------`,
-      `*Notes:* ${orderData.specialInstructions || 'NIL'}`,
+
+      `\n*Notes:* ${orderData.specialInstructions || 'NIL'}`,
       `\n👉 Please share the *UPI QR Code* to confirm this order.`,
     ].join('\n');
 
