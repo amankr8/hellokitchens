@@ -1,35 +1,35 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
-import { Cart, CartItem } from '../model/cart-item';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { Cart, CartEntry, CartItem } from '../model/cart-item';
 import { MenuItem } from '../model/menu-item';
+import { MenuService } from './menu.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  STORAGE_KEY = 'cartV2';
+  private readonly STORAGE_KEY = 'cartV2';
 
-  private loadItemsFromStorage(): CartItem[] {
+  private menuService = inject(MenuService);
+  private readonly _menuItems = this.menuService.menuItems;
+
+  private loadFromStorage(): Cart {
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as Cart).items : [];
+      return raw ? (JSON.parse(raw) as Cart) : { notes: null, items: [] };
     } catch {
-      return [];
+      return { notes: null, items: [] };
     }
   }
 
-  private loadNotesFromStorage(): string | null {
-    try {
-      const raw = localStorage.getItem(this.STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as Cart).notes : null;
-    } catch {
-      return null;
-    }
-  }
+  private readonly _cartEntries = signal<CartEntry[]>(
+    this.loadFromStorage().items,
+  );
+  readonly cartEntries = this._cartEntries.asReadonly();
 
-  private readonly _cartItems = signal<CartItem[]>(this.loadItemsFromStorage());
+  private readonly _cartItems = signal<CartItem[]>([]);
   readonly cartItems = this._cartItems.asReadonly();
 
-  private readonly _notes = signal<string | null>(this.loadNotesFromStorage());
+  private readonly _notes = signal<string | null>(this.loadFromStorage().notes);
   readonly notes = this._notes.asReadonly();
 
   private animationQueue = signal<{ x: number; y: number; imageUrl: string }[]>(
@@ -45,8 +45,29 @@ export class CartService {
   constructor() {
     effect(() => {
       const notes = this._notes();
-      const items = this._cartItems();
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify({ notes, items }));
+      const itemEntries = this._cartEntries();
+      localStorage.setItem(
+        this.STORAGE_KEY,
+        JSON.stringify({ notes, items: itemEntries }),
+      );
+    });
+
+    effect(() => {
+      const menuItems = this._menuItems();
+      if (!menuItems) {
+        this._cartItems.set([]);
+        return;
+      }
+
+      const entries = this._cartEntries();
+      const items: CartItem[] = [];
+      for (const entry of entries) {
+        const menuItem = menuItems.find((mi) => mi.id === entry.menuItemId);
+        if (menuItem) {
+          items.push({ menuItem, quantity: entry.quantity });
+        }
+      }
+      this._cartItems.set(items);
     });
   }
 
@@ -63,42 +84,42 @@ export class CartService {
     return next;
   }
 
-  setNotes(instructions: string | null) {
-    this._notes.set(instructions);
+  setNotes(notes: string | null) {
+    this._notes.set(notes);
   }
 
-  addToCart(item: MenuItem): void {
-    this._cartItems.update((items) => {
-      const existing = items.find((i) => i.menuItem.id === item.id);
+  addToCart(itemId: number): void {
+    this._cartEntries.update((entries) => {
+      const existing = entries.find((i) => i.menuItemId === itemId);
 
       if (existing) {
-        return items.map((i) =>
-          i.menuItem.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
+        return entries.map((i) =>
+          i.menuItemId === itemId ? { ...i, quantity: i.quantity + 1 } : i,
         );
       }
 
-      return [...items, { menuItem: item, quantity: 1 }];
+      return [...entries, { menuItemId: itemId, quantity: 1 }];
     });
   }
 
-  removeFromCart(item: MenuItem): void {
-    this._cartItems.update((items) => {
-      const existing = items.find((i) => i.menuItem.id === item.id);
-      if (!existing) return items;
+  removeFromCart(itemId: number): void {
+    this._cartEntries.update((entries) => {
+      const existing = entries.find((i) => i.menuItemId === itemId);
+      if (!existing) return entries;
 
       if (existing.quantity > 1) {
-        return items.map((i) =>
-          i.menuItem.id === item.id ? { ...i, quantity: i.quantity - 1 } : i,
+        return entries.map((i) =>
+          i.menuItemId === itemId ? { ...i, quantity: i.quantity - 1 } : i,
         );
       }
 
-      return items.filter((i) => i.menuItem.id !== item.id);
+      return entries.filter((i) => i.menuItemId !== itemId);
     });
   }
 
   getItemQuantity(itemId: number): number {
     return (
-      this._cartItems().find((i) => i.menuItem.id === itemId)?.quantity ?? 0
+      this._cartEntries().find((i) => i.menuItemId === itemId)?.quantity ?? 0
     );
   }
 

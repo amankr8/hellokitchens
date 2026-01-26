@@ -27,6 +27,6 @@ public class OrderResponseDto extends AuditableDto {
     private BigDecimal deliveryFees;
     private BigDecimal taxes;
     private BigDecimal totalAmount;
-    private String specialInstructions;
+    private String notes;
     private List<OrderItemResponseDto> orderItems;
 }

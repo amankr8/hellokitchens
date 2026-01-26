@@ -13,7 +13,7 @@ export interface Order {
   deliveryFees: number;
   taxes: number;
   totalAmount: number;
-  specialInstructions: string | null;
+  notes: string | null;
   orderItems: OrderItem[];
   createdAt: string;
   updatedAt: string;
@@ -30,7 +30,7 @@ export interface OrderItem {
 export interface OrderPayload {
   customerDetails: UserPayload;
   addressDetails: AddressPayload;
-  specialInstructions: string | null;
+  notes: string | null;
   orderItems: OrderItemPayload[];
 }
 

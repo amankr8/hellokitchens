@@ -95,7 +95,7 @@ public class Order extends Auditable {
                 .deliveryFees(this.deliveryFees)
                 .taxes(this.taxes)
                 .totalAmount(this.totalAmount)
-                .specialInstructions(this.specialInstructions)
+                .notes(this.specialInstructions)
                 .orderItems(this.orderItems.stream()
                         .map(OrderItem::toResponseDto)
                         .toList())
