@@ -3,12 +3,14 @@ package com.flykraft.livemenu.entity;
 import com.flykraft.livemenu.dto.menu.CategoryResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Filter(name = "kitchenFilter", condition = "k_id = :kitchenId")
 @Entity
 @Table(name = "categories", uniqueConstraints = @UniqueConstraint(columnNames = {"k_id", "c_name"}))
 public class Category {

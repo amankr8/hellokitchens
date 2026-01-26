@@ -1,15 +1,12 @@
 package com.flykraft.livemenu.service.impl;
 
 import com.flykraft.livemenu.config.TenantContext;
-import com.flykraft.livemenu.dto.menu.CategoryRequestDto;
 import com.flykraft.livemenu.dto.menu.MenuItemRequestDto;
-import com.flykraft.livemenu.entity.Category;
 import com.flykraft.livemenu.entity.DishImage;
 import com.flykraft.livemenu.entity.Kitchen;
 import com.flykraft.livemenu.entity.MenuItem;
 import com.flykraft.livemenu.exception.ResourceNotFoundException;
 import com.flykraft.livemenu.model.CloudinaryFile;
-import com.flykraft.livemenu.repository.CategoryRepository;
 import com.flykraft.livemenu.repository.DishImageRepository;
 import com.flykraft.livemenu.repository.MenuItemRepository;
 import com.flykraft.livemenu.service.CloudinaryService;
@@ -29,41 +26,12 @@ public class MenuServiceImpl implements MenuService {
     private final MenuItemRepository menuItemRepository;
     private final DishImageRepository dishImageRepository;
     private final KitchenService kitchenService;
-    private final CategoryRepository categoryRepository;
     private final CloudinaryService cloudinaryService;
 
     private static final List<String> ALLOWED_FILE_TYPES = List.of("image/jpeg", "image/png");
 
     @Value("${spring.application.name}")
     private String appName;
-
-    @Override
-    public List<Category> loadAllCategories() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    public Category addNewCategory(CategoryRequestDto categoryRequestDto) {
-        Long currentKitchenId = TenantContext.getKitchenId();
-        Category category = Category.builder()
-                .kitchen(kitchenService.loadKitchenById(currentKitchenId))
-                .name(categoryRequestDto.getCategoryName())
-                .build();
-        return categoryRepository.save(category);
-    }
-
-    @Override
-    public Category updateCategory(Long categoryId, CategoryRequestDto categoryRequestDto) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category with id " + categoryId + " does not exist"));
-        category.setName(categoryRequestDto.getCategoryName());
-        return categoryRepository.save(category);
-    }
-
-    @Override
-    public void deleteCategoryById(Long categoryId) {
-        categoryRepository.deleteById(categoryId);
-    }
 
     @Override
     public List<MenuItem> loadAllMenuItems() {
