@@ -1,13 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
-  private http = inject(HttpClient);
   private API_KEY = environment.google.apiKey;
 
   constructor() {

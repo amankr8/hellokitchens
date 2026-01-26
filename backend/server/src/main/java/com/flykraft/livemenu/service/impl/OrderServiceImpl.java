@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
                 .deliveryFees(BigDecimal.valueOf(40))
                 .taxes(BigDecimal.ZERO)
                 .totalAmount(BigDecimal.ZERO)
-                .specialInstructions(orderRequestDto.getSpecialInstructions())
+                .specialInstructions(orderRequestDto.getNotes())
                 .build();
         order = orderRepository.save(order);
 

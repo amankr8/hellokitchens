@@ -12,6 +12,6 @@ import java.util.List;
 public class OrderRequestDto {
     private UserReqDto customerDetails;
     private AddressReqDto addressDetails;
-    private String specialInstructions;
+    private String notes;
     private List<OrderItemRequestDto> orderItems;
 }

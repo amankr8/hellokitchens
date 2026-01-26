@@ -19,7 +19,7 @@ export class CartComponent {
   cartService = inject(CartService);
 
   kitchen = this.kitchenService.kitchen;
-  cartItems = this.cartService.cartItems;
+  cartEntries = this.cartService.cartEntries;
 
   icons = Icons;
 

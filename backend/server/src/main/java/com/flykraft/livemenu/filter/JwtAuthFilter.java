@@ -39,7 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private static final List<RequestMatcher> PUBLIC_MATCHERS = List.of(
             PathPatternRequestMatcher.withDefaults().matcher("/api/v1/auth/**"),
-            PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/api/v1/menus/**"),
+            PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/api/v1/menu/**"),
             PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/api/v1/kitchens/**")
     );
 

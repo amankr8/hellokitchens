@@ -16,7 +16,7 @@ export class MenuItemCardComponent {
   cartService = inject(CartService);
 
   quantity = computed(() =>
-    this.cartService.getItemQuantity(this.menuItem?.id)
+    this.cartService.getItemQuantity(this.menuItem?.id),
   );
 
   defaultImage: string = 'images/dish.png';
@@ -28,7 +28,7 @@ export class MenuItemCardComponent {
   }
 
   onDecrease(): void {
-    this.cartService.removeFromCart(this.menuItem);
+    this.cartService.removeFromCart(this.menuItem.id);
   }
 
   onImageError(event: any): void {
@@ -40,11 +40,11 @@ export class MenuItemCardComponent {
   }
 
   onAddClick(event: MouseEvent): void {
-    this.cartService.addToCart(this.menuItem);
+    this.cartService.addToCart(this.menuItem.id);
     this.cartService.triggerAnimation(
       event.clientX,
       event.clientY,
-      this.getImageUrl()
+      this.getImageUrl(),
     );
   }
 }

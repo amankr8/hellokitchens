@@ -6,6 +6,7 @@ import { CartItem } from '../../../../model/cart-item';
 import { Icons } from '../../../../utils/icons';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { MenuService } from '../../../../service/menu.service';
 
 @Component({
   selector: 'app-cart-items',
@@ -14,7 +15,11 @@ import { RouterLink } from '@angular/router';
 })
 export class CartItemsComponent {
   cartService = inject(CartService);
+  menuService = inject(MenuService);
+
   cartItems = this.cartService.cartItems;
+  loading = this.menuService.loading;
+  error = this.menuService.error;
 
   isBillExpanded = signal(false);
   notes = signal('');
@@ -26,19 +31,23 @@ export class CartItemsComponent {
 
   constructor() {
     effect(() => {
-      const specialInstructions = this.cartService.notes();
-      if (!specialInstructions) return;
+      const notes = this.cartService.notes();
+      if (!notes) return;
 
-      this.notes.set(specialInstructions);
+      this.notes.set(notes);
     });
   }
 
+  ngOnInit() {
+    this.menuService.loadMenuItems();
+  }
+
   increaseQty(item: CartItem) {
-    this.cartService.addToCart(item.menuItem);
+    this.cartService.addToCart(item.menuItem.id);
   }
 
   decreaseQty(item: CartItem) {
-    this.cartService.removeFromCart(item.menuItem);
+    this.cartService.removeFromCart(item.menuItem.id);
   }
 
   onImageError(event: any): void {
@@ -54,9 +63,9 @@ export class CartItemsComponent {
   }
 
   saveNotes() {
-    const instructions = this.notes();
-    if (instructions.trim().length > 0) {
-      this.cartService.setNotes(instructions);
+    const notes = this.notes();
+    if (notes.trim().length > 0) {
+      this.cartService.setNotes(notes);
       this.isEditingNotes.set(false);
     }
   }

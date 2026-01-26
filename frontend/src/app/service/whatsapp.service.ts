@@ -41,7 +41,7 @@ export class WhatsappService {
       `*Total Payable: ₹${orderData.subtotal + taxesAndFees}*`,
       `--------------------------`,
 
-      `\n*Notes:* ${orderData.specialInstructions || 'NIL'}`,
+      `\n*Notes:* ${orderData.notes || 'NIL'}`,
       `\n👉 Please share the *UPI QR Code* to confirm this order.`,
     ].join('\n');
 

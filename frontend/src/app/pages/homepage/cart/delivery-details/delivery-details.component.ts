@@ -23,7 +23,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { LocationService } from '../../../../service/location.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { CartItem } from '../../../../model/cart-item';
 import { Address } from '../../../../model/user';
 import { OrderPayload } from '../../../../model/order';
 import { MapPickerComponent } from '../../../components/map-picker/map-picker.component';
@@ -51,8 +50,8 @@ export class DeliveryDetailsComponent {
   uiService = inject(UiService);
   fb = inject(FormBuilder);
 
-  cartItems = this.cartService.cartItems;
-  specialInstructions = this.cartService.notes;
+  cartEntries = this.cartService.cartEntries;
+  notes = this.cartService.notes;
 
   user = this.userService.user;
   isUserLoading = this.userService.loading;
@@ -69,7 +68,6 @@ export class DeliveryDetailsComponent {
 
   isUserRegistered = computed(() => !!this.user()?.name);
 
-  private searchTimer: any;
   searchQuery = signal('');
   searchResults = signal<any[]>([]);
 
@@ -200,14 +198,6 @@ export class DeliveryDetailsComponent {
       fullAddress: addr?.fullAddress ?? '',
       location: addr?.location ?? '',
     });
-  }
-
-  increaseQty(item: CartItem) {
-    this.cartService.addToCart(item.menuItem);
-  }
-
-  decreaseQty(item: CartItem) {
-    this.cartService.removeFromCart(item.menuItem);
   }
 
   selectAddress(addr: Address) {
@@ -413,16 +403,17 @@ export class DeliveryDetailsComponent {
       return;
     }
 
+    const cartEntries = this.cartEntries();
+
     this.isPlacingOrder.set(true);
 
-    const cartItems = this.cartItems();
     const payload: OrderPayload = {
       customerDetails: this.userForm.value,
       addressDetails: this.addressForm.value,
-      specialInstructions: this.specialInstructions(),
-      orderItems: cartItems.map((item) => ({
-        menuItemId: item.menuItem.id,
-        quantity: item.quantity,
+      notes: this.notes(),
+      orderItems: cartEntries.map((entry) => ({
+        menuItemId: entry.menuItemId,
+        quantity: entry.quantity,
       })),
     };
 
