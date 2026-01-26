@@ -38,14 +38,27 @@
   </div>
 
   <ng-container *ngIf="!loading() && !error()">
-    <div
-      *ngIf="(menuItems()?.length ?? 0) > 0; else emptyState"
-      class="grid grid-cols-1 md:grid-cols-2 gap-3"
-    >
-      <app-menu-item-card
-        *ngFor="let item of menuItems(); trackBy: trackById"
-        [menuItem]="item"
-      ></app-menu-item-card>
+    <div *ngIf="groupedMenuItems().length; else emptyState" class="space-y-10">
+      <div *ngFor="let group of groupedMenuItems()" class="space-y-6">
+        <div class="flex items-center gap-4 px-2">
+          <span
+            class="text-[11px] font-black uppercase tracking-[0.2em] text-orange-600 whitespace-nowrap bg-orange-50 px-3 py-1 rounded-lg"
+          >
+            {{ group.label }}
+          </span>
+          <div class="h-[1px] w-full bg-gray-100"></div>
+          <span class="text-[10px] font-bold text-gray-300 whitespace-nowrap">
+            {{ group.items.length }} Items
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <app-menu-item-card
+            *ngFor="let item of group.items; trackBy: trackById"
+            [menuItem]="item"
+          ></app-menu-item-card>
+        </div>
+      </div>
     </div>
 
     <ng-template #emptyState>

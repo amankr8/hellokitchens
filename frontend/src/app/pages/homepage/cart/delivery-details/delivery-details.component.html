@@ -237,7 +237,7 @@
   >
     <button
       (click)="placeOrder()"
-      [disabled]="isPlacingOrder() || cartItems().length === 0"
+      [disabled]="isPlacingOrder() || cartEntries().length === 0"
       class="w-full max-w-2xl mx-auto py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-orange-200/50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-200 disabled:shadow-none"
     >
       <ng-container *ngIf="!isPlacingOrder(); else loadingState">

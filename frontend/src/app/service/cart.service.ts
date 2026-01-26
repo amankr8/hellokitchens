@@ -1,6 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Cart, CartEntry, CartItem } from '../model/cart-item';
-import { MenuItem } from '../model/menu-item';
 import { MenuService } from './menu.service';
 
 @Injectable({

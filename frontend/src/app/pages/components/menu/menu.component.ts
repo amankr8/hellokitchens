@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MenuItem } from '../../../model/menu-item';
 import { MenuService } from '../../../service/menu.service';
 import { CommonModule } from '@angular/common';
@@ -26,4 +26,19 @@ export class MenuComponent {
   trackById(index: number, item: MenuItem) {
     return item.id;
   }
+
+  groupedMenuItems = computed(() => {
+    const items = this.menuItems() || [];
+    const groups = items.reduce((acc: any, item) => {
+      const cat = item.category || 'Other';
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(item);
+      return acc;
+    }, {});
+
+    return Object.keys(groups).map((category) => ({
+      label: category,
+      items: groups[category],
+    }));
+  });
 }
