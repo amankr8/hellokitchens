@@ -23,9 +23,7 @@ export class MenuComponent {
     this.menuService.loadMenuItems();
   }
 
-  trackById(index: number, item: MenuItem) {
-    return item.id;
-  }
+  trackById = (_: number, item: MenuItem) => item.id;
 
   groupedMenuItems = computed(() => {
     const items = this.menuItems() || [];
