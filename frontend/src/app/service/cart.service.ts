@@ -36,10 +36,10 @@ export class CartService {
   );
 
   readonly totalCount = computed(() =>
-    this._cartItems().reduce((acc, item) => acc + item.quantity, 0),
+    this._cartEntries().reduce((acc, item) => acc + item.quantity, 0),
   );
 
-  readonly isEmpty = computed(() => this._cartItems().length === 0);
+  readonly isEmpty = computed(() => this._cartEntries().length === 0);
 
   constructor() {
     effect(() => {
@@ -123,6 +123,7 @@ export class CartService {
   }
 
   clearCart(): void {
+    this._cartEntries.set([]);
     this._cartItems.set([]);
     this._notes.set(null);
   }
