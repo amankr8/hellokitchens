@@ -6,7 +6,7 @@ import { MenuService } from './menu.service';
   providedIn: 'root',
 })
 export class CartService {
-  private readonly STORAGE_KEY = 'cartV2';
+  private readonly STORAGE_KEY = 'cartV3';
 
   private menuService = inject(MenuService);
   private readonly _menuItems = this.menuService.menuItems;
